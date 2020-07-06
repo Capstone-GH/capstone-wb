@@ -1,43 +1,28 @@
 import React from 'react'
-import {Stage, Layer, Circle} from 'react-konva'
+import {Line} from './line'
+import {Stage, Layer} from 'react-konva'
 
 export default function Whiteboard() {
-  const handleDragStart = e => {
-    e.target.setAttrs({
-      shadowOffset: {
-        x: 15,
-        y: 15
-      },
-      scaleX: 1.1,
-      scaleY: 1.1
-    })
-  }
-  const handleDragEnd = e => {
-    e.target.to({
-      duration: 0.5,
-      easing: Konva.Easings.ElasticEaseOut,
-      scaleX: 1,
-      scaleY: 1,
-      shadowOffsetX: 5,
-      shadowOffsetY: 5
-    })
+  const stageEl = React.createRef()
+  const layerEl = React.createRef()
+
+  const drawLine = () => {
+    Line(stageEl.current.getStage(), layerEl.current)
   }
 
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
-      <Layer>
-        <Circle
-          x={100}
-          y={100}
-          width={100}
-          height={100}
-          fill="yellow"
-          shadowBlur={5}
-          draggable
-          onDragStart={handleDragStart}
-          onDragEnd={handleDragEnd}
-        />
-      </Layer>
-    </Stage>
+    <div>
+      <h1>Whiteboard</h1>
+      <button type="button" onClick={drawLine}>
+        Pen
+      </button>
+      <Stage
+        width={window.innerWidth}
+        height={window.innerHeight}
+        ref={stageEl}
+      >
+        <Layer ref={layerEl} />
+      </Stage>
+    </div>
   )
 }
