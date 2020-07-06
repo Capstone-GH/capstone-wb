@@ -31,7 +31,7 @@ export default function Whiteboard() {
           y={100}
           width={100}
           height={100}
-          fill="red"
+          fill="yellow"
           shadowBlur={5}
           draggable
           onDragStart={handleDragStart}
