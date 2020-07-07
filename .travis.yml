@@ -10,8 +10,11 @@ notifications:
     on_failure: always # default: always (which is annoying, as it should be)
 install:
   - npm ci # faster, goes only from package-lock
+before_script:
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
-  # - npm test # test the code
+  - npm test # test the code
   - npm run build-client # make the bundle
 # before_deploy:
 #   - rm -rf node_modules # omit from the tarball, since we skip cleanup
