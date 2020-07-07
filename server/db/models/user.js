@@ -1,6 +1,43 @@
-// const crypto = require('crypto')
-// const Sequelize = require('sequelize')
-// const db = require('../db')
+const crypto = require('crypto')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+
+const User = new Schema(
+  {
+    email: {type: String, required: true},
+    password: {type: String, required: true},
+    salt: {type: String},
+    googleId: {type: String}
+  },
+  {timestamps: true}
+)
+
+User.methods.correctPassword = function(candidatePwd) {
+  return User.statics.encryptPassword(candidatePwd, this.salt) === this.password
+}
+
+User.statics.generateSalt = function generateSalt() {
+  return crypto.randomBytes(16).toString('base64')
+}
+
+User.statics.encryptPassword = function encryptPassword(plainText, salt) {
+  return crypto
+    .createHash('RSA-SHA256')
+    .update(plainText)
+    .update(salt)
+    .digest('hex')
+}
+
+User.pre('save', function(next) {
+  const user = this
+
+  if (!user.isModified('password')) return next()
+
+  user.salt = User.statics.generateSalt()
+  user.password = User.statics.encryptPassword(user.password, user.salt)
+
+  next()
+})
 
 // const User = db.define('user', {
 //   email: {
@@ -29,42 +66,4 @@
 //   }
 // })
 
-// module.exports = User
-
-// /**
-//  * instanceMethods
-//  */
-// User.prototype.correctPassword = function(candidatePwd) {
-//   return User.encryptPassword(candidatePwd, this.salt()) === this.password()
-// }
-
-// /**
-//  * classMethods
-//  */
-// User.generateSalt = function() {
-//   return crypto.randomBytes(16).toString('base64')
-// }
-
-// User.encryptPassword = function(plainText, salt) {
-//   return crypto
-//     .createHash('RSA-SHA256')
-//     .update(plainText)
-//     .update(salt)
-//     .digest('hex')
-// }
-
-// /**
-//  * hooks
-//  */
-// const setSaltAndPassword = user => {
-//   if (user.changed('password')) {
-//     user.salt = User.generateSalt()
-//     user.password = User.encryptPassword(user.password(), user.salt())
-//   }
-// }
-
-// User.beforeCreate(setSaltAndPassword)
-// User.beforeUpdate(setSaltAndPassword)
-// User.beforeBulkCreate(users => {
-//   users.forEach(setSaltAndPassword)
-// })
+module.exports = mongoose.model('users', User)

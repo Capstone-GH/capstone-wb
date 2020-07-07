@@ -1,4 +1,4 @@
-// const User = require('./user')
+const User = require('./user')
 const Project = require('./project')
 
 /**
@@ -15,5 +15,6 @@ const Project = require('./project')
  * instead of: const User = require('../db/models/user')
  */
 module.exports = {
-  Project
+  Project,
+  User
 }

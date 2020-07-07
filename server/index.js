@@ -4,9 +4,12 @@ const morgan = require('morgan')
 const compression = require('compression')
 const session = require('express-session')
 const passport = require('passport')
+const User = require('./db/models/user')
 // const SequelizeStore = require('connect-session-sequelize')(session.Store)
+const MongoStore = require('connect-mongo')(session)
 const db = require('./db')
 // const sessionStore = new SequelizeStore({db})
+const sessionStore = new MongoStore({mongooseConnection: db})
 const PORT = process.env.PORT || 8080
 const app = express()
 const socketio = require('socket.io')
@@ -29,16 +32,16 @@ module.exports = app
 if (process.env.NODE_ENV !== 'production') require('../secrets')
 
 // passport registration
-// passport.serializeUser((user, done) => done(null, user.id))
+passport.serializeUser((user, done) => done(null, user._id))
 
-// passport.deserializeUser(async (id, done) => {
-//   try {
-//     // const user = await db.models.user.findByPk(id)
-//     done(null, user)
-//   } catch (err) {
-//     done(err)
-//   }
-// })
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id)
+    done(null, user)
+  } catch (err) {
+    done(err)
+  }
+})
 
 const createApp = () => {
   // logging middleware
@@ -58,7 +61,7 @@ const createApp = () => {
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'my best friend is Cody',
-      // store: sessionStore,
+      store: sessionStore,
       resave: false,
       saveUninitialized: false
     })
@@ -67,7 +70,7 @@ const createApp = () => {
   app.use(passport.session())
 
   // auth and api routes
-  // app.use('/auth', require('./auth'))
+  app.use('/auth', require('./auth'))
   app.use('/api', require('./api'))
 
   // static file-serving middleware
