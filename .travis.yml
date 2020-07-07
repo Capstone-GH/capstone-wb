@@ -11,7 +11,6 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
 script:
-  - npm test # test the code
   - npm run build-client # make the bundle
 # before_deploy:
 #   - rm -rf node_modules # omit from the tarball, since we skip cleanup
