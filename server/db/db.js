@@ -8,9 +8,7 @@
 //   }
 // )
 const connectionString =
-  process.env.NODE_ENV !== 'production'
-    ? require('../../secrets').connectionString
-    : ''
+  process.env.mongo_DB || require('../../secrets').connectionString
 
 //Import the mongoose module
 const mongoose = require('mongoose')
