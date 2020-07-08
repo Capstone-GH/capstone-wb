@@ -1,13 +1,21 @@
 import React from 'react'
 import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
+import {connect} from 'react-redux'
+import {getLine} from '../store/linePoints'
+import {Redraw} from './redrawutils'
 
-export default function Whiteboard() {
+function Whiteboard() {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
 
   const drawLine = () => {
-    Line(stageEl.current.getStage(), layerEl.current)
+    let points = Line(stageEl.current.getStage(), layerEl.current)
+    console.log(points)
+  }
+
+  const redrawLine = () => {
+    Redraw(layerEl.current)
   }
 
   return (
@@ -15,6 +23,9 @@ export default function Whiteboard() {
       <h1>Whiteboard</h1>
       <button type="button" onClick={drawLine}>
         Pen
+      </button>
+      <button type="button" onClick={redrawLine}>
+        Redraw
       </button>
       <Stage
         width={window.innerWidth}
@@ -26,3 +37,11 @@ export default function Whiteboard() {
     </div>
   )
 }
+
+const mapDispatch = dispatch => {
+  return {
+    getLine: points => dispatch(getLine(points))
+  }
+}
+
+export default connect(null, mapDispatch)(Whiteboard)

@@ -7,6 +7,7 @@
 //     logging: false
 //   }
 // )
+
 const connectionString =
   process.env.mongo_DB || require('../../secrets').connectionString
 
@@ -16,10 +17,8 @@ const mongoose = require('mongoose')
 //Set up default mongoose connection
 const mongoDB = connectionString
 
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// mongoose.set('useUnifiedTopology', true)
+mongoose.connect(mongoDB, {useNewUrlParser: true})
 
 //Get the default connection
 const db = mongoose.connection
@@ -28,6 +27,6 @@ module.exports = db
 
 // This is a global Mocha hook used for resource cleanup.
 // Otherwise, Mocha v4+ does not exit after tests.
-// if (process.env.NODE_ENV === 'test') {
-//   after('close database connection', () => db.close())
-// }
+if (process.env.NODE_ENV === 'test') {
+  after('close database connection', () => db.close())
+}
