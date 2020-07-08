@@ -14,11 +14,14 @@ install:
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
-# before_deploy:
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: scribby-dev
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: nOPa5WeviT1gzQlkINitfY9fojku/pNlcjmzKxD8V0oHZxfWXWLpj0FL9UgKj0JL3MuO912si+ix4fs04xZIj5AESXlsw0XJCT2XcVhWmoLJ6OpsI2K+f2pttvvVZcpBxoe8EEsApIPPKM3CV5Rn8WEQoGwcdOQ1CMN93LYHATCl0Gx8+yfaxJ35g9QaVq/fAkruehdMpGIIbS9QLH6ZDGDZg3WTTKXwOqzadJzhpGypZdVwVRy3TJjZOOXZOM6ZSUcEwM6I4qlMc14K5HU6wr+R596sm8gA7/JKHj7s4qteDrK3zpyFolC8kMK9IScKXvQxsd4Jo0XoDpqyo6BsO+AAIC1bb/ZcUAGhHl4D/hUTfCao1Jw3ezborZcHKU3KcXVvLP/W1gahzTUo0doQtEzsDnoPrxkEkcWY/rwKKZzDFeqYFFns3NlBIQDb6VrJEga6aFOY582zLJlOarsotObMVhLK4EC+YFkcIb/WxaKWXwOejQ1h/BJXBN68koCp80+YXPAhV2VyxRAIkGhyHK3jlj/dT/CeGZDGEckCDDipUycsAhRVf8H0TsA9a/VBSs0xFizndHI0XQQBnmOay/CXsBza86D3uQLhW+nYeQHV6v0sGfMEnIXxUvuMm2s7dpxy7OEiuXy250XW4ynexEDxSFxyhN44/p6CNaF7sxg=
