@@ -7,17 +7,18 @@ export const getLine = points => ({
   type: GET_LINE,
   points
 })
-//thunk
-export const getLinePoints = () => {
-  return async dispatch => {
-    try {
-      const {data} = await axios.post('/api/products')
-      dispatch(getLine(data))
-    } catch (error) {
-      console.log('Error', error)
-    }
-  }
-}
+
+// //thunk
+// export const getLinePoints = (projectID) => {
+//   return async dispatch => {
+//     try {
+//       const {data} = await axios.post(`/api/projects/${projectID}`)
+//       dispatch(getLine(data))
+//     } catch (error) {
+//       console.log('Error', error)
+//     }
+//   }
+// }
 
 //reducer
 export default function(state = [], action) {

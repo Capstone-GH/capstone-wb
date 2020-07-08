@@ -29,9 +29,13 @@ router.post('/', async (req, res, next) => {
   //     })
   //   })
   try {
-    const project = new Project({name: req.body.name})
-    await project.save()
-    res.send(project)
+    if (!req.user) res.sendStatus(401)
+    const newProject = new Project({
+      name: req.body.name,
+      linepoints: req.body.linepoints
+    })
+    await newProject.save()
+    res.send(newProject)
   } catch (error) {
     next(error)
   }
