@@ -2,18 +2,18 @@ language: node_js
 node_js:
   - 12 # uses version 12
 services:
-  - postgresql # starts up postgres
-addons:
-  postgresql: '10' # recent postgres version on Travis
-dist: xenial # uses xenial environment
+  - mongodb # starts up postgres
+# dist: xenial # uses xenial environment
 notifications:
   email:
     on_success: change # default: change (only when going from broken to fixed)
     on_failure: always # default: always (which is annoying, as it should be)
 install:
   - npm ci # faster, goes only from package-lock
+  - travis_wait mvn install
 before_script:
-  - psql -c 'create database "boilermaker-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
+  - sleep 15
+  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
