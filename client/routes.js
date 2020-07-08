@@ -6,6 +6,7 @@ import {Login, Signup, UserHome} from './components'
 import {me} from './store'
 import Whiteboard from './components/whiteboard'
 import SavedBoards from './components/saved-boards'
+import CodeEditor from './components/codeEditor'
 
 /**
  * COMPONENT
@@ -24,6 +25,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
         <Route path="/whiteboard" component={Whiteboard} />
+        <Route path="/codeEditor" component={CodeEditor} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
