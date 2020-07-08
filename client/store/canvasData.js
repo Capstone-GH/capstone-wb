@@ -9,6 +9,7 @@ let defaultState = {
 //action type
 export const GET_LINE = 'GET_LINE'
 const SET_PROJECTID = 'SET_PROJECTID'
+const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 //action creator
 export const getLine = points => ({
   type: GET_LINE,
@@ -18,6 +19,13 @@ export const getLine = points => ({
 export const setId = projectId => ({
   type: SET_PROJECTID,
   projectId
+})
+
+export const setReloadedBoard = (projectId, whiteboardData, name) => ({
+  type: SET_RELOADEDBOARD,
+  projectId,
+  whiteboardData,
+  name
 })
 
 export const saveBoard = (projectId, linePoints) => {
@@ -47,6 +55,16 @@ export const saveBoard = (projectId, linePoints) => {
   }
 }
 
+export const reloadSavedBoard = projectId => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.get(`/api/projects/${projectId}`)
+      dispatch(setReloadedBoard(data._id, data.whiteboardData, data.name))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+}
 //check if there is already a project id
 //if there is, were going to send a put request
 
@@ -66,6 +84,12 @@ export default function(state = defaultState, action) {
       return {
         ...state,
         projectId: action.projectId
+      }
+    case SET_RELOADEDBOARD:
+      return {
+        projectId: action.projectId,
+        linePoints: action.whiteboardData,
+        name: action.name
       }
     default:
       return state
