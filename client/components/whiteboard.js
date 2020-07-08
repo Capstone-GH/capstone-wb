@@ -2,7 +2,7 @@ import React from 'react'
 import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {connect} from 'react-redux'
-import {getLine} from '../store/linePoints'
+import {getLine, saveBoard} from '../store/canvasData'
 import {Redraw} from './redrawutils'
 
 function Whiteboard(props) {
@@ -10,8 +10,7 @@ function Whiteboard(props) {
   const layerEl = React.createRef()
 
   const drawLine = () => {
-    let points = Line(stageEl.current.getStage(), layerEl.current)
-    console.log(points)
+    Line(stageEl.current.getStage(), layerEl.current)
   }
 
   const redrawLine = () => {
@@ -27,7 +26,10 @@ function Whiteboard(props) {
       <button type="button" onClick={redrawLine}>
         Redraw
       </button>
-      <button type="submit" onClick={() => console.log(props.linePoints)}>
+      <button
+        type="submit"
+        onClick={() => props.saveBoard(props.projectId, props.linePoints)}
+      >
         Save
       </button>
       <Stage
@@ -43,13 +45,16 @@ function Whiteboard(props) {
 
 const mapState = state => {
   return {
-    linePoints: state.linePoints
+    linePoints: state.canvasData.linePoints,
+    projectId: state.canvasData.projectId
   }
 }
 
 const mapDispatch = dispatch => {
   return {
-    getLine: points => dispatch(getLine(points))
+    getLine: points => dispatch(getLine(points)),
+    saveBoard: (projectId, linePoints) =>
+      dispatch(saveBoard(projectId, linePoints))
   }
 }
 

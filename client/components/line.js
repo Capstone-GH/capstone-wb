@@ -1,6 +1,6 @@
 import Konva from 'konva'
 import store from '../store/index'
-import {getLine} from '../store/linePoints'
+import {getLine} from '../store/canvasData'
 
 export const Line = (stage, layer, mode = 'brush') => {
   let isPaint = false
