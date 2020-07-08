@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {getLine} from '../store/linePoints'
 import {Redraw} from './redrawutils'
 
-function Whiteboard() {
+function Whiteboard(props) {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
 
@@ -27,6 +27,9 @@ function Whiteboard() {
       <button type="button" onClick={redrawLine}>
         Redraw
       </button>
+      <button type="submit" onClick={() => console.log(props.linePoints)}>
+        Save
+      </button>
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -38,10 +41,16 @@ function Whiteboard() {
   )
 }
 
+const mapState = state => {
+  return {
+    linePoints: state.linePoints
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     getLine: points => dispatch(getLine(points))
   }
 }
 
-export default connect(null, mapDispatch)(Whiteboard)
+export default connect(mapState, mapDispatch)(Whiteboard)
