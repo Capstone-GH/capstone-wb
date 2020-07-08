@@ -7,6 +7,11 @@
 //     logging: false
 //   }
 // )
+// const connectionString =
+//   process.env.NODE_ENV !== 'production'
+//     ? require('../../secrets').connectionString
+//     : ''
+
 const connectionString =
   process.env.mongo_DB || require('../../secrets').connectionString
 
@@ -16,10 +21,7 @@ const mongoose = require('mongoose')
 //Set up default mongoose connection
 const mongoDB = connectionString
 
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+mongoose.connect(mongoDB, {useNewUrlParser: true})
 
 //Get the default connection
 const db = mongoose.connection
