@@ -2,6 +2,19 @@ const Project = require('../db/models/project')
 const {findByIdAndUpdate} = require('../db/models/project')
 const router = require('express').Router()
 
+router.get('/:id', async (req, res, next) => {
+  try {
+    const singleProject = await Project.findById(req.params.id)
+    if (singleProject) {
+      res.json(singleProject)
+    } else {
+      res.sendStatus(404)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/', async (req, res, next) => {
   try {
     if (!req.user) res.sendStatus(401)

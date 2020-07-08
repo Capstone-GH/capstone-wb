@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fetchBoards} from '../store/user'
+import {Link} from 'react-router-dom'
 
 export class SavedBoards extends React.Component {
   componentDidMount() {
@@ -12,7 +13,11 @@ export class SavedBoards extends React.Component {
 
     return savedBoards
       ? savedBoards.map(board => {
-          return <h1 key={board._id}>{board.name}</h1>
+          return (
+            <Link to={`/whiteboard/${board._id}`} key={board._id}>
+              {board.name}
+            </Link>
+          )
         })
       : 'No saved boards'
   }

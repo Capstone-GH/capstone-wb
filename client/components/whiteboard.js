@@ -1,14 +1,23 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {connect} from 'react-redux'
-import {getLine, saveBoard} from '../store/canvasData'
+import {getLine, saveBoard, reloadSavedBoard} from '../store/canvasData'
 import {Redraw} from './redrawutils'
 
 function Whiteboard(props) {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
-
+  console.log(props.match.params.id)
+  useEffect(() => {
+    async function fetchData() {
+      if (props.match.params.id) {
+        await props.reloadSavedBoard(props.match.params.id)
+        redrawLine()
+      }
+    }
+    fetchData()
+  }, [])
   const drawLine = () => {
     Line(stageEl.current.getStage(), layerEl.current)
   }
@@ -53,6 +62,7 @@ const mapState = state => {
 const mapDispatch = dispatch => {
   return {
     getLine: points => dispatch(getLine(points)),
+    reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
     saveBoard: (projectId, linePoints) =>
       dispatch(saveBoard(projectId, linePoints))
   }
