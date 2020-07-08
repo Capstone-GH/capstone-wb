@@ -3,7 +3,8 @@ const Schema = mongoose.Schema
 
 const Project = new Schema(
   {
-    name: {type: String, required: true},
+    name: {type: String, default: 'Untitled'},
+    whiteboardData: {type: Array},
     codeEditorData: {type: String}
   },
   {timestamps: true}
