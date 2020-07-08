@@ -7,7 +7,8 @@ const User = new Schema(
     email: {type: String, required: true},
     password: {type: String, required: true},
     salt: {type: String},
-    googleId: {type: String}
+    googleId: {type: String},
+    ownerBoards: [{type: Schema.Types.ObjectId, ref: 'projects'}]
   },
   {timestamps: true}
 )

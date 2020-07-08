@@ -1,5 +1,6 @@
 const router = require('express').Router()
-const {User} = require('../db/models')
+var ObjectId = require('mongoose').Types.ObjectId
+const {User, Project} = require('../db/models')
 module.exports = router
 
 router.get('/', async (req, res, next) => {
@@ -13,5 +14,14 @@ router.get('/', async (req, res, next) => {
     res.json(users)
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/projects', async (req, res, next) => {
+  try {
+    const currUser = await User.findById(req.user._id).populate('ownerBoards')
+    res.json(currUser.ownerBoards)
+  } catch (error) {
+    next(error)
   }
 })

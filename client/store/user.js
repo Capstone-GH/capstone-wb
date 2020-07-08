@@ -6,6 +6,7 @@ import history from '../history'
  */
 const GET_USER = 'GET_USER'
 const REMOVE_USER = 'REMOVE_USER'
+const SET_USER_BOARDS = 'SET_USER_BOARDS'
 
 /**
  * INITIAL STATE
@@ -17,10 +18,20 @@ const defaultUser = {}
  */
 const getUser = user => ({type: GET_USER, user})
 const removeUser = () => ({type: REMOVE_USER})
+const setUserBoards = boards => ({type: SET_USER_BOARDS, boards})
 
 /**
  * THUNK CREATORS
  */
+export const fetchBoards = () => async dispatch => {
+  try {
+    const {data} = await axios.get('/api/users/projects')
+    dispatch(setUserBoards(data))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const me = () => async dispatch => {
   try {
     const res = await axios.get('/auth/me')
@@ -65,6 +76,8 @@ export default function(state = defaultUser, action) {
       return action.user
     case REMOVE_USER:
       return defaultUser
+    case SET_USER_BOARDS:
+      return {...state, savedBoards: action.boards}
     default:
       return state
   }
