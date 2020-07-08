@@ -11,9 +11,6 @@ notifications:
 install:
   - npm ci # faster, goes only from package-lock
   # - travis_wait mvn install
-# before_script:
-#   - sleep 15
-#   - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 script:
   - npm test # test the code
   - npm run build-client # make the bundle
