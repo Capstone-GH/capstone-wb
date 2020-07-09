@@ -3,7 +3,7 @@ import store from '../store/index'
 import {Line} from './line'
 
 export const Redraw = (layer, mode = 'brush') => {
-  let allLines = store.getState().canvasData.linePoints
+  let allLines = store.getState().canvasData.linePoints || []
   console.log(allLines)
 
   allLines.forEach(line => {

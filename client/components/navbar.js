@@ -17,6 +17,7 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           </a>
           <Link to="/whiteboard">Whiteboard</Link>
           <Link to="/codeEditor">Code Editor</Link>
+          <Link to="/projects">Projects</Link>
         </div>
       ) : (
         <div>
