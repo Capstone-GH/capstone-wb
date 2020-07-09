@@ -1,11 +1,33 @@
+/* eslint-disable no-alert */
 import React, {Component} from 'react'
 import AceEditor from 'react-ace'
+import 'ace-builds'
+
 import 'ace-builds/src-noconflict/mode-javascript'
-import 'ace-builds/src-noconflict/mode-html'
 import 'ace-builds/src-noconflict/theme-monokai'
-import 'ace-builds/src-noconflict/theme-terminal'
+
+import store from '../store/index'
+import {getCode} from '../store/canvasData'
 
 export default class CodeEditor extends Component {
+  constructor(props) {
+    super(props)
+    this.refName = React.createRef()
+    this.state = {
+      newValue: ''
+    }
+    this.onChange = this.onChange.bind(this)
+    console.log(props)
+    console.log(this.refName)
+    console.log(this.refName.current)
+  }
+
+  onChange(newValue) {
+    this.setState({newValue: newValue})
+    store.dispatch(getCode(this.state.newValue))
+    console.log(newValue)
+  }
+
   render() {
     return (
       <div>
@@ -14,6 +36,10 @@ export default class CodeEditor extends Component {
           mode="javascript"
           theme="monokai"
           fontSize={14}
+          setOptions={{useWorker: false}}
+          onChange={this.onChange}
+          ref={this.refName}
+          value={this.state.newValue}
           // width={window.innerWidth}
           // height={window.innerHeight}
         />

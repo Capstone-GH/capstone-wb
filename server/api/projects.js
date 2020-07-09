@@ -17,11 +17,12 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     if (!req.user) res.sendStatus(401)
-    console.log(req.body.linePoints)
-
+    // console.log(req.body.linePoints)
+    console.log(req.body)
     const newProject = new Project({
       whiteboardData: req.body.linePoints,
-      owner: req.user._id
+      owner: req.user._id,
+      codeEditorData: req.body.codeEditorData
     })
     await newProject.save()
     //save to user
@@ -42,6 +43,7 @@ router.put('/:id', async (req, res, next) => {
     if (!req.user) res.sendStatus(401)
     const projectToUpdate = await Project.findById(req.params.id)
     projectToUpdate.whiteboardData = req.body.linePoints
+    projectToUpdate.codeEditorData = req.body.codeEditorData
     await projectToUpdate.save()
     res.json(projectToUpdate)
   } catch (error) {
