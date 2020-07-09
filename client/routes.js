@@ -26,6 +26,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route path="/codeEditor" component={CodeEditor} />
         <Route path="/whiteboard/:id" component={Whiteboard} />
+        <Route exact path="/whiteboard" component={Whiteboard} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
