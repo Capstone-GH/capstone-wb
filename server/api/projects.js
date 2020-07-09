@@ -1,5 +1,4 @@
-const Project = require('../db/models/project')
-const {findByIdAndUpdate} = require('../db/models/project')
+const {User, Project} = require('../db/models')
 const router = require('express').Router()
 
 router.get('/:id', async (req, res, next) => {
@@ -21,9 +20,14 @@ router.post('/', async (req, res, next) => {
     console.log(req.body.linePoints)
 
     const newProject = new Project({
-      whiteboardData: req.body.linePoints
+      whiteboardData: req.body.linePoints,
+      owner: req.user._id
     })
     await newProject.save()
+    //save to user
+    const currUser = await User.findById(req.user._id)
+    currUser.ownerBoards.push(newProject._id)
+    await currUser.save()
 
     console.log(newProject)
     res.send(newProject)

@@ -5,7 +5,8 @@ const Project = new Schema(
   {
     name: {type: String, default: 'Untitled'},
     whiteboardData: {type: Array},
-    codeEditorData: {type: String}
+    codeEditorData: {type: String},
+    owner: {type: Schema.Types.ObjectId, ref: 'users'}
   },
   {timestamps: true}
 )

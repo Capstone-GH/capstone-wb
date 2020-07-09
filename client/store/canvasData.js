@@ -1,15 +1,18 @@
 import axios from 'axios'
 
 //default state
-let defaultState = {
-  projectId: null,
-  linePoints: []
+const defaultBoard = {
+  linePoints: [],
+  name: '',
+  projectId: null
 }
 
 //action type
 export const GET_LINE = 'GET_LINE'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
+const SET_NEW_BOARD = 'SET_NEW_BOARD'
+
 //action creator
 export const getLine = points => ({
   type: GET_LINE,
@@ -26,6 +29,10 @@ export const setReloadedBoard = (projectId, whiteboardData, name) => ({
   projectId,
   whiteboardData,
   name
+})
+
+export const setNewBoard = () => ({
+  type: SET_NEW_BOARD
 })
 
 export const saveBoard = (projectId, linePoints) => {
@@ -73,7 +80,7 @@ export const reloadSavedBoard = projectId => {
 //when we create that new project, we should take its ID number and put that in the redux
 
 //reducer
-export default function(state = defaultState, action) {
+export default function(state = defaultBoard, action) {
   switch (action.type) {
     case GET_LINE:
       return {
@@ -90,6 +97,12 @@ export default function(state = defaultState, action) {
         projectId: action.projectId,
         linePoints: action.whiteboardData,
         name: action.name
+      }
+    case SET_NEW_BOARD:
+      return {
+        linePoints: [],
+        name: '',
+        projectId: null
       }
     default:
       return state
