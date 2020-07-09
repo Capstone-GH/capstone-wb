@@ -6,6 +6,9 @@ import 'ace-builds'
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-monokai'
 
+import store from '../store/index'
+import {getCode} from '../store/canvasData'
+
 export default class CodeEditor extends Component {
   constructor(props) {
     super(props)
@@ -21,11 +24,11 @@ export default class CodeEditor extends Component {
 
   onChange(newValue) {
     this.setState({newValue: newValue})
+    store.dispatch(getCode(this.state.newValue))
     console.log(newValue)
   }
 
   render() {
-    console.log(this.state)
     return (
       <div>
         <AceEditor

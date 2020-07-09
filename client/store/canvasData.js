@@ -4,11 +4,13 @@ import axios from 'axios'
 const defaultBoard = {
   linePoints: [],
   name: '',
-  projectId: null
+  projectId: null,
+  codeEditorData: ''
 }
 
 //action type
 export const GET_LINE = 'GET_LINE'
+export const GET_CODE = 'GET_CODE'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
@@ -19,28 +21,40 @@ export const getLine = points => ({
   points
 })
 
+export const getCode = str => ({
+  type: GET_CODE,
+  str
+})
+
 export const setId = projectId => ({
   type: SET_PROJECTID,
   projectId
 })
 
-export const setReloadedBoard = (projectId, whiteboardData, name) => ({
+export const setReloadedBoard = (
+  projectId,
+  whiteboardData,
+  name,
+  codeEditorData
+) => ({
   type: SET_RELOADEDBOARD,
   projectId,
   whiteboardData,
-  name
+  name,
+  codeEditorData
 })
 
 export const setNewBoard = () => ({
   type: SET_NEW_BOARD
 })
 
-export const saveBoard = (projectId, linePoints) => {
+export const saveBoard = (projectId, linePoints, codeEditorData) => {
   if (projectId) {
     return async dispatch => {
       try {
         const {data} = await axios.put(`/api/projects/${projectId}`, {
-          linePoints: linePoints
+          linePoints: linePoints,
+          codeEditorData: codeEditorData
         })
         console.log(data)
       } catch (error) {
@@ -54,6 +68,7 @@ export const saveBoard = (projectId, linePoints) => {
         const {data} = await axios.post('/api/projects', {
           linePoints: linePoints
         })
+        console.log(data)
         dispatch(setId(data._id))
       } catch (error) {
         console.error(error)
@@ -66,7 +81,14 @@ export const reloadSavedBoard = projectId => {
   return async dispatch => {
     try {
       const {data} = await axios.get(`/api/projects/${projectId}`)
-      dispatch(setReloadedBoard(data._id, data.whiteboardData, data.name))
+      dispatch(
+        setReloadedBoard(
+          data._id,
+          data.whiteboardData,
+          data.name,
+          data.codeEditorData
+        )
+      )
     } catch (error) {
       console.error(error)
     }
@@ -87,6 +109,11 @@ export default function(state = defaultBoard, action) {
         ...state,
         linePoints: [...state.linePoints, action.points]
       }
+    case GET_CODE:
+      return {
+        ...state,
+        codeEditorData: action.str
+      }
     case SET_PROJECTID:
       return {
         ...state,
@@ -96,7 +123,8 @@ export default function(state = defaultBoard, action) {
       return {
         projectId: action.projectId,
         linePoints: action.whiteboardData,
-        name: action.name
+        name: action.name,
+        codeEditorData: action.codeEditorData
       }
     case SET_NEW_BOARD:
       return {

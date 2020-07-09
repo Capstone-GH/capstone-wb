@@ -36,7 +36,8 @@ function Whiteboard(props) {
       if (props.match.params.id) {
         fetchData()
       } else {
-        props.setNewBoard()
+        console.log('hello')
+        // props.setNewBoard()
       }
     },
     [props.match.params.id]
@@ -61,7 +62,13 @@ function Whiteboard(props) {
       </button>
       <button
         type="submit"
-        onClick={() => props.saveBoard(props.projectId, props.linePoints)}
+        onClick={() =>
+          props.saveBoard(
+            props.projectId,
+            props.linePoints,
+            props.codeEditorData
+          )
+        }
       >
         Save
       </button>
@@ -77,10 +84,12 @@ function Whiteboard(props) {
 }
 
 const mapState = state => {
+  console.log(state)
   return {
     linePoints: state.canvasData.linePoints,
     projectId: state.canvasData.projectId,
-    name: state.canvasData.name
+    name: state.canvasData.name,
+    codeEditorData: state.canvasData.codeEditorData
   }
 }
 
@@ -88,8 +97,8 @@ const mapDispatch = dispatch => {
   return {
     getLine: points => dispatch(getLine(points)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
-    saveBoard: (projectId, linePoints) =>
-      dispatch(saveBoard(projectId, linePoints)),
+    saveBoard: (projectId, linePoints, codeEditorData) =>
+      dispatch(saveBoard(projectId, linePoints, codeEditorData)),
     setNewBoard: () => dispatch(setNewBoard())
   }
 }
