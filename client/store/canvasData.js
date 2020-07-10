@@ -1,4 +1,5 @@
 import axios from 'axios'
+import socket from '../socket'
 
 //default state
 const defaultBoard = {
@@ -70,6 +71,7 @@ export const saveBoard = (projectId, linePoints, codeEditorData) => {
         })
         console.log(data)
         dispatch(setId(data._id))
+        // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
       }
