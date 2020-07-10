@@ -14,7 +14,7 @@ export class SavedBoards extends React.Component {
     return savedBoards
       ? savedBoards.map(board => {
           return (
-            <Link to={`/projects/${board._id}`} key={board._id}>
+            <Link to={`/project/${board._id}`} key={board._id}>
               {board.name}
             </Link>
           )

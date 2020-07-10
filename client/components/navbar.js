@@ -15,17 +15,19 @@ const Navbar = ({handleClick, isLoggedIn}) => (
           <a href="#" onClick={handleClick}>
             Logout
           </a>
-          <Link to="/whiteboard">Whiteboard</Link>
-          <Link to="/codeEditor">Code Editor</Link>
-          <Link to="/projects">Projects</Link>
+          <Link to="/project">Project Workspace</Link>
+          {/* <Link to="/whiteboard">Whiteboard</Link>
+          <Link to="/codeEditor">Code Editor</Link> */}
+          <Link to="/myprojects">My Projects</Link>
         </div>
       ) : (
         <div>
           {/* The navbar will show these links before you log in */}
           <Link to="/login">Login</Link>
           <Link to="/signup">Sign Up</Link>
-          <Link to="/whiteboard">Whiteboard</Link>
-          <Link to="/codeEditor">Code Editor</Link>
+          <Link to="/project">Project Workspace</Link>
+          {/* <Link to="/whiteboard">Whiteboard</Link>
+          <Link to="/codeEditor">Code Editor</Link> */}
         </div>
       )}
     </nav>

@@ -132,7 +132,7 @@ export default function(state = defaultBoard, action) {
     case SET_NEW_BOARD:
       return {
         linePoints: [],
-        name: '',
+        name: 'New Project',
         projectId: null
       }
     default:

@@ -14,7 +14,8 @@ export class Project extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      codeEditorData: ''
+      codeEditorData: '',
+      isHandlerDragging: false
     }
     this.onChange = this.onChange.bind(this)
   }
@@ -29,6 +30,8 @@ export class Project extends React.Component {
   componentDidMount() {
     if (this.props.match.params.id) {
       this.props.reloadSavedBoard(this.props.match.params.id)
+    } else {
+      this.props.setNewBoard()
     }
   }
 
@@ -43,9 +46,9 @@ export class Project extends React.Component {
 
     console.log(this.state)
     return (
-      <div id="project-board">
-        {this.props.projectId ? (
-          <div>
+      <div>
+        {this.props.name ? (
+          <div id="project-view">
             <button
               onClick={() =>
                 this.props.saveBoard(
@@ -58,15 +61,28 @@ export class Project extends React.Component {
             >
               Save!
             </button>
-            <Whiteboard
-              projectId={this.props.projectId}
-              name={this.props.name}
-              linePoints={this.props.linePoints}
-            />
-            <CodeEditor
-              codeEditorData={this.props.codeEditorData}
-              onChange={this.onChange}
-            />
+            <button
+              onClick={() => {
+                this.props.setNewBoard()
+                window.location.href = '/project'
+              }}
+              type="button"
+            >
+              New Project!
+            </button>
+            <h1>Project: {this.props.name}</h1>
+            <div id="workspace-container">
+              <Whiteboard
+                projectId={this.props.projectId}
+                name={this.props.name}
+                linePoints={this.props.linePoints}
+              />
+              <div id="drag-handler" />
+              <CodeEditor
+                codeEditorData={this.props.codeEditorData}
+                onChange={this.onChange}
+              />
+            </div>
           </div>
         ) : (
           <h1>...loading</h1>

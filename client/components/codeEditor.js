@@ -31,7 +31,7 @@ export default class CodeEditor extends Component {
   render() {
     console.log('rendering codeEditor', this.props)
     return (
-      <div>
+      <div id="code-editor-container" className="side">
         <AceEditor
           placeholder="Let's get coding"
           mode="javascript"
@@ -43,8 +43,8 @@ export default class CodeEditor extends Component {
           ref={this.refName}
           // value={this.state.newValue}
           value={this.props.codeEditorData}
-          // width={window.innerWidth}
-          // height={window.innerHeight}
+          width="100%"
+          height="100%"
         />
       </div>
     )

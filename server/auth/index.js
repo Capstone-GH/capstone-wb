@@ -24,7 +24,7 @@ router.post('/signup', async (req, res, next) => {
     const user = new User(req.body)
     await user.save()
     req.login(user, err => (err ? next(err) : res.json(user)))
-    res.send(user)
+    // res.send(user)
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
       res.status(401).send('User already exists')

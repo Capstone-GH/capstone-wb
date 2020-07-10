@@ -44,14 +44,36 @@ export default function Whiteboard(props) {
     () => {
       clearBoard()
       redrawLine()
+      // fitStageIntoParentContainer()
     },
     [props.linePoints]
   )
 
+  let stageWidth = 1000
+  let stageHeight = 1000
+
+  function fitStageIntoParentContainer() {
+    const stage = stageEl.current.getStage()
+    var container = document.querySelector('#whiteboard-container')
+
+    // now we need to fit stage into parent
+    var containerWidth = container.offsetWidth
+    var containerHeight = container.offsetHeight
+    // to do this we need to scale the stage
+    var widthScale = containerWidth / stageWidth
+    var heightScale = containerHeight / stageHeight
+
+    stage.width(stageWidth * widthScale)
+    stage.height(stageHeight * heightScale)
+    stage.scale({x: widthScale, y: heightScale})
+    stage.draw()
+  }
+
   console.log('rendering whiteboard', props)
+
   return (
-    <div>
-      <h1>Whiteboard: {props.name}</h1>
+    <div id="whiteboard-container" className="side">
+      {/* <h1>Whiteboard: {props.name}</h1> */}
       <button type="button" onClick={drawLine}>
         Pen
       </button>
@@ -71,8 +93,10 @@ export default function Whiteboard(props) {
         Save
       </button> */}
       <Stage
-        width={window.innerWidth}
-        height={window.innerHeight}
+        // width={window.innerWidth}
+        // height={window.innerHeight}
+        height={stageHeight}
+        width={stageWidth}
         ref={stageEl}
       >
         <Layer ref={layerEl} />
