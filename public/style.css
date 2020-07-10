@@ -1,3 +1,12 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body {
   font-family: sans-serif;
 }
@@ -20,6 +29,23 @@ form div {
   display: inline-block;
 }
 
-#project-view {
+/* #project-view {
   display: flex;
+} */
+
+#whiteboard-container {
+  border: 3px solid black;
+  width: 50%;
+}
+
+#code-editor-container {
+  /* border: 3px solid peru; */
+  width: 50%;
+}
+
+#workspace-container {
+  display: flex;
+  width: 98vw;
+  /* height: 80vh; */
+  border: 3px solid lightblue;
 }
