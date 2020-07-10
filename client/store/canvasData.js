@@ -67,7 +67,8 @@ export const saveBoard = (projectId, linePoints, codeEditorData) => {
       try {
         console.log(linePoints)
         const {data} = await axios.post('/api/projects', {
-          linePoints: linePoints
+          linePoints: linePoints,
+          codeEditorData: codeEditorData
         })
         console.log(data)
         dispatch(setId(data._id))
