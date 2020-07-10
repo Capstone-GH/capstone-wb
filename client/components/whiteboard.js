@@ -10,10 +10,10 @@ import {
 } from '../store/canvasData'
 import {Redraw} from './redrawutils'
 
-function Whiteboard(props) {
+export default function Whiteboard(props) {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
-  console.log(props.match.params.id)
+
   const drawLine = () => {
     Line(stageEl.current.getStage(), layerEl.current)
   }
@@ -28,20 +28,17 @@ function Whiteboard(props) {
     layerEl.current.destroyChildren()
   }
 
-  useEffect(
-    () => {
-      async function fetchData() {
-        await props.reloadSavedBoard(props.match.params.id)
-      }
-      if (props.match.params.id) {
-        fetchData()
-      } else {
-        console.log('hello')
-        // props.setNewBoard()
-      }
-    },
-    [props.match.params.id]
-  )
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     await props.reloadSavedBoard(props.match.params.id)
+  //   }
+  //   if (props.match.params.id) {
+  //     fetchData()
+  //   } else {
+  //     console.log('hello')
+  //     // props.setNewBoard()
+  //   }
+  // }, [props.match.params.id])
 
   useEffect(
     () => {
@@ -51,16 +48,17 @@ function Whiteboard(props) {
     [props.linePoints]
   )
 
+  console.log('rendering whiteboard', props)
   return (
     <div>
       <h1>Whiteboard: {props.name}</h1>
       <button type="button" onClick={drawLine}>
         Pen
       </button>
-      <button type="button" onClick={redrawLine}>
+      {/* <button type="button" onClick={redrawLine}>
         Redraw
-      </button>
-      <button
+      </button> */}
+      {/* <button
         type="submit"
         onClick={() =>
           props.saveBoard(
@@ -71,7 +69,7 @@ function Whiteboard(props) {
         }
       >
         Save
-      </button>
+      </button> */}
       <Stage
         width={window.innerWidth}
         height={window.innerHeight}
@@ -83,24 +81,24 @@ function Whiteboard(props) {
   )
 }
 
-const mapState = state => {
-  console.log(state)
-  return {
-    linePoints: state.canvasData.linePoints,
-    projectId: state.canvasData.projectId,
-    name: state.canvasData.name,
-    codeEditorData: state.canvasData.codeEditorData
-  }
-}
+// const mapState = (state) => {
+//   console.log(state)
+//   return {
+//     linePoints: state.canvasData.linePoints,
+//     projectId: state.canvasData.projectId,
+//     name: state.canvasData.name,
+//     codeEditorData: state.canvasData.codeEditorData,
+//   }
+// }
 
-const mapDispatch = dispatch => {
-  return {
-    getLine: points => dispatch(getLine(points)),
-    reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
-    saveBoard: (projectId, linePoints, codeEditorData) =>
-      dispatch(saveBoard(projectId, linePoints, codeEditorData)),
-    setNewBoard: () => dispatch(setNewBoard())
-  }
-}
+// const mapDispatch = (dispatch) => {
+//   return {
+//     getLine: (points) => dispatch(getLine(points)),
+//     reloadSavedBoard: (projectId) => dispatch(reloadSavedBoard(projectId)),
+//     saveBoard: (projectId, linePoints, codeEditorData) =>
+//       dispatch(saveBoard(projectId, linePoints, codeEditorData)),
+//     setNewBoard: () => dispatch(setNewBoard()),
+//   }
+// }
 
-export default connect(mapState, mapDispatch)(Whiteboard)
+// export default connect(mapState, mapDispatch)(Whiteboard)

@@ -13,22 +13,23 @@ export default class CodeEditor extends Component {
   constructor(props) {
     super(props)
     this.refName = React.createRef()
-    this.state = {
-      newValue: ''
-    }
-    this.onChange = this.onChange.bind(this)
-    console.log(props)
-    console.log(this.refName)
-    console.log(this.refName.current)
+    // this.state = {
+    //   newValue: ''
+    // }
+    // this.onChange = this.onChange.bind(this)
+    // console.log(props)
+    // console.log(this.refName)
+    // console.log(this.refName.current)
   }
 
-  onChange(newValue) {
-    this.setState({newValue: newValue})
-    store.dispatch(getCode(this.state.newValue))
-    console.log(newValue)
-  }
+  // onChange(newValue) {
+  //   this.setState({newValue: newValue})
+  //   store.dispatch(getCode(this.state.newValue))
+  //   console.log(newValue)
+  // }
 
   render() {
+    console.log('rendering codeEditor', this.props)
     return (
       <div>
         <AceEditor
@@ -37,9 +38,11 @@ export default class CodeEditor extends Component {
           theme="monokai"
           fontSize={14}
           setOptions={{useWorker: false}}
-          onChange={this.onChange}
+          onChange={this.props.onChange}
+          // onChange={this.onChange}
           ref={this.refName}
-          value={this.state.newValue}
+          // value={this.state.newValue}
+          value={this.props.codeEditorData}
           // width={window.innerWidth}
           // height={window.innerHeight}
         />

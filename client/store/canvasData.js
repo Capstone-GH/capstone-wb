@@ -123,6 +123,7 @@ export default function(state = defaultBoard, action) {
       }
     case SET_RELOADEDBOARD:
       return {
+        ...state,
         projectId: action.projectId,
         linePoints: action.whiteboardData,
         name: action.name,
