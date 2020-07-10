@@ -29,6 +29,8 @@ export class Project extends React.Component {
   componentDidMount() {
     if (this.props.match.params.id) {
       this.props.reloadSavedBoard(this.props.match.params.id)
+    } else {
+      this.props.setNewBoard()
     }
   }
 
@@ -44,7 +46,7 @@ export class Project extends React.Component {
     console.log(this.state)
     return (
       <div id="project-board">
-        {this.props.projectId ? (
+        {this.props.name ? (
           <div>
             <button
               onClick={() =>
@@ -57,6 +59,15 @@ export class Project extends React.Component {
               type="button"
             >
               Save!
+            </button>
+            <button
+              onClick={() => {
+                this.props.setNewBoard()
+                window.location.href = '/project'
+              }}
+              type="button"
+            >
+              New Project!
             </button>
             <Whiteboard
               projectId={this.props.projectId}

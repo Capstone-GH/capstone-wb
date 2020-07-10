@@ -29,12 +29,13 @@ class Routes extends Component {
         {/* <Route exact path="/whiteboard" component={Whiteboard} />
         <Route path="/whiteboard/:id" component={Whiteboard} /> */}
         {/* <Route path="/codeEditor" component={CodeEditor} /> */}
+        <Route exact path="/project" component={Project} />
+        <Route path="/project/:id" component={Project} />
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
-            <Route exact path="/projects" component={SavedBoards} />
-            <Route path="/projects/:id" component={Project} />
+            <Route exact path="/myprojects" component={SavedBoards} />
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}
