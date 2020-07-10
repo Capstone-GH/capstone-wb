@@ -48,7 +48,7 @@ function Whiteboard(props) {
       clearBoard()
       redrawLine()
     },
-    [props.projectId]
+    [props.linePoints]
   )
 
   return (

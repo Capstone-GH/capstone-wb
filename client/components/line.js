@@ -1,12 +1,14 @@
 import Konva from 'konva'
 import store from '../store/index'
 import {getLine} from '../store/canvasData'
+import {EventEmitter} from 'events'
+export const line_events = new EventEmitter()
 
 export const Line = (stage, layer, mode = 'brush') => {
   let isPaint = false
   let lastLine
 
-  stage.on('mousedown touchstart', function(e) {
+  stage.on('mousedown touchstart', function() {
     isPaint = true
     let pos = stage.getPointerPosition()
     lastLine = new Konva.Line({
@@ -24,6 +26,7 @@ export const Line = (stage, layer, mode = 'brush') => {
     console.log(lastLine)
     console.log(typeof lastLine.attrs)
     store.dispatch(getLine(lastLine.attrs.points))
+    line_events.emit('new-line', lastLine.attrs.points)
   })
   stage.on('mousemove touchmove', function() {
     if (!isPaint) {
