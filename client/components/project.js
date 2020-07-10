@@ -41,7 +41,7 @@ export class Project extends React.Component {
 
   render() {
     console.log('rendering project component')
-    console.log(this.props)
+    console.log('props', this.props)
     console.log(this.state)
 
     console.log(this.state)

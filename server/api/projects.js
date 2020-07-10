@@ -18,7 +18,7 @@ router.post('/', async (req, res, next) => {
   try {
     if (!req.user) res.sendStatus(401)
     // console.log(req.body.linePoints)
-    console.log(req.body)
+    // console.log(req.body)
     const newProject = new Project({
       whiteboardData: req.body.linePoints,
       owner: req.user._id,
@@ -30,7 +30,7 @@ router.post('/', async (req, res, next) => {
     currUser.ownerBoards.push(newProject._id)
     await currUser.save()
 
-    console.log(newProject)
+    // console.log(newProject)
     res.send(newProject)
   } catch (error) {
     next(error)
