@@ -45,7 +45,7 @@ export default function Whiteboard(props) {
       clearBoard()
       redrawLine()
     },
-    [props.projectId]
+    [props.linePoints]
   )
 
   console.log('rendering whiteboard', props)
