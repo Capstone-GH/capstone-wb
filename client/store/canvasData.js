@@ -12,6 +12,7 @@ const defaultBoard = {
 //action type
 export const GET_LINE = 'GET_LINE'
 export const GET_CODE = 'GET_CODE'
+export const GET_NAME = 'GET_NAME'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
@@ -24,6 +25,11 @@ export const getLine = points => ({
 
 export const getCode = str => ({
   type: GET_CODE,
+  str
+})
+
+export const getName = str => ({
+  type: GET_NAME,
   str
 })
 
@@ -49,13 +55,15 @@ export const setNewBoard = () => ({
   type: SET_NEW_BOARD
 })
 
-export const saveBoard = (projectId, linePoints, codeEditorData) => {
+export const saveBoard = (projectId, linePoints, codeEditorData, name) => {
+  console.log('name', name)
   if (projectId) {
     return async dispatch => {
       try {
         const {data} = await axios.put(`/api/projects/${projectId}`, {
           linePoints: linePoints,
-          codeEditorData: codeEditorData
+          codeEditorData: codeEditorData,
+          name: name
         })
         console.log(data)
       } catch (error) {
@@ -65,10 +73,10 @@ export const saveBoard = (projectId, linePoints, codeEditorData) => {
   } else {
     return async dispatch => {
       try {
-        console.log(linePoints)
         const {data} = await axios.post('/api/projects', {
           linePoints: linePoints,
-          codeEditorData: codeEditorData
+          codeEditorData: codeEditorData,
+          name: name
         })
         console.log(data)
         dispatch(setId(data._id))
@@ -116,6 +124,11 @@ export default function(state = defaultBoard, action) {
       return {
         ...state,
         codeEditorData: action.str
+      }
+    case GET_NAME:
+      return {
+        ...state,
+        name: action.str
       }
     case SET_PROJECTID:
       return {

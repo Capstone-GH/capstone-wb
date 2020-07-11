@@ -7,24 +7,37 @@ import {
   saveBoard,
   reloadSavedBoard,
   setNewBoard,
-  getCode
+  getCode,
+  getName
 } from '../store/canvasData'
 
 export class Project extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      codeEditorData: '',
-      isHandlerDragging: false
+      codeEditorData: ' ',
+      name: this.props.name,
+      isHandlerDragging: false,
+      inProgress: false
     }
     this.onChange = this.onChange.bind(this)
+    this.onNameChange = this.onNameChange.bind(this)
   }
 
   onChange(newValue) {
     console.log('calling on change')
     this.setState({codeEditorData: newValue})
     this.props.getCode(this.state.codeEditorData)
-    console.log(newValue)
+  }
+
+  async onNameChange(e) {
+    this.setState({inProgress: true})
+    console.log(e.target.value)
+    const newValue = e.target.value
+    console.log('calling onNameChange')
+    await this.setState({name: newValue})
+    console.log(this.state)
+    this.props.getName(this.state.name)
   }
 
   componentDidMount() {
@@ -47,14 +60,23 @@ export class Project extends React.Component {
     console.log(this.state)
     return (
       <div>
-        {this.props.name ? (
+        {this.props.name || this.state.inProgress ? (
           <div id="project-view">
+            <input
+              id="project-title"
+              type="text"
+              value={this.props.name}
+              onChange={this.onNameChange}
+              placeholder="Your Project Name"
+              className="display-4"
+            />
             <button
               onClick={() =>
                 this.props.saveBoard(
                   this.props.projectId,
                   this.props.linePoints,
-                  this.props.codeEditorData
+                  this.props.codeEditorData,
+                  this.props.name
                 )
               }
               type="button"
@@ -70,7 +92,7 @@ export class Project extends React.Component {
             >
               New Project!
             </button>
-            <h1>Project: {this.props.name}</h1>
+            {/* <h1>Project: {this.props.name}</h1> */}
             <div id="workspace-container">
               <Whiteboard
                 projectId={this.props.projectId}
@@ -105,10 +127,11 @@ const mapDispatch = dispatch => {
   return {
     getLine: points => dispatch(getLine(points)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
-    saveBoard: (projectId, linePoints, codeEditorData) =>
-      dispatch(saveBoard(projectId, linePoints, codeEditorData)),
+    saveBoard: (projectId, linePoints, codeEditorData, name) =>
+      dispatch(saveBoard(projectId, linePoints, codeEditorData, name)),
     setNewBoard: () => dispatch(setNewBoard()),
-    getCode: str => dispatch(getCode(str))
+    getCode: str => dispatch(getCode(str)),
+    getName: str => dispatch(getName(str))
   }
 }
 
