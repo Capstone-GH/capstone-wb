@@ -19,10 +19,13 @@ router.post('/', async (req, res, next) => {
     if (!req.user) res.sendStatus(401)
     // console.log(req.body.linePoints)
     // console.log(req.body)
+    console.log('req.body', req.body)
+
     const newProject = new Project({
       whiteboardData: req.body.linePoints,
       owner: req.user._id,
-      codeEditorData: req.body.codeEditorData
+      codeEditorData: req.body.codeEditorData,
+      name: req.body.name
     })
     await newProject.save()
     //save to user
@@ -40,10 +43,12 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     console.log('updating!')
+    console.log('req.body', req.body)
     if (!req.user) res.sendStatus(401)
     const projectToUpdate = await Project.findById(req.params.id)
     projectToUpdate.whiteboardData = req.body.linePoints
     projectToUpdate.codeEditorData = req.body.codeEditorData
+    projectToUpdate.name = req.body.name
     await projectToUpdate.save()
     res.json(projectToUpdate)
   } catch (error) {
