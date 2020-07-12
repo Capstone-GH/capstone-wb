@@ -1,14 +1,9 @@
 import React, {useEffect} from 'react'
 import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
-import {connect} from 'react-redux'
-import {
-  getLine,
-  saveBoard,
-  reloadSavedBoard,
-  setNewBoard
-} from '../store/canvasData'
 import {Redraw} from './redrawutils'
+import Toolbar from './toolbar'
+import {Container, Row, Col} from 'react-bootstrap'
 
 export default function Whiteboard(props) {
   const stageEl = React.createRef()
@@ -27,18 +22,6 @@ export default function Whiteboard(props) {
     console.log('clearboard')
     layerEl.current.destroyChildren()
   }
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     await props.reloadSavedBoard(props.match.params.id)
-  //   }
-  //   if (props.match.params.id) {
-  //     fetchData()
-  //   } else {
-  //     console.log('hello')
-  //     // props.setNewBoard()
-  //   }
-  // }, [props.match.params.id])
 
   useEffect(
     () => {
@@ -72,57 +55,25 @@ export default function Whiteboard(props) {
   console.log('rendering whiteboard', props)
 
   return (
-    <div id="whiteboard-container" className="side">
-      {/* <h1>Whiteboard: {props.name}</h1> */}
-      <button type="button" onClick={drawLine}>
+    <Container id="whiteboard-container" className="side">
+      <Row>
+        {/* <h1>Whiteboard: {props.name}</h1> */}
+        <Toolbar drawLine={drawLine} />
+        {/* <button type="button" onClick={drawLine}>
         Pen
-      </button>
-      {/* <button type="button" onClick={redrawLine}>
-        Redraw
       </button> */}
-      {/* <button
-        type="submit"
-        onClick={() =>
-          props.saveBoard(
-            props.projectId,
-            props.linePoints,
-            props.codeEditorData
-          )
-        }
-      >
-        Save
-      </button> */}
-      <Stage
-        // width={window.innerWidth}
-        // height={window.innerHeight}
-        height={stageHeight}
-        width={stageWidth}
-        ref={stageEl}
-      >
-        <Layer ref={layerEl} />
-      </Stage>
-    </div>
+        <Col>
+          <Stage
+            // width={window.innerWidth}
+            // height={window.innerHeight}
+            height={stageHeight}
+            width={stageWidth}
+            ref={stageEl}
+          >
+            <Layer ref={layerEl} />
+          </Stage>
+        </Col>
+      </Row>
+    </Container>
   )
 }
-
-// const mapState = (state) => {
-//   console.log(state)
-//   return {
-//     linePoints: state.canvasData.linePoints,
-//     projectId: state.canvasData.projectId,
-//     name: state.canvasData.name,
-//     codeEditorData: state.canvasData.codeEditorData,
-//   }
-// }
-
-// const mapDispatch = (dispatch) => {
-//   return {
-//     getLine: (points) => dispatch(getLine(points)),
-//     reloadSavedBoard: (projectId) => dispatch(reloadSavedBoard(projectId)),
-//     saveBoard: (projectId, linePoints, codeEditorData) =>
-//       dispatch(saveBoard(projectId, linePoints, codeEditorData)),
-//     setNewBoard: () => dispatch(setNewBoard()),
-//   }
-// }
-
-// export default connect(mapState, mapDispatch)(Whiteboard)

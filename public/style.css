@@ -48,6 +48,8 @@ form div {
   width: 98vw;
   /* height: 80vh; */
   border: 3px solid lightblue;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 #project-title {
@@ -56,4 +58,8 @@ form div {
 
 #boardName {
   text-align: center;
+}
+
+#toolbar {
+  background-color: grey;
 }

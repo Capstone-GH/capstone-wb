@@ -1,4 +1,5 @@
 import React from 'react'
+import {Container, Row, Col} from 'react-bootstrap'
 import Whiteboard from './whiteboard'
 import CodeEditor from './codeEditor'
 import {connect} from 'react-redux'
@@ -69,58 +70,62 @@ export class Project extends React.Component {
     return (
       <div>
         {this.props.name || this.state.inProgress ? (
-          <div id="project-view">
-            <input
-              id="project-title"
-              type="text"
-              value={this.props.name}
-              onChange={this.onNameChange}
-              placeholder="Your Project Name"
-              className="display-4"
-            />
-            <button
-              onClick={async () => {
-                const id = await this.props.saveBoard(
-                  this.props.projectId,
-                  this.props.linePoints,
-                  this.props.codeEditorData,
-                  this.props.name
-                )
-                window.location.href = `/project/${id}`
-              }}
-              type="button"
-            >
-              Save!
-            </button>
-            <button
-              onClick={() => {
-                this.props.setNewBoard()
-                window.location.href = '/project'
-              }}
-              type="button"
-            >
-              New Project!
-            </button>
-            <button
-              type="button"
-              onClick={() => this.shareProject()}
-              data-toggle="modal"
-              data-target="#shareModal"
-            >
-              Share
-            </button>
-            <div id="workspace-container">
-              <Whiteboard
-                projectId={this.props.projectId}
-                name={this.props.name}
-                linePoints={this.props.linePoints}
+          <Container fluid id="project-view">
+            <Row>
+              <input
+                id="project-title"
+                type="text"
+                value={this.props.name}
+                onChange={this.onNameChange}
+                placeholder="Your Project Name"
+                className="display-4"
               />
-              <div id="drag-handler" />
-              <CodeEditor
-                codeEditorData={this.props.codeEditorData}
-                onChange={this.onChange}
-              />
-            </div>
+              <button
+                onClick={async () => {
+                  const id = await this.props.saveBoard(
+                    this.props.projectId,
+                    this.props.linePoints,
+                    this.props.codeEditorData,
+                    this.props.name
+                  )
+                  window.location.href = `/project/${id}`
+                }}
+                type="button"
+              >
+                Save!
+              </button>
+              <button
+                onClick={() => {
+                  this.props.setNewBoard()
+                  window.location.href = '/project'
+                }}
+                type="button"
+              >
+                New Project!
+              </button>
+              <button
+                type="button"
+                onClick={() => this.shareProject()}
+                data-toggle="modal"
+                data-target="#shareModal"
+              >
+                Share
+              </button>
+            </Row>
+            <Row>
+              <Col id="workspace-container">
+                <Whiteboard
+                  projectId={this.props.projectId}
+                  name={this.props.name}
+                  linePoints={this.props.linePoints}
+                />
+                <div id="drag-handler" />
+                <CodeEditor
+                  codeEditorData={this.props.codeEditorData}
+                  onChange={this.onChange}
+                />
+              </Col>
+            </Row>
             <div
               className="modal fade"
               id="shareModal"
@@ -176,7 +181,7 @@ export class Project extends React.Component {
                 </div>
               </div>
             </div>
-          </div>
+          </Container>
         ) : (
           <h1>...loading</h1>
         )}
