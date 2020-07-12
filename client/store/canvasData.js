@@ -66,6 +66,7 @@ export const saveBoard = (projectId, linePoints, codeEditorData, name) => {
           name: name
         })
         console.log(data)
+        return projectId
       } catch (error) {
         console.errror(error)
       }
@@ -80,6 +81,7 @@ export const saveBoard = (projectId, linePoints, codeEditorData, name) => {
         })
         console.log(data)
         dispatch(setId(data._id))
+        return data._id
         // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
