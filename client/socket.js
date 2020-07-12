@@ -10,7 +10,8 @@ socket.on('connect', () => {
 })
 
 line_events.on('new-line', points => {
-  socket.emit('new-line-from-client', points)
+  let id = store.getState().canvasData.projectId
+  socket.emit('new-line-from-client', points, id)
 })
 
 socket.on('new-line-from-server', points => {

@@ -2,13 +2,18 @@ module.exports = io => {
   //const rooms = {}
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
-    // const roomName = getRoomName(socket)
-    // console.log(roomName, 'what is roomName')
-    // socket.join(roomName)
-    // rooms[roomName] = rooms[roomName] || []
-    // socket.emit('load', rooms[roomName])
-    socket.on('new-line-from-client', points => {
-      socket.broadcast.emit('new-line-from-server', points)
+
+    const roomName = getRoomName(socket)
+    console.log('Joining(from page load): ', roomName)
+    socket.join(roomName)
+
+    socket.on('joinRoom', id => {
+      console.log('Joining (from event): ', id)
+      socket.join(id)
+    })
+
+    socket.on('new-line-from-client', (points, roomName) => {
+      socket.to(roomName).emit('new-line-from-server', points)
       console.log('new_line')
     })
 
@@ -23,8 +28,8 @@ module.exports = io => {
   })
 }
 
-// function getRoomName(socket) {
-//   const urlArr = socket.request.headers.referer.split('/')
-//   const roomName = urlArr.pop()
-//   return roomName
-// }
+function getRoomName(socket) {
+  const urlArr = socket.request.headers.referer.split('/')
+  const roomName = urlArr.pop()
+  return roomName
+}

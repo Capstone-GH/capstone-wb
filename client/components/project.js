@@ -10,6 +10,7 @@ import {
   getCode,
   getName
 } from '../store/canvasData'
+import socket from '../socket'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -22,6 +23,7 @@ export class Project extends React.Component {
     }
     this.onChange = this.onChange.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
+    this.shareProject = this.shareProject.bind(this)
   }
 
   onChange(newValue) {
@@ -48,8 +50,14 @@ export class Project extends React.Component {
     }
   }
 
-  componentWillUnmount() {
-    console.log('going away!')
+  async shareProject() {
+    const id = await this.props.saveBoard(
+      this.props.projectId,
+      this.props.linePoints,
+      this.props.codeEditorData,
+      this.props.name
+    )
+    socket.emit('joinRoom', id)
   }
 
   render() {
@@ -71,14 +79,15 @@ export class Project extends React.Component {
               className="display-4"
             />
             <button
-              onClick={() =>
-                this.props.saveBoard(
+              onClick={async () => {
+                const id = await this.props.saveBoard(
                   this.props.projectId,
                   this.props.linePoints,
                   this.props.codeEditorData,
                   this.props.name
                 )
-              }
+                window.location.href = `/project/${id}`
+              }}
               type="button"
             >
               Save!
@@ -92,7 +101,14 @@ export class Project extends React.Component {
             >
               New Project!
             </button>
-            {/* <h1>Project: {this.props.name}</h1> */}
+            <button
+              type="button"
+              onClick={() => this.shareProject()}
+              data-toggle="modal"
+              data-target="#shareModal"
+            >
+              Share
+            </button>
             <div id="workspace-container">
               <Whiteboard
                 projectId={this.props.projectId}
@@ -104,6 +120,61 @@ export class Project extends React.Component {
                 codeEditorData={this.props.codeEditorData}
                 onChange={this.onChange}
               />
+            </div>
+            <div
+              className="modal fade"
+              id="shareModal"
+              tabIndex="-1"
+              role="dialog"
+              aria-labelledby="shareLinkModal"
+              aria-hidden="true"
+            >
+              <div className="modal-dialog">
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title" id="shareLinkModal">
+                      Share the link below to invite collaborators
+                    </h5>
+                    <button
+                      type="button"
+                      className="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div className="modal-body">
+                    <input
+                      type="text"
+                      id="share-link"
+                      value={`https://scribby-dev.herokuapp.com/${
+                        this.props.projectId
+                      }`}
+                    />
+                  </div>
+                  <div className="modal-footer">
+                    <button
+                      type="button"
+                      className="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={() => {
+                        const copyText = document.getElementById('share-link')
+                        copyText.select()
+                        document.execCommand('copy')
+                      }}
+                    >
+                      Copy to clipboard
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         ) : (
