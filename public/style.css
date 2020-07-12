@@ -53,3 +53,7 @@ form div {
 #project-title {
   display: block;
 }
+
+#boardName {
+  text-align: center;
+}
