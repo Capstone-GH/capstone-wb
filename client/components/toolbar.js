@@ -1,29 +1,159 @@
 import React from 'react'
-import {Container, Row, Col} from 'react-bootstrap'
+import clsx from 'clsx'
+import {makeStyles, useTheme} from '@material-ui/core/styles'
+import Drawer from '@material-ui/core/Drawer'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import Divider from '@material-ui/core/Divider'
+import IconButton from '@material-ui/core/IconButton'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import CreateIcon from '@material-ui/icons/Create'
 
-export default function Toolbar(props) {
+const drawerWidth = 250
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    height: '100%',
+    position: 'static'
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    })
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    })
+  },
+  menuButton: {
+    marginRight: 36
+  },
+  hide: {
+    display: 'none'
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+    height: '100%',
+    position: 'static',
+    justifyContent: 'flex-start'
+  },
+  paper: {
+    height: '100%',
+    position: 'static',
+    justifyContent: 'flex-start'
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen
+    }),
+    height: '100%',
+    position: 'static',
+    justifyContent: 'flex-start'
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing(6) + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(8) + 1
+    },
+    height: '100%',
+    position: 'static',
+    justifyContent: 'flex-start'
+  },
+  toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
+  }
+}))
+
+export default function WhiteboardToolbar(props) {
+  const classes = useStyles()
+  const theme = useTheme()
+  const [open, setOpen] = React.useState(false)
+
   const {drawLine} = props
+
+  const handleDrawerOpen = e => {
+    e.preventDefault()
+    setOpen(true)
+  }
+
+  const handleDrawerClose = () => {
+    setOpen(false)
+  }
+
   return (
-    <Col xs=".75" id="toolbar">
-      <button type="button" className="tool-button" onClick={drawLine}>
-        <svg
-          width="1em"
-          height="1em"
-          viewBox="0 0 16 16"
-          className="bi bi-pencil"
-          fill="currentColor"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fillRule="evenodd"
-            d="M11.293 1.293a1 1 0 0 1 1.414 0l2 2a1 1 0 0 1 0 1.414l-9 9a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391l9-9zM12 2l2 2-9 9-3 1 1-3 9-9z"
-          />
-          <path
-            fillRule="evenodd"
-            d="M12.146 6.354l-2.5-2.5.708-.708 2.5 2.5-.707.708zM3 10v.5a.5.5 0 0 0 .5.5H4v.5a.5.5 0 0 0 .5.5H5v.5a.5.5 0 0 0 .5.5H6v-1.5a.5.5 0 0 0-.5-.5H5v-.5a.5.5 0 0 0-.5-.5H3z"
-          />
-        </svg>
-      </button>
-    </Col>
+    <React.Fragment>
+      <Drawer
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open
+        })}
+        classes={{
+          paper: clsx({
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open
+          })
+        }}
+      >
+        <div className={classes.toolbar}>
+          {open ? (
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleDrawerOpen}>
+              <ChevronRightIcon />
+            </IconButton>
+          )}
+        </div>
+        <Divider />
+        <div className={classes.toolbar}>
+          <List>
+            <ListItem className="tool-item">
+              <IconButton
+                className="tool-button"
+                aria-label="pen"
+                onClick={drawLine}
+                onContextMenu={handleDrawerOpen}
+              >
+                <CreateIcon />
+              </IconButton>
+              <ListItemText primary="Additonal Options" />
+            </ListItem>
+          </List>
+        </div>
+      </Drawer>
+    </React.Fragment>
   )
 }

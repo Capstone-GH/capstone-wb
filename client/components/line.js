@@ -5,6 +5,7 @@ import {EventEmitter} from 'events'
 export const line_events = new EventEmitter()
 
 export const Line = (stage, layer, mode = 'brush') => {
+  console.log('drawing in line.js')
   let isPaint = false
   let lastLine
 

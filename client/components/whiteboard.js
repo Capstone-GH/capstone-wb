@@ -2,14 +2,30 @@ import React, {useEffect} from 'react'
 import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {Redraw} from './redrawutils'
-import Toolbar from './toolbar'
-import {Container, Row, Col} from 'react-bootstrap'
+import WhiteboardToolbar from './toolbar'
+// import {Container, Row, Col} from 'react-bootstrap'
+import {makeStyles} from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    color: theme.palette.text.secondary
+  }
+}))
 
 export default function Whiteboard(props) {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
+  const classes = useStyles()
 
   const drawLine = () => {
+    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current)
   }
 
@@ -55,25 +71,17 @@ export default function Whiteboard(props) {
   console.log('rendering whiteboard', props)
 
   return (
-    <Container id="whiteboard-container" className="side">
-      <Row>
-        {/* <h1>Whiteboard: {props.name}</h1> */}
-        <Toolbar drawLine={drawLine} />
-        {/* <button type="button" onClick={drawLine}>
-        Pen
-      </button> */}
-        <Col>
-          <Stage
-            // width={window.innerWidth}
-            // height={window.innerHeight}
-            height={stageHeight}
-            width={stageWidth}
-            ref={stageEl}
-          >
-            <Layer ref={layerEl} />
-          </Stage>
-        </Col>
-      </Row>
-    </Container>
+    <div id="whiteboard-container" className="side">
+      <WhiteboardToolbar drawLine={drawLine} />
+      <Stage
+        // width={window.innerWidth}
+        // height={window.innerHeight}
+        height={stageHeight}
+        width={stageWidth}
+        ref={stageEl}
+      >
+        <Layer ref={layerEl} />
+      </Stage>
+    </div>
   )
 }

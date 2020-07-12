@@ -9,6 +9,13 @@ html {
 
 body {
   font-family: sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
 }
 
 a {
@@ -36,6 +43,7 @@ form div {
 #whiteboard-container {
   border: 3px solid black;
   width: 50%;
+  display: flex;
 }
 
 #code-editor-container {
@@ -45,7 +53,7 @@ form div {
 
 #workspace-container {
   display: flex;
-  width: 98vw;
+  width: 100%;
   /* height: 80vh; */
   border: 3px solid lightblue;
   padding-left: 0px;
@@ -62,4 +70,17 @@ form div {
 
 #toolbar {
   background-color: grey;
+}
+
+.MuiDrawer-paper {
+  height: 100%;
+  position: static;
+}
+
+.MuiListItem-root.tool-item {
+  padding-left: 0px;
+}
+
+.MuiIconButton-root.tool-button {
+  margin-right: 1em;
 }
