@@ -4,7 +4,8 @@ import {getLine} from '../store/canvasData'
 import {EventEmitter} from 'events'
 export const line_events = new EventEmitter()
 
-export const Line = (stage, layer, mode = 'brush') => {
+export const Line = (stage, layer, color = 'black', mode = 'brush') => {
+  console.log('drawing in line.js')
   let isPaint = false
   let lastLine
 
@@ -12,7 +13,7 @@ export const Line = (stage, layer, mode = 'brush') => {
     isPaint = true
     let pos = stage.getPointerPosition()
     lastLine = new Konva.Line({
-      stroke: mode === 'brush' ? 'blue' : 'white',
+      stroke: color,
       strokeWidth: mode === 'brush' ? 5 : 20,
       globalCompositeOperation:
         mode === 'brush' ? 'source-over' : 'destination-out',

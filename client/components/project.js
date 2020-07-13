@@ -1,4 +1,5 @@
 import React from 'react'
+// import {Container, Row, Col} from 'react-bootstrap'
 import Whiteboard from './whiteboard'
 import CodeEditor from './codeEditor'
 import {connect} from 'react-redux'
@@ -11,6 +12,15 @@ import {
   getName
 } from '../store/canvasData'
 import socket from '../socket'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
+import {withStyles} from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -19,11 +29,22 @@ export class Project extends React.Component {
       codeEditorData: ' ',
       name: this.props.name,
       isHandlerDragging: false,
-      inProgress: false
+      inProgress: false,
+      shareModalOpen: false
     }
     this.onChange = this.onChange.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
     this.shareProject = this.shareProject.bind(this)
+    this.openShareModal = this.openShareModal.bind(this)
+    this.closeShareModal = this.closeShareModal.bind(this)
+  }
+
+  openShareModal() {
+    this.setState({shareModalOpen: true})
+  }
+
+  closeShareModal() {
+    this.setState({shareModalOpen: false})
   }
 
   onChange(newValue) {
@@ -58,6 +79,7 @@ export class Project extends React.Component {
       this.props.name
     )
     socket.emit('joinRoom', id)
+    this.openShareModal()
   }
 
   render() {
@@ -101,14 +123,9 @@ export class Project extends React.Component {
             >
               New Project!
             </button>
-            <button
-              type="button"
-              onClick={() => this.shareProject()}
-              data-toggle="modal"
-              data-target="#shareModal"
-            >
+            <Button type="button" onClick={() => this.shareProject()}>
               Share
-            </button>
+            </Button>
             <div id="workspace-container">
               <Whiteboard
                 projectId={this.props.projectId}
@@ -121,7 +138,46 @@ export class Project extends React.Component {
                 onChange={this.onChange}
               />
             </div>
-            <div
+            <Dialog
+              open={this.state.shareModalOpen}
+              onClose={this.closeShareModal}
+              aria-labelledby="share-link-title"
+              aria-describedby="share-link-area"
+            >
+              <DialogTitle id="share-link-title">
+                Share the link below to invite collaborators:
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="share-link-area">
+                  <input
+                    type="text"
+                    id="share-link"
+                    value={`https://scribby-dev.herokuapp.com/${
+                      this.props.projectId
+                    }`}
+                    readOnly={true}
+                  />
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.closeShareModal} color="primary">
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    const copyText = document.getElementById('share-link')
+                    copyText.select()
+                    document.execCommand('copy')
+                  }}
+                  color="primary"
+                  autoFocus
+                >
+                  Copy to Clipboard
+                </Button>
+              </DialogActions>
+            </Dialog>
+
+            {/* <div
               className="modal fade"
               id="shareModal"
               tabIndex="-1"
@@ -148,9 +204,8 @@ export class Project extends React.Component {
                     <input
                       type="text"
                       id="share-link"
-                      value={`https://scribby-dev.herokuapp.com/${
-                        this.props.projectId
-                      }`}
+                      value={`https://scribby-dev.herokuapp.com/${this.props.projectId}`}
+                      readOnly={true}
                     />
                   </div>
                   <div className="modal-footer">
@@ -175,7 +230,7 @@ export class Project extends React.Component {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         ) : (
           <h1>...loading</h1>
