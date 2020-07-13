@@ -14,6 +14,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CreateIcon from '@material-ui/icons/Create'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
+import Button from '@material-ui/core/Button'
 
 const drawerWidth = 250
 
@@ -99,6 +101,8 @@ export default function WhiteboardToolbar(props) {
   const classes = useStyles()
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
+  const [selected, setSelected] = React.useState('')
+  const [penColor, setPenColor] = React.useState('black')
 
   const {drawLine} = props
 
@@ -144,12 +148,45 @@ export default function WhiteboardToolbar(props) {
               <IconButton
                 className="tool-button"
                 aria-label="pen"
-                onClick={drawLine}
+                onClick={() => {
+                  drawLine(penColor)
+                  setSelected('pen')
+                  handleDrawerClose()
+                }}
                 onContextMenu={handleDrawerOpen}
               >
-                <CreateIcon />
+                {selected === 'pen' ? (
+                  <CreateIcon style={{color: penColor}} />
+                ) : (
+                  <CreateIcon />
+                )}
               </IconButton>
-              <ListItemText primary="Additonal Options" />
+              <ButtonGroup
+                variant="text"
+                aria-label="color select button group"
+              >
+                <Button
+                  onClick={() => {
+                    setPenColor('black')
+                  }}
+                >
+                  Black
+                </Button>
+                <Button
+                  onClick={() => {
+                    setPenColor('red')
+                  }}
+                >
+                  Red
+                </Button>
+                <Button
+                  onClick={() => {
+                    setPenColor('blue')
+                  }}
+                >
+                  Blue
+                </Button>
+              </ButtonGroup>
             </ListItem>
           </List>
         </div>

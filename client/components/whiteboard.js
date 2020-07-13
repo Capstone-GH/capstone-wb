@@ -24,9 +24,9 @@ export default function Whiteboard(props) {
   const layerEl = React.createRef()
   const classes = useStyles()
 
-  const drawLine = () => {
+  const drawLine = (color = 'black') => {
     console.log('drawing')
-    Line(stageEl.current.getStage(), layerEl.current)
+    Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
   const redrawLine = () => {
