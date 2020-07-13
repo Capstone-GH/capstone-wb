@@ -17,6 +17,11 @@ module.exports = io => {
       console.log('new_line')
     })
 
+    socket.on('new-code-from-client', (str, roomName) => {
+      socket.to(roomName).emit('new-code-from-server', str)
+      console.log('new_code')
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })

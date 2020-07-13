@@ -1,5 +1,5 @@
 import io from 'socket.io-client'
-import {getLine} from './store/canvasData'
+import {getLine, getCode} from './store/canvasData'
 import store from './store/index'
 import {line_events} from './components/line'
 
@@ -16,6 +16,15 @@ line_events.on('new-line', points => {
 
 socket.on('new-line-from-server', points => {
   store.dispatch(getLine(points))
+})
+
+line_events.on('new-code', str => {
+  let id = store.getState().canvasData.projectId
+  socket.emit('new-code-from-client', str, id)
+})
+
+socket.on('new-code-from-server', str => {
+  store.dispatch(getCode(str))
 })
 
 // clientSocket.on('connect', () => {

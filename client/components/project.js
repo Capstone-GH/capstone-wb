@@ -134,8 +134,11 @@ export class Project extends React.Component {
               />
               <div id="drag-handler" />
               <CodeEditor
+                projectId={this.props.projectId}
+                name={this.props.name}
                 codeEditorData={this.props.codeEditorData}
-                onChange={this.onChange}
+                str={this.props.str}
+                // onChange={this.onChange}
               />
             </div>
             <Dialog

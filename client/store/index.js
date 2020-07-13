@@ -3,9 +3,9 @@ import {createLogger} from 'redux-logger'
 import thunkMiddleware from 'redux-thunk'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
-import canvasData from './canvasData'
+import canvasData, {getCode} from './canvasData'
 
-const reducer = combineReducers({user, canvasData})
+const reducer = combineReducers({user, canvasData, getCode})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )
