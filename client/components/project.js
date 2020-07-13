@@ -45,6 +45,7 @@ export class Project extends React.Component {
 
   closeShareModal() {
     this.setState({shareModalOpen: false})
+    window.location.href = `/project/${this.props.projectId}`
   }
 
   onChange(newValue) {
@@ -75,7 +76,7 @@ export class Project extends React.Component {
   async shareProject() {
     const id = await this.props.saveBoard(
       this.props.projectId,
-      this.props.linePoints,
+      this.props.whiteboardData,
       this.props.codeEditorData,
       this.props.name
     )
@@ -105,7 +106,7 @@ export class Project extends React.Component {
               onClick={async () => {
                 const id = await this.props.saveBoard(
                   this.props.projectId,
-                  this.props.linePoints,
+                  this.props.whiteboardData,
                   this.props.codeEditorData,
                   this.props.name
                 )
@@ -131,7 +132,7 @@ export class Project extends React.Component {
               <Whiteboard
                 projectId={this.props.projectId}
                 name={this.props.name}
-                linePoints={this.props.linePoints}
+                whiteboardData={this.props.whiteboardData}
               />
               <div id="drag-handler" />
               <CodeEditor
@@ -155,7 +156,7 @@ export class Project extends React.Component {
                   <input
                     type="text"
                     id="share-link"
-                    value={`https://scribby-dev.herokuapp.com/${
+                    value={`https://scribby-dev.herokuapp.com/project/${
                       this.props.projectId
                     }`}
                     readOnly={true}
@@ -179,61 +180,6 @@ export class Project extends React.Component {
                 </Button>
               </DialogActions>
             </Dialog>
-
-            {/* <div
-              className="modal fade"
-              id="shareModal"
-              tabIndex="-1"
-              role="dialog"
-              aria-labelledby="shareLinkModal"
-              aria-hidden="true"
-            >
-              <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title" id="shareLinkModal">
-                      Share the link below to invite collaborators
-                    </h5>
-                    <button
-                      type="button"
-                      className="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div className="modal-body">
-                    <input
-                      type="text"
-                      id="share-link"
-                      value={`https://scribby-dev.herokuapp.com/${this.props.projectId}`}
-                      readOnly={true}
-                    />
-                  </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary"
-                      onClick={() => {
-                        const copyText = document.getElementById('share-link')
-                        copyText.select()
-                        document.execCommand('copy')
-                      }}
-                    >
-                      Copy to clipboard
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
         ) : (
           <h1>...loading</h1>
@@ -245,7 +191,7 @@ export class Project extends React.Component {
 
 const mapState = state => {
   return {
-    linePoints: state.canvasData.linePoints,
+    whiteboardData: state.canvasData.whiteboardData,
     projectId: state.canvasData.projectId,
     name: state.canvasData.name,
     codeEditorData: state.canvasData.codeEditorData
@@ -256,8 +202,8 @@ const mapDispatch = dispatch => {
   return {
     getLine: points => dispatch(getLine(points)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
-    saveBoard: (projectId, linePoints, codeEditorData, name) =>
-      dispatch(saveBoard(projectId, linePoints, codeEditorData, name)),
+    saveBoard: (projectId, whiteboardData, codeEditorData, name) =>
+      dispatch(saveBoard(projectId, whiteboardData, codeEditorData, name)),
     setNewBoard: () => dispatch(setNewBoard()),
     getCode: str => dispatch(getCode(str)),
     getName: str => dispatch(getName(str))

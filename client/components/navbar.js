@@ -8,7 +8,7 @@ const Navigation = ({handleClick, isLoggedIn}) => (
   <div>
     <Navbar collapseOnSelect expand="lg" bg="light" variant="pills">
       <Navbar.Brand href="/project">
-        <img src="scribby1.png" />
+        {/* <img src="scribby1.png" /> */}
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">

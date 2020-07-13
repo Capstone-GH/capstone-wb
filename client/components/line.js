@@ -26,7 +26,7 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
     console.log(lastLine.attrs)
     console.log(lastLine)
     console.log(typeof lastLine.attrs)
-    store.dispatch(getLine(lastLine.attrs.points))
+    store.dispatch(getLine(lastLine.attrs.points, lastLine.attrs.stroke))
     line_events.emit('new-line', lastLine.attrs.points)
   })
   stage.on('mousemove touchmove', function() {
