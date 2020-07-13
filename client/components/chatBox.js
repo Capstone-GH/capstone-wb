@@ -1,33 +1,14 @@
 import React, {Component} from 'react'
 import {Launcher} from 'react-chat-window'
+import {connect} from 'react-redux'
+import {getMessage} from '../store/chatStore'
+import socket from '../socket'
 
-export default class Chatbox extends Component {
-  constructor() {
-    super()
-    this.state = {
-      messageList: []
-    }
-  }
-
+class Chatbox extends Component {
   _onMessageWasSent(message) {
-    this.setState({
-      messageList: [...this.state.messageList, message]
-    })
-  }
-
-  _sendMessage(text) {
-    if (text.length > 0) {
-      this.setState({
-        messageList: [
-          ...this.state.messageList,
-          {
-            author: 'them',
-            type: 'text',
-            data: {text}
-          }
-        ]
-      })
-    }
+    console.log(message)
+    this.props.getMessage(message)
+    socket.emit('message-from-client', message, this.props.projectId)
   }
 
   render() {
@@ -39,10 +20,25 @@ export default class Chatbox extends Component {
             imageUrl: 'code.png'
           }}
           onMessageWasSent={this._onMessageWasSent.bind(this)}
-          messageList={this.state.messageList}
+          messageList={this.props.chatStore}
           showEmoji
         />
       </div>
     )
   }
 }
+
+const mapState = state => {
+  return {
+    chatStore: state.chatStore,
+    projectId: state.canvasData.projectId
+  }
+}
+
+const mapDispatch = dispatch => {
+  return {
+    getMessage: message => dispatch(getMessage(message))
+  }
+}
+
+export default connect(mapState, mapDispatch)(Chatbox)
