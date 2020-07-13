@@ -2,6 +2,7 @@ import io from 'socket.io-client'
 import {getLine} from './store/canvasData'
 import store from './store/index'
 import {line_events} from './components/line'
+import {getMessage} from './store/chatStore'
 
 const socket = io(window.location.origin)
 //const drawingName = window.location.origin
@@ -16,6 +17,10 @@ line_events.on('new-line', points => {
 
 socket.on('new-line-from-server', points => {
   store.dispatch(getLine(points))
+})
+
+socket.on('message-from-server', message => {
+  store.dispatch(getMessage(message))
 })
 
 // clientSocket.on('connect', () => {
