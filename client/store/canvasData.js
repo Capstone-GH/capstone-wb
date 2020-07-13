@@ -3,7 +3,7 @@ import socket from '../socket'
 
 //default state
 const defaultBoard = {
-  linePoints: [],
+  whiteboardData: [],
   name: '',
   projectId: null,
   codeEditorData: ''
@@ -18,9 +18,9 @@ const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
 
 //action creator
-export const getLine = points => ({
+export const getLine = (points, color) => ({
   type: GET_LINE,
-  points
+  lineObj: {type: 'line', points, color}
 })
 
 export const getCode = str => ({
@@ -55,13 +55,13 @@ export const setNewBoard = () => ({
   type: SET_NEW_BOARD
 })
 
-export const saveBoard = (projectId, linePoints, codeEditorData, name) => {
+export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
   console.log('name', name)
   if (projectId) {
     return async dispatch => {
       try {
         const {data} = await axios.put(`/api/projects/${projectId}`, {
-          linePoints: linePoints,
+          whiteboardData: whiteboardData,
           codeEditorData: codeEditorData,
           name: name
         })
@@ -75,7 +75,7 @@ export const saveBoard = (projectId, linePoints, codeEditorData, name) => {
     return async dispatch => {
       try {
         const {data} = await axios.post('/api/projects', {
-          linePoints: linePoints,
+          whiteboardData: whiteboardData,
           codeEditorData: codeEditorData,
           name: name
         })
@@ -120,7 +120,7 @@ export default function(state = defaultBoard, action) {
     case GET_LINE:
       return {
         ...state,
-        linePoints: [...state.linePoints, action.points]
+        whiteboardData: [...state.whiteboardData, action.lineObj]
       }
     case GET_CODE:
       return {
@@ -141,13 +141,13 @@ export default function(state = defaultBoard, action) {
       return {
         ...state,
         projectId: action.projectId,
-        linePoints: action.whiteboardData,
+        whiteboardData: action.whiteboardData,
         name: action.name,
         codeEditorData: action.codeEditorData
       }
     case SET_NEW_BOARD:
       return {
-        linePoints: [],
+        whiteboardData: [],
         name: 'New Project',
         projectId: null
       }

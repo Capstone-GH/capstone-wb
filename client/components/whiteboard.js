@@ -89,7 +89,7 @@ export default function Whiteboard(props) {
       redrawLine()
       // fitStageIntoParentContainer()
     },
-    [props.linePoints]
+    [props.whiteboardData]
   )
 
   let stageWidth = 1000
