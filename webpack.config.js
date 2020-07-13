@@ -1,4 +1,6 @@
 const isDev = process.env.NODE_ENV === 'development'
+const path = require('path')
+const SRC = path.resolve(__dirname, 'node_modules')
 
 module.exports = {
   mode: isDev ? 'development' : 'production',
@@ -29,7 +31,7 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(png|jpg|gif)$/i,
+        test: /\.(png|jpg|gif|svg)$/i,
         use: [
           {
             loader: 'url-loader',
@@ -38,6 +40,11 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.mp3$/,
+        include: SRC,
+        loader: 'file-loader'
       }
     ]
   }

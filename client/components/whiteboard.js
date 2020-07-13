@@ -82,6 +82,7 @@ export default function Whiteboard(props) {
       >
         <Layer ref={layerEl} />
       </Stage>
+      {/* <ChatWidget /> */}
     </div>
   )
 }
