@@ -51,6 +51,7 @@ export class Project extends React.Component {
     console.log('calling on change')
     this.setState({codeEditorData: newValue})
     this.props.getCode(this.state.codeEditorData)
+    socket.emit('new-code-from-client', newValue, this.props.projectId)
   }
 
   async onNameChange(e) {
@@ -134,6 +135,8 @@ export class Project extends React.Component {
               />
               <div id="drag-handler" />
               <CodeEditor
+                projectId={this.props.projectId}
+                name={this.props.name}
                 codeEditorData={this.props.codeEditorData}
                 onChange={this.onChange}
               />
