@@ -16,6 +16,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import CreateIcon from '@material-ui/icons/Create'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import Button from '@material-ui/core/Button'
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked'
+import ClearIcon from '@material-ui/icons/Clear'
+import Crop169Icon from '@material-ui/icons/Crop169'
 
 const drawerWidth = 250
 
@@ -104,7 +107,7 @@ export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
   const [penColor, setPenColor] = React.useState('black')
 
-  const {drawLine} = props
+  const {drawLine, circle, rectangle} = props
 
   const handleDrawerOpen = e => {
     e.preventDefault()
@@ -187,6 +190,24 @@ export default function WhiteboardToolbar(props) {
                   Blue
                 </Button>
               </ButtonGroup>
+            </ListItem>
+
+            <ListItem className="tool-item">
+              <IconButton onClick={() => circle()}>
+                <RadioButtonUncheckedIcon />
+              </IconButton>
+            </ListItem>
+
+            <ListItem className="tool-item">
+              <IconButton onClick={() => rectangle()}>
+                <Crop169Icon />
+              </IconButton>
+            </ListItem>
+
+            <ListItem className="tool-item">
+              <IconButton onClick={() => console.log('erase')}>
+                <ClearIcon />
+              </IconButton>
             </ListItem>
           </List>
         </div>
