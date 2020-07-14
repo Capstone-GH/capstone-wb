@@ -17,6 +17,11 @@ module.exports = io => {
       console.log('new_line')
     })
 
+    socket.on('new-code-from-client', (codeEditorData, roomName) => {
+      socket.to(roomName).emit('new-code-from-server', codeEditorData)
+      console.log('new_code')
+    })
+
     socket.on('message-from-client', (message, roomName) => {
       socket
         .to(roomName)

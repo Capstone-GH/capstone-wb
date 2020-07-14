@@ -22,7 +22,7 @@ router.post('/', async (req, res, next) => {
     console.log('req.body', req.body)
 
     const newProject = new Project({
-      whiteboardData: req.body.linePoints,
+      whiteboardData: req.body.whiteboardData,
       owner: req.user._id,
       codeEditorData: req.body.codeEditorData,
       name: req.body.name
@@ -46,7 +46,7 @@ router.put('/:id', async (req, res, next) => {
     console.log('req.body', req.body)
     if (!req.user) res.sendStatus(401)
     const projectToUpdate = await Project.findById(req.params.id)
-    projectToUpdate.whiteboardData = req.body.linePoints
+    projectToUpdate.whiteboardData = req.body.whiteboardData
     projectToUpdate.codeEditorData = req.body.codeEditorData
     projectToUpdate.name = req.body.name
     await projectToUpdate.save()
