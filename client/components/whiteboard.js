@@ -3,10 +3,7 @@ import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {Redraw} from './redrawutils'
 import WhiteboardToolbar from './toolbar'
-// import {Container, Row, Col} from 'react-bootstrap'
 import {makeStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
 
@@ -40,14 +37,14 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `rect${rectangles.length + 1}`,
       stroke: 'black'
     }
-    const rects = rectangles.concat([rect])
-    setRectangles(rects)
-    const shs = shapes.concat([`rect${rectangles.length + 1}`])
-    setShapes(shs)
+    props.getRect(rect)
+    // const rects = rectangles.concat([rect])
+    // setRectangles(rects)
+    // const shs = shapes.concat([`rect${rectangles.length + 1}`])
+    // setShapes(shs)
   }
 
   const addCircle = () => {
@@ -56,7 +53,6 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
@@ -64,22 +60,17 @@ export default function Whiteboard(props) {
     setCircles(circs)
     const shs = shapes.concat([`circ${circles.length + 1}`])
     setShapes(shs)
-
-    console.log(circ)
   }
 
   const drawLine = (color = 'black') => {
-    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
   const redrawLine = () => {
-    console.log('redraw')
-    Redraw(layerEl.current)
+    Redraw(layerEl.current, selectedId, selectShape)
   }
 
   const clearBoard = () => {
-    console.log('clearboard')
     layerEl.current.destroyChildren()
   }
 
@@ -87,6 +78,7 @@ export default function Whiteboard(props) {
     () => {
       clearBoard()
       redrawLine()
+
       // fitStageIntoParentContainer()
     },
     [props.whiteboardData]
@@ -112,8 +104,6 @@ export default function Whiteboard(props) {
     stage.draw()
   }
 
-  console.log('rendering whiteboard', props)
-
   return (
     <div id="whiteboard-container" className="side">
       <WhiteboardToolbar
@@ -121,13 +111,7 @@ export default function Whiteboard(props) {
         circle={addCircle}
         rectangle={addRectangle}
       />
-      <Stage
-        // width={window.innerWidth}
-        // height={window.innerHeight}
-        height={stageHeight}
-        width={stageWidth}
-        ref={stageEl}
-      >
+      <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
           {circles.map((circle, i) => {
             return (
@@ -146,7 +130,7 @@ export default function Whiteboard(props) {
               />
             )
           })}
-          {rectangles.map((rect, i) => {
+          {/* {rectangles.map((rect, i) => {
             return (
               <Rectangle
                 key={i}
@@ -162,7 +146,7 @@ export default function Whiteboard(props) {
                 }}
               />
             )
-          })}
+          })} */}
         </Layer>
       </Stage>
     </div>

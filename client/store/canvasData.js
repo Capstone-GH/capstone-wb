@@ -1,5 +1,4 @@
 import axios from 'axios'
-import socket from '../socket'
 
 //default state
 const defaultBoard = {
@@ -10,9 +9,10 @@ const defaultBoard = {
 }
 
 //action type
-export const GET_LINE = 'GET_LINE'
-export const GET_CODE = 'GET_CODE'
-export const GET_NAME = 'GET_NAME'
+const GET_LINE = 'GET_LINE'
+const GET_CODE = 'GET_CODE'
+const GET_NAME = 'GET_NAME'
+const GET_RECT = 'GET_RECT'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
@@ -31,6 +31,11 @@ export const getCode = str => ({
 export const getName = str => ({
   type: GET_NAME,
   str
+})
+
+export const getRect = rect => ({
+  type: GET_RECT,
+  rectObj: {...rect, type: 'rect'}
 })
 
 export const setId = projectId => ({
@@ -82,7 +87,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
         console.log(data)
         dispatch(setId(data._id))
         return data._id
-        // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
       }
@@ -108,13 +112,6 @@ export const reloadSavedBoard = projectId => {
   }
 }
 
-//check if there is already a project id
-//if there is, were going to send a put request
-
-//if there is not, we're going to send a post request and create a new project
-
-//when we create that new project, we should take its ID number and put that in the redux
-
 //reducer
 export default function(state = defaultBoard, action) {
   switch (action.type) {
@@ -132,6 +129,11 @@ export default function(state = defaultBoard, action) {
       return {
         ...state,
         name: action.str
+      }
+    case GET_RECT:
+      return {
+        ...state,
+        whiteboardData: [...state.whiteboardData, action.rectObj]
       }
     case SET_PROJECTID:
       return {
