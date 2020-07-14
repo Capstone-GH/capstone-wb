@@ -113,7 +113,7 @@ export default function Whiteboard(props) {
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
-          {circles.map((circle, i) => {
+          {/* {circles.map((circle, i) => {
             return (
               <Circle
                 key={i}
@@ -129,7 +129,7 @@ export default function Whiteboard(props) {
                 }}
               />
             )
-          })}
+          })} */}
           {/* {rectangles.map((rect, i) => {
             return (
               <Rectangle
