@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button'
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
 import Link from '@material-ui/core/Link'
+// import scrib from '../../public/scrib1.png'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,7 +34,8 @@ const Navigation = ({handleClick, isLoggedIn}) => {
     <div className={classes.root}>
       <AppBar position="static" style={{background: '#e1f5fe'}}>
         <Toolbar>
-          {/* <img src="s1.png" /> */}
+          <img src="s1.png" />
+          {/* <img src={require('../../public/s1.png')} /> */}
           {isLoggedIn ? (
             <React.Fragment>
               <Typography className={classes.root} variant="h6">

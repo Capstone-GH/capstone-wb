@@ -1,9 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {fetchBoards} from '../store/user'
+import {fetchBoards, deleteBoard} from '../store/user'
 import {Link} from 'react-router-dom'
 import {Card, Button, CardColumns} from 'react-bootstrap'
-import {deleteBoard} from '../store/canvasData'
 
 export class SavedBoards extends React.Component {
   componentDidMount() {
@@ -22,7 +21,7 @@ export class SavedBoards extends React.Component {
                 return (
                   <Card
                     style={{width: '18rem'}}
-                    key="boardId"
+                    key={board._id}
                     className="bg-light text-black"
                     border="info"
                   >
@@ -30,10 +29,7 @@ export class SavedBoards extends React.Component {
                     <Card.Title>{board.name}</Card.Title>
                     <Button variant="outline-danger">
                       {' '}
-                      <Link to={`/project/${board._id}`}>
-                        {/* key={board._id} */}
-                        Edit
-                      </Link>
+                      <Link to={`/project/${board._id}`}>Edit</Link>
                     </Button>
                     <Button
                       variant="outline-danger"
