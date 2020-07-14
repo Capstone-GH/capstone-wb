@@ -21,6 +21,11 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Backdrop from '@material-ui/core/Backdrop'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import TextField from '@material-ui/core/TextField'
+import SaveIcon from '@material-ui/icons/Save'
+import IconButton from '@material-ui/core/IconButton'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -94,40 +99,51 @@ export class Project extends React.Component {
       <div>
         {this.props.name || this.state.inProgress ? (
           <div id="project-view">
-            <input
-              id="project-title"
-              type="text"
-              value={this.props.name}
-              onChange={this.onNameChange}
-              placeholder="Your Project Name"
-              className="display-4"
-            />
-            <button
-              onClick={async () => {
-                const id = await this.props.saveBoard(
-                  this.props.projectId,
-                  this.props.whiteboardData,
-                  this.props.codeEditorData,
-                  this.props.name
-                )
-                window.location.href = `/project/${id}`
-              }}
-              type="button"
-            >
-              Save!
-            </button>
-            <button
-              onClick={() => {
-                this.props.setNewBoard()
-                window.location.href = '/project'
-              }}
-              type="button"
-            >
-              New Project!
-            </button>
-            <Button type="button" onClick={() => this.shareProject()}>
-              Share
-            </Button>
+            <Paper elevation={3} className="project-title-bar">
+              <div>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  color="secondary"
+                  onClick={() => this.shareProject()}
+                >
+                  Share
+                </Button>
+                <IconButton
+                  aria-label="save"
+                  onClick={async () => {
+                    const id = await this.props.saveBoard(
+                      this.props.projectId,
+                      this.props.whiteboardData,
+                      this.props.codeEditorData,
+                      this.props.name
+                    )
+                    window.location.href = `/project/${id}`
+                  }}
+                  type="button"
+                  variant="outlined"
+                  color="secondary"
+                >
+                  <SaveIcon />
+                </IconButton>
+              </div>
+              <TextField
+                id="project-title"
+                value={this.props.name}
+                onChange={this.onNameChange}
+                placeholder="Your Project Name"
+                color="secondary"
+              />
+              <Button
+                onClick={() => {
+                  this.props.setNewBoard()
+                  window.location.href = '/project'
+                }}
+                type="button"
+              >
+                New Project
+              </Button>
+            </Paper>
             <div id="workspace-container">
               <Whiteboard
                 projectId={this.props.projectId}
@@ -182,7 +198,7 @@ export class Project extends React.Component {
             </Dialog>
           </div>
         ) : (
-          <h1>...loading</h1>
+          <CircularProgress />
         )}
       </div>
     )
