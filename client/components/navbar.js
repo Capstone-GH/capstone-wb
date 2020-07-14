@@ -26,34 +26,36 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-function Navigation({handleClick, isLoggedIn}) {
+const Navigation = ({handleClick, isLoggedIn}) => {
   const classes = useStyles()
 
   return (
-    <div className={classes.root} cls>
+    <div className={classes.root}>
       <AppBar position="static" style={{background: '#e1f5fe'}}>
         <Toolbar>
-          <img src="s1.png" />
+          {/* <img src="s1.png" /> */}
           {isLoggedIn ? (
-            <Typography className={classes.root} variant="h6">
-              <Link href="/project" />
-              <Link href="/home">
-                <Button color="secondary">Home</Button>
-              </Link>
-              <Link href="/project">
-                <Button color="secondary">Project Workspace</Button>
-              </Link>
-              <Link href="/myprojects">
-                <Button color="secondary">My Projects</Button>
-              </Link>
-              <Button color="secondary">
-                <a href="#" onClick={handleClick}>
-                  Logout{' '}
-                </a>
-              </Button>
-            </Typography>
+            <React.Fragment>
+              <Typography className={classes.root} variant="h6">
+                {/* <Link href="/project" /> */}
+                <Link href="/home">
+                  <Button color="secondary">Home</Button>
+                </Link>
+                <Link href="/project">
+                  <Button color="secondary">Project Workspace</Button>
+                </Link>
+                <Link href="/myprojects">
+                  <Button color="secondary">My Projects</Button>
+                </Link>
+                <Button color="secondary">
+                  <a href="#" onClick={handleClick}>
+                    Logout{' '}
+                  </a>
+                </Button>
+              </Typography>
+            </React.Fragment>
           ) : (
-            <>
+            <React.Fragment>
               <Link href="/project">
                 <Button color="secondary">Project Workspace</Button>
               </Link>
@@ -64,7 +66,7 @@ function Navigation({handleClick, isLoggedIn}) {
               <Link href="/signup">
                 <Button color="secondary">Sign Up</Button>
               </Link>
-            </>
+            </React.Fragment>
           )}
         </Toolbar>
       </AppBar>

@@ -16,6 +16,7 @@ export const GET_NAME = 'GET_NAME'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
+const REMOVE_BOARD = 'REMOVE_BOARD'
 
 //action creator
 export const getLine = (points, color) => ({
@@ -53,6 +54,11 @@ export const setReloadedBoard = (
 
 export const setNewBoard = () => ({
   type: SET_NEW_BOARD
+})
+
+export const removeBoard = boardId => ({
+  type: REMOVE_BOARD,
+  boardId
 })
 
 export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
@@ -107,6 +113,17 @@ export const reloadSavedBoard = projectId => {
     }
   }
 }
+
+export const deleteBoard = boardId => {
+  return async dispatch => {
+    try {
+      await axios.delete(`/api/projects/${boardId}`)
+      dispatch(removeBoard(boardId))
+    } catch (error) {
+      console.log('Error deleting board', error)
+    }
+  }
+}
 //check if there is already a project id
 //if there is, were going to send a put request
 
@@ -150,6 +167,11 @@ export default function(state = defaultBoard, action) {
         whiteboardData: [],
         name: 'New Project',
         projectId: null
+      }
+    case REMOVE_BOARD:
+      return {
+        ...state,
+        projectId: action.boardId
       }
     default:
       return state

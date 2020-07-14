@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 import {fetchBoards} from '../store/user'
 import {Link} from 'react-router-dom'
 import {Card, Button, CardColumns} from 'react-bootstrap'
+import {deleteBoard} from '../store/canvasData'
 
 export class SavedBoards extends React.Component {
   componentDidMount() {
@@ -11,7 +12,7 @@ export class SavedBoards extends React.Component {
 
   render() {
     let {savedBoards} = this.props || []
-
+    console.log(this.props)
     return (
       <div className="container py-5">
         <h1>My Boards</h1>
@@ -29,9 +30,16 @@ export class SavedBoards extends React.Component {
                     <Card.Title>{board.name}</Card.Title>
                     <Button variant="outline-danger">
                       {' '}
-                      <Link to={`/project/${board._id}`} key={board._id}>
-                        Let's go here
+                      <Link to={`/project/${board._id}`}>
+                        {/* key={board._id} */}
+                        Edit
                       </Link>
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => this.props.deleteBoard(board._id)}
+                    >
+                      Delete
                     </Button>
                   </Card>
                 )
@@ -51,7 +59,8 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    fetchBoards: () => dispatch(fetchBoards())
+    fetchBoards: () => dispatch(fetchBoards()),
+    deleteBoard: id => dispatch(deleteBoard(id))
   }
 }
 
