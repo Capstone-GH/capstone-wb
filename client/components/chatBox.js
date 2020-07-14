@@ -17,7 +17,10 @@ class Chatbox extends Component {
         <Launcher
           agentProfile={{
             teamName: 'Live chat',
-            imageUrl: 'code.png'
+            // imageUrl: "https://img.icons8.com/doodle/48/000000/code-file.png"
+            // imageUrl: "https://img.icons8.com/cotton/64/000000/source-code--v3.png"
+            // imageUrl: "https://img.icons8.com/cotton/64/000000/groups--v1.png"
+            imageUrl: 'https://img.icons8.com/cotton/64/000000/name--v2.png'
           }}
           onMessageWasSent={this._onMessageWasSent.bind(this)}
           messageList={this.props.chatStore}
