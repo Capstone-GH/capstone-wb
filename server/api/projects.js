@@ -1,4 +1,5 @@
 const {User, Project} = require('../db/models')
+const e = require('express')
 const router = require('express').Router()
 
 router.get('/:id', async (req, res, next) => {
@@ -51,6 +52,16 @@ router.put('/:id', async (req, res, next) => {
     projectToUpdate.name = req.body.name
     await projectToUpdate.save()
     res.json(projectToUpdate)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    if (!req.user) res.sendStatus(401)
+    await Project.findByIdAndDelete(req.params.id)
+    res.sendStatus(204)
   } catch (error) {
     next(error)
   }
