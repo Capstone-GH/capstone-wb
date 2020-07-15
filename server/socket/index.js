@@ -28,6 +28,16 @@ module.exports = io => {
       console.log('message-from-client')
     })
 
+    socket.on('new-rect-from-client', (rect, roomName) => {
+      socket.to(roomName).emit('new-rect-from-server', rect)
+      console.log('new_rect')
+    })
+
+    socket.on('new-circ-from-client', (circ, roomName) => {
+      socket.to(roomName).emit('new-circ-from-server', circ)
+      console.log('new_circ')
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })

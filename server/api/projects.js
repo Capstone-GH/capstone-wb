@@ -18,9 +18,6 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     if (!req.user) res.sendStatus(401)
-    // console.log(req.body.linePoints)
-    // console.log(req.body)
-    console.log('req.body', req.body)
 
     const newProject = new Project({
       whiteboardData: req.body.whiteboardData,
@@ -29,12 +26,10 @@ router.post('/', async (req, res, next) => {
       name: req.body.name
     })
     await newProject.save()
-    //save to user
     const currUser = await User.findById(req.user._id)
     currUser.ownerBoards.push(newProject._id)
     await currUser.save()
 
-    // console.log(newProject)
     res.send(newProject)
   } catch (error) {
     next(error)
@@ -43,8 +38,6 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:id', async (req, res, next) => {
   try {
-    console.log('updating!')
-    console.log('req.body', req.body)
     if (!req.user) res.sendStatus(401)
     const projectToUpdate = await Project.findById(req.params.id)
     projectToUpdate.whiteboardData = req.body.whiteboardData
