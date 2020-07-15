@@ -119,3 +119,8 @@ form div {
   background: red;
   margin: 0 auto;
 }
+
+.sc-launcher,
+.sc-chat-window {
+  z-index: 50;
+}
