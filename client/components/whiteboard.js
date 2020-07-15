@@ -30,7 +30,14 @@ export default function Whiteboard(props) {
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
-  const {getLine, getCirc, getRect, whiteboardData, getUpdatedShapes} = props
+  const {
+    getLine,
+    getCirc,
+    getRect,
+    whiteboardData,
+    getUpdatedShapes,
+    width
+  } = props
 
   const getRandomInt = max => {
     return Math.floor(Math.random() * Math.floor(max))
@@ -87,48 +94,39 @@ export default function Whiteboard(props) {
     layerEl.current.destroyChildren()
   }
 
-  // useEffect(() => {
-  //   clearBoard()
-  //   redrawLine()
-  //   // fitStageIntoParentContainer()
-  // }, [props.whiteboardData])
+  useEffect(
+    () => {
+      fitStageIntoParentContainer()
+    },
+    [width]
+  )
 
   let stageWidth = 1000
   let stageHeight = 1000
 
   function fitStageIntoParentContainer() {
     const stage = stageEl.current.getStage()
-    var container = document.querySelector('#whiteboard-container')
 
     // now we need to fit stage into parent
-    var containerWidth = container.offsetWidth
-    var containerHeight = container.offsetHeight
-    // to do this we need to scale the stage
-    var widthScale = containerWidth / stageWidth
-    var heightScale = containerHeight / stageHeight
+    let containerWidth = width
 
-    stage.width(stageWidth * widthScale)
-    stage.height(stageHeight * heightScale)
-    stage.scale({x: widthScale, y: heightScale})
+    // to do this we need to scale the stage
+    const scale = containerWidth / stageWidth
+
+    stage.width(stageWidth * scale)
     stage.draw()
   }
 
   console.log('rendering whiteboard', props)
 
   return (
-    <div id="whiteboard-container" className="side">
+    <div id="whiteboard-container">
       <WhiteboardToolbar
         drawLine={drawLine}
         circle={addCircle}
         rectangle={addRectangle}
       />
-      <Stage
-        // width={window.innerWidth}
-        // height={window.innerHeight}
-        height={stageHeight}
-        width={stageWidth}
-        ref={stageEl}
-      >
+      <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
           {whiteboardData.map((shape, i) => {
             switch (shape.type) {
