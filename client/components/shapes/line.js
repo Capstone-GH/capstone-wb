@@ -1,7 +1,7 @@
 import React from 'react'
-import {Line, Transformer} from 'react-konva'
+import {Line} from 'react-konva'
 
-const Lin = ({shapeProps, isSelected, onSelect, onChange}) => {
+const Lin = ({shapeProps, isSelected, onSelect}) => {
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -22,32 +22,7 @@ const Lin = ({shapeProps, isSelected, onSelect, onChange}) => {
         stroke={shapeProps.color}
         strokeWidth={5}
         points={shapeProps.points}
-        // {...shapeProps}
-        draggable
-        onDragEnd={e => {
-          onChange({
-            ...shapeProps,
-            x: e.target.x(),
-            y: e.target.y()
-          })
-        }}
-        onTransformEnd={e => {
-          // transformer is changing scale
-          const node = shapeRef.current
-          const scaleX = node.scaleX()
-          const scaleY = node.scaleY()
-          node.scaleX(1)
-          node.scaleY(1)
-          onChange({
-            ...shapeProps,
-            x: node.x(),
-            y: node.y(),
-            width: node.width() * scaleX,
-            height: node.height() * scaleY
-          })
-        }}
       />
-      {isSelected && <Transformer ref={trRef} />}
     </React.Fragment>
   )
 }

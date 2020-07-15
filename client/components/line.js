@@ -5,7 +5,6 @@ import {EventEmitter} from 'events'
 export const line_events = new EventEmitter()
 
 export const Line = (stage, layer, color = 'black', mode = 'brush') => {
-  console.log('drawing in line.js')
   let isPaint = false
   let lastLine
 
@@ -23,9 +22,6 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
   })
   stage.on('mouseup touchend', function() {
     isPaint = false
-    console.log(lastLine.attrs)
-    console.log(lastLine)
-    console.log(typeof lastLine.attrs)
     store.dispatch(getLine(lastLine.attrs.points, lastLine.attrs.stroke))
     line_events.emit('new-line', lastLine.attrs.points, lastLine.attrs.stroke)
   })

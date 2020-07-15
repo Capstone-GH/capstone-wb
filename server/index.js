@@ -112,35 +112,6 @@ const startListening = () => {
   const io = require('socket.io')(server)
   require('./socket')(io)
 }
-// const socketListener = socketio(server)
-
-// const drawings = {}
-// function getDrawing(drawingName) {
-//   if (drawings[drawingName] === undefined) {
-//     drawings[drawingName] = []
-//   }
-//   return drawings[drawingName]
-// }
-
-// socketListener.on('connection', (serverSocket) => {
-//   console.log(`Connection from client ${serverSocket.id}`)
-
-//   serverSocket.on('join-drawing', (drawingName) => {
-//     serverSocket.join(drawingName)
-//     const drawing = getDrawing(drawingName)
-//     serverSocket.emit('replay-drawing', drawing)
-//   })
-
-//   serverSocket.on('draw-from-client', (drawingName, stage, layer, mode) => {
-//     const drawing = getDrawing(drawingName)
-//     drawing.push([stage, layer, mode])
-//     serverSocket.broadcast
-//       .to(drawingName)
-//       .emit('draw-from-server', stage, layer, mode)
-//   })
-// })
-
-// const syncDb = () => db.sync()
 
 async function bootApp() {
   // await sessionStore.sync()

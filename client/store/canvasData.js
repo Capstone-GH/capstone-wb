@@ -99,7 +99,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
         console.log(data)
         dispatch(setId(data._id))
         return data._id
-        // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
       }
