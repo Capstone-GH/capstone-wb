@@ -33,12 +33,15 @@ import IconButton from '@material-ui/core/IconButton'
 export class Project extends React.Component {
   constructor(props) {
     super(props)
+    this.workspaceRef = React.createRef()
+    this.whiteboardRef = React.createRef()
     this.state = {
       codeEditorData: ' ',
       name: this.props.name,
       isHandlerDragging: false,
       inProgress: false,
-      shareModalOpen: false
+      shareModalOpen: false,
+      width: 1000
     }
     this.onChange = this.onChange.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
@@ -147,17 +150,57 @@ export class Project extends React.Component {
                 New Project
               </Button>
             </Paper>
-            <div id="workspace-container">
-              <Whiteboard
-                projectId={this.props.projectId}
-                name={this.props.name}
-                whiteboardData={this.props.whiteboardData}
-                getLine={this.props.getLine}
-                getCirc={this.props.getCirc}
-                getRect={this.props.getRect}
-                getUpdatedShapes={this.props.getUpdatedShapes}
+            <div
+              id="workspace-container"
+              ref={this.workspaceRef}
+              onMouseMove={e => {
+                if (!this.state.isHandlerDragging) {
+                  return false
+                }
+                //Get offset
+                let containerOffsetLeft = this.workspaceRef.current.offsetLeft
+
+                //Get x-coord of pointer relative to container
+                let pointerRelativeXpos = e.clientX - containerOffsetLeft
+
+                //set min width
+                const whiteboardMinWidth = 60
+
+                this.whiteboardRef.current.style.width =
+                  Math.max(whiteboardMinWidth, pointerRelativeXpos - 8) + 'px'
+                this.whiteboardRef.current.style.flexGrow = 0
+                this.setState({
+                  width: Math.max(whiteboardMinWidth, pointerRelativeXpos - 80)
+                })
+              }}
+              onMouseUp={() => {
+                this.setState({
+                  isHandlerDragging: false
+                })
+              }}
+            >
+              <div
+                ref={this.whiteboardRef}
+                id="whiteboard-slider-div"
+                className="side"
+              >
+                <Whiteboard
+                  projectId={this.props.projectId}
+                  name={this.props.name}
+                  whiteboardData={this.props.whiteboardData}
+                  getLine={this.props.getLine}
+                  getCirc={this.props.getCirc}
+                  getRect={this.props.getRect}
+                  getUpdatedShapes={this.props.getUpdatedShapes}
+                  width={this.state.width}
+                />
+              </div>
+              <div
+                id="drag-handler"
+                onMouseDown={() => {
+                  this.setState({isHandlerDragging: true})
+                }}
               />
-              <div id="drag-handler" />
               <CodeEditor
                 projectId={this.props.projectId}
                 name={this.props.name}
