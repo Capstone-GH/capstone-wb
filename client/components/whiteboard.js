@@ -3,10 +3,7 @@ import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {Redraw} from './redrawutils'
 import WhiteboardToolbar from './toolbar'
-// import {Container, Row, Col} from 'react-bootstrap'
 import {makeStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
@@ -25,12 +22,20 @@ const useStyles = makeStyles(theme => ({
 export default function Whiteboard(props) {
   const stageEl = React.createRef()
   const layerEl = React.createRef()
+  const containerEl = React.createRef()
   const classes = useStyles()
   const [circles, setCircles] = useState([])
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
-  const {getLine, getCirc, getRect, whiteboardData, getUpdatedShapes} = props
+  const {
+    getLine,
+    getCirc,
+    getRect,
+    whiteboardData,
+    getUpdatedShapes,
+    width
+  } = props
 
   const getRandomInt = max => {
     return Math.floor(Math.random() * Math.floor(max))
@@ -42,15 +47,14 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `rect${rectangles.length + 1}`,
       stroke: 'black'
     }
-    getRect(rect)
-    const rects = rectangles.concat([rect])
-    setRectangles(rects)
-    const shs = shapes.concat([`rect${rectangles.length + 1}`])
-    setShapes(shs)
+    props.getRect(rect)
+    // const rects = rectangles.concat([rect])
+    // setRectangles(rects)
+    // const shs = shapes.concat([`rect${rectangles.length + 1}`])
+    // setShapes(shs)
   }
 
   const addCircle = () => {
@@ -59,7 +63,6 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
@@ -68,126 +71,57 @@ export default function Whiteboard(props) {
     setCircles(circs)
     const shs = shapes.concat([`circ${circles.length + 1}`])
     setShapes(shs)
-
-    console.log(circ)
   }
 
   const drawLine = (color = 'black') => {
-    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
   const redrawLine = () => {
-    console.log('redraw')
-    Redraw(layerEl.current)
+    Redraw(layerEl.current, selectedId, selectShape)
   }
 
   const clearBoard = () => {
-    console.log('clearboard')
     layerEl.current.destroyChildren()
   }
 
-  // useEffect(() => {
-  //   clearBoard()
-  //   redrawLine()
-  //   // fitStageIntoParentContainer()
-  // }, [props.whiteboardData])
+  useEffect(
+    () => {
+      fitStageIntoParentContainer()
+      console.log('fitting stage')
+    },
+    [width]
+  )
 
-  let stageWidth = 1000
-  let stageHeight = 1000
+  let stageWidth = 700
+  let stageHeight = 700
 
   function fitStageIntoParentContainer() {
     const stage = stageEl.current.getStage()
-    var container = document.querySelector('#whiteboard-container')
+    var container = containerEl.current
 
     // now we need to fit stage into parent
-    var containerWidth = container.offsetWidth
-    var containerHeight = container.offsetHeight
+    var containerWidth = width
+    // var containerHeight = container.offsetHeight
     // to do this we need to scale the stage
-    var widthScale = containerWidth / stageWidth
-    var heightScale = containerHeight / stageHeight
+    var scale = containerWidth / stageWidth
+    // var heightScale = containerHeight / stageHeight
 
-    stage.width(stageWidth * widthScale)
-    stage.height(stageHeight * heightScale)
-    stage.scale({x: widthScale, y: heightScale})
+    stage.width(stageWidth * scale)
+    stage.height(stageHeight * scale)
+    stage.scale({x: scale, y: scale})
     stage.draw()
   }
 
-  console.log('rendering whiteboard', props)
-
   return (
-    <div id="whiteboard-container" className="side">
+    <div id="whiteboard-container" ref={containerEl}>
       <WhiteboardToolbar
         drawLine={drawLine}
         circle={addCircle}
         rectangle={addRectangle}
       />
-      <Stage
-        // width={window.innerWidth}
-        // height={window.innerHeight}
-        height={stageHeight}
-        width={stageWidth}
-        ref={stageEl}
-      >
-        <Layer ref={layerEl}>
-          {whiteboardData.map((shape, i) => {
-            switch (shape.type) {
-              case 'circ':
-                return (
-                  <Circle
-                    key={i}
-                    shapeProps={shape}
-                    isSelected={shape.id === selectedId}
-                    onSelect={() => {
-                      selectShape(shape.id)
-                    }}
-                    onChange={newAttrs => {
-                      const shapesArr = whiteboardData.slice()
-                      shapesArr[i] = newAttrs
-                      setShapes(shapesArr)
-                      getUpdatedShapes(shapesArr)
-                    }}
-                  />
-                )
-              case 'rect':
-                return (
-                  <Rectangle
-                    key={i}
-                    shapeProps={shape}
-                    isSelected={shape.id === selectedId}
-                    onSelect={() => {
-                      selectShape(shape.id)
-                    }}
-                    onChange={newAttrs => {
-                      const shapesArr = whiteboardData.slice()
-                      shapesArr[i] = newAttrs
-                      setShapes(shapesArr)
-                      getUpdatedShapes(shapesArr)
-                    }}
-                  />
-                )
-              case 'line':
-                return (
-                  <Lin
-                    key={i}
-                    shapeProps={shape}
-                    isSelected={shape.id === selectedId}
-                    onSelect={() => {
-                      selectShape(shape.id)
-                    }}
-                    onChange={newAttrs => {
-                      const shapesArr = whiteboardData.slice()
-                      shapesArr[i] = newAttrs
-                      setShapes(shapesArr)
-                      getUpdatedShapes(shapesArr)
-                    }}
-                  />
-                )
-              default:
-                console.log('N/A')
-            }
-          })}
-        </Layer>
+      <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
+        <Layer ref={layerEl} />
       </Stage>
     </div>
   )

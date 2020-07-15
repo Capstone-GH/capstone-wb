@@ -1,5 +1,4 @@
 import axios from 'axios'
-import socket from '../socket'
 
 //default state
 const defaultBoard = {
@@ -11,14 +10,14 @@ const defaultBoard = {
 
 //action type
 const GET_LINE = 'GET_LINE'
-const GET_RECT = 'GET_RECT'
-const GET_CIRC = 'GET_CIRC'
 const GET_CODE = 'GET_CODE'
 const GET_NAME = 'GET_NAME'
+const GET_RECT = 'GET_RECT'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'
+const GET_CIRC = 'GET_CIRC'
 
 //action creator
 export const getLine = (points, color) => ({
@@ -100,7 +99,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
         console.log(data)
         dispatch(setId(data._id))
         return data._id
-        // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
       }
@@ -125,13 +123,6 @@ export const reloadSavedBoard = projectId => {
     }
   }
 }
-
-//check if there is already a project id
-//if there is, were going to send a put request
-
-//if there is not, we're going to send a post request and create a new project
-
-//when we create that new project, we should take its ID number and put that in the redux
 
 //reducer
 export default function(state = defaultBoard, action) {

@@ -39,25 +39,33 @@ form div {
 #project-view {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
 }
 
 #whiteboard-container {
   border: 3px solid black;
-  width: 50%;
   display: flex;
+  flex-direction: row;
+}
+
+.side {
+  /* Use box-sizing so that element's outerwidth will match width property */
+  box-sizing: border-box;
+
+  /* Allow box to grow and shrink, and ensure they are all equally sized */
+  flex: 1 1 auto;
 }
 
 #code-editor-container {
-  /* border: 3px solid peru; */
-  width: 50%;
+  border: 3px solid peru;
 }
 
 #workspace-container {
   display: flex;
   width: 100%;
   /* height: 80vh; */
-  /* border: 3px solid lightblue; */
+  flex-direction: row;
+  border: 3px solid lightblue;
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -102,3 +110,40 @@ form div {
   font-size: 2em;
   color: #5393d3;
 }
+
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+
+#drag-handler {
+  width: 20px;
+  padding: 0;
+  cursor: ew-resize;
+  flex: 0 0 auto;
+}
+
+#drag-handler::before {
+  content: '';
+  display: block;
+  width: 4px;
+  height: 100%;
+  background: red;
+  margin: 0 auto;
+}
+
+/* #flex {
+  display: flex;
+  flex-direction: row;
+} */
+
+/* .gutter, #ace-editor {
+  float: left
+} */
+
+/* #splitter {
+  display: flex;
+} */

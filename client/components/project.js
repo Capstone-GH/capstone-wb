@@ -1,5 +1,4 @@
 import React from 'react'
-// import {Container, Row, Col} from 'react-bootstrap'
 import Whiteboard from './whiteboard'
 import CodeEditor from './codeEditor'
 import {connect} from 'react-redux'
@@ -16,29 +15,33 @@ import {
 } from '../store/canvasData'
 import socket from '../socket'
 import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
-import {withStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import Backdrop from '@material-ui/core/Backdrop'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
+import Split from 'react-split'
+
+import SplitPane, {Pane} from 'react-split-pane'
 
 export class Project extends React.Component {
   constructor(props) {
     super(props)
+    this.workspaceRef = React.createRef()
+    this.whiteboardRef = React.createRef()
+    this.codeEditorRef = React.createRef()
     this.state = {
       codeEditorData: ' ',
       name: this.props.name,
       isHandlerDragging: false,
       inProgress: false,
-      shareModalOpen: false
+      shareModalOpen: false,
+      width: 700
     }
     this.onChange = this.onChange.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
@@ -53,7 +56,8 @@ export class Project extends React.Component {
 
   closeShareModal() {
     this.setState({shareModalOpen: false})
-    window.location.href = `/project/${this.props.projectId}`
+    this.props.history.push(`/project/${this.props.projectId}`)
+    // window.location.href = `/project/${this.props.projectId}`
   }
 
   onChange(newValue) {
@@ -93,11 +97,6 @@ export class Project extends React.Component {
   }
 
   render() {
-    console.log('rendering project component')
-    console.log('props', this.props)
-    console.log(this.state)
-
-    console.log(this.state)
     return (
       <div>
         {this.props.name || this.state.inProgress ? (
@@ -121,7 +120,8 @@ export class Project extends React.Component {
                       this.props.codeEditorData,
                       this.props.name
                     )
-                    window.location.href = `/project/${id}`
+                    // window.location.href = `/project/${id}`
+                    this.props.history.push(`/project/${id}`)
                   }}
                   type="button"
                   variant="outlined"
@@ -140,6 +140,7 @@ export class Project extends React.Component {
               <Button
                 onClick={() => {
                   this.props.setNewBoard()
+                  // this.props.history.push(`/project`)
                   window.location.href = '/project'
                 }}
                 type="button"
@@ -147,24 +148,79 @@ export class Project extends React.Component {
                 New Project
               </Button>
             </Paper>
-            <div id="workspace-container">
-              <Whiteboard
-                projectId={this.props.projectId}
-                name={this.props.name}
-                whiteboardData={this.props.whiteboardData}
-                getLine={this.props.getLine}
-                getCirc={this.props.getCirc}
-                getRect={this.props.getRect}
-                getUpdatedShapes={this.props.getUpdatedShapes}
+
+            <div id="workspace-container" ref={this.workspaceRef}>
+              <div
+                ref={this.whiteboardRef}
+                id="whiteboard-slider-div"
+                className="side"
+              >
+                {/* <Split
+                sizes={[50, 50]}
+                gutterSize={10}
+                background="Red"
+                gutterAlign="center"
+                // snapOffset={30}
+                direction="verical"
+                cursor="col-resize"
+                id="splitter"
+              > */}
+                <Whiteboard
+                  projectId={this.props.projectId}
+                  name={this.props.name}
+                  whiteboardData={this.props.whiteboardData}
+                  getRect={this.props.getRect}
+                  width={this.state.width}
+                />
+              </div>
+              <div
+                id="drag-handler"
+                onMouseDown={() => {
+                  this.setState({isHandlerDragging: true})
+                  console.log(this.workspaceRef)
+                }}
+                onMouseMove={e => {
+                  if (!this.state.isHandlerDragging) {
+                    return false
+                  }
+                  //more logic here..
+                  // Get offset
+
+                  let containerOffsetLeft = this.workspaceRef.current.offsetLeft
+
+                  // Get x-coordinate of pointer relative to container
+                  let pointerRelativeXpos = e.clientX - containerOffsetLeft
+
+                  const boxAminWidth = 60
+
+                  // Resize box A
+                  // * 8px is the left/right spacing between .handler and its inner pseudo-element
+                  // * Set flex-grow to 0 to prevent it from growing
+                  this.whiteboardRef.current.style.width =
+                    Math.max(boxAminWidth, pointerRelativeXpos - 8) + 'px'
+                  this.whiteboardRef.current.style.flexGrow = 0
+
+                  this.setState({
+                    width: Math.max(boxAminWidth, pointerRelativeXpos - 80)
+                  })
+                  console.log('moving')
+                }}
+                onMouseUp={() => {
+                  this.setState({
+                    isHandlerDragging: false
+                  })
+                  console.log('done')
+                }}
               />
-              <div id="drag-handler" />
               <CodeEditor
                 projectId={this.props.projectId}
                 name={this.props.name}
                 codeEditorData={this.props.codeEditorData}
                 onChange={this.onChange}
               />
+              {/* </Split> */}
             </div>
+
             <Dialog
               open={this.state.shareModalOpen}
               onClose={this.closeShareModal}

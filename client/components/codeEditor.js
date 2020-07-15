@@ -5,6 +5,7 @@ import 'ace-builds'
 
 import 'ace-builds/src-noconflict/mode-javascript'
 import 'ace-builds/src-noconflict/theme-monokai'
+// import Radio from '@material-ui/core/Radio';
 
 export default class CodeEditor extends Component {
   constructor(props) {
@@ -13,7 +14,6 @@ export default class CodeEditor extends Component {
   }
 
   render() {
-    console.log('rendering codeEditor', this.props)
     return (
       <div id="code-editor-container" className="side">
         <AceEditor
@@ -23,9 +23,7 @@ export default class CodeEditor extends Component {
           fontSize={14}
           setOptions={{useWorker: false}}
           onChange={this.props.onChange}
-          // onChange={this.onChange}
           ref={this.refName}
-          // value={this.state.newValue}
           value={this.props.codeEditorData}
           width="100%"
           height="100%"
