@@ -3,13 +3,11 @@ import {Line} from './line'
 import {Stage, Layer} from 'react-konva'
 import {Redraw} from './redrawutils'
 import WhiteboardToolbar from './toolbar'
-// import {Container, Row, Col} from 'react-bootstrap'
 import {makeStyles} from '@material-ui/core/styles'
-import Paper from '@material-ui/core/Paper'
-import Grid from '@material-ui/core/Grid'
 import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
+import socket from '../socket'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -36,7 +34,8 @@ export default function Whiteboard(props) {
     getRect,
     whiteboardData,
     getUpdatedShapes,
-    width
+    width,
+    projectId
   } = props
 
   const getRandomInt = max => {
@@ -49,11 +48,11 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `rect${rectangles.length + 1}`,
       stroke: 'black'
     }
     getRect(rect)
+    socket.emit('new-rect-from-client', rect, projectId)
     const rects = rectangles.concat([rect])
     setRectangles(rects)
     const shs = shapes.concat([`rect${rectangles.length + 1}`])
@@ -66,17 +65,15 @@ export default function Whiteboard(props) {
       y: getRandomInt(100),
       width: 100,
       height: 100,
-      // fill: "red",
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
     getCirc(circ)
+    socket.emit('new-circ-from-client', circ, projectId)
     const circs = circles.concat([circ])
     setCircles(circs)
     const shs = shapes.concat([`circ${circles.length + 1}`])
     setShapes(shs)
-
-    console.log(circ)
   }
 
   const drawLine = (color = 'black') => {
@@ -144,6 +141,11 @@ export default function Whiteboard(props) {
                       shapesArr[i] = newAttrs
                       setShapes(shapesArr)
                       getUpdatedShapes(shapesArr)
+                      socket.emit(
+                        'new-updateShape-from-client',
+                        shapesArr,
+                        projectId
+                      )
                     }}
                   />
                 )
@@ -161,6 +163,11 @@ export default function Whiteboard(props) {
                       shapesArr[i] = newAttrs
                       setShapes(shapesArr)
                       getUpdatedShapes(shapesArr)
+                      socket.emit(
+                        'new-updateShape-from-client',
+                        shapesArr,
+                        projectId
+                      )
                     }}
                   />
                 )
@@ -178,6 +185,11 @@ export default function Whiteboard(props) {
                       shapesArr[i] = newAttrs
                       setShapes(shapesArr)
                       getUpdatedShapes(shapesArr)
+                      socket.emit(
+                        'new-updateShape-from-client',
+                        shapesArr,
+                        projectId
+                      )
                     }}
                   />
                 )

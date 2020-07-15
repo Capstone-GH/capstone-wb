@@ -29,7 +29,6 @@ const Circ = ({shapeProps, isSelected, onSelect, onChange}) => {
           })
         }}
         onTransformEnd={e => {
-          // transformer is changing scale
           const node = shapeRef.current
           const scaleX = node.scaleX()
           const scaleY = node.scaleY()

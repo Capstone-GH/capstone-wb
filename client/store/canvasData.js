@@ -1,5 +1,4 @@
 import axios from 'axios'
-import socket from '../socket'
 
 //default state
 const defaultBoard = {
@@ -100,7 +99,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
         console.log(data)
         dispatch(setId(data._id))
         return data._id
-        // socket.emit('new-line', data._id)
       } catch (error) {
         console.error(error)
       }
@@ -126,14 +124,8 @@ export const reloadSavedBoard = projectId => {
   }
 }
 
-//check if there is already a project id
-//if there is, were going to send a put request
-
-//if there is not, we're going to send a post request and create a new project
-
-//when we create that new project, we should take its ID number and put that in the redux
-
 //reducer
+// eslint-disable-next-line complexity
 export default function(state = defaultBoard, action) {
   switch (action.type) {
     case GET_LINE:

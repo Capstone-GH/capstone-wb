@@ -1,5 +1,4 @@
 module.exports = io => {
-  //const rooms = {}
   io.on('connection', socket => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
@@ -28,14 +27,24 @@ module.exports = io => {
       console.log('message-from-client')
     })
 
+    socket.on('new-rect-from-client', (rect, roomName) => {
+      socket.to(roomName).emit('new-rect-from-server', rect)
+      console.log('new_rect')
+    })
+
+    socket.on('new-circ-from-client', (circ, roomName) => {
+      socket.to(roomName).emit('new-circ-from-server', circ)
+      console.log('new_circ')
+    })
+
+    socket.on('new-updateShape-from-client', (shapesArr, roomName) => {
+      socket.to(roomName).emit('new-updateShape-from-server', shapesArr)
+      console.log('new_shapesArr')
+    })
+
     socket.on('disconnect', () => {
       console.log(`Connection ${socket.id} has left the building`)
     })
-    //   socket.on('drawing', (...payload) => {
-    //     const roomName = getRoomName(socket)
-    //     rooms[roomName].push(payload)
-    //     socket.to(roomName).emit('someOneDrew', payload)
-    //   })
   })
 }
 
