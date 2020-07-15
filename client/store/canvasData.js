@@ -10,17 +10,35 @@ const defaultBoard = {
 }
 
 //action type
-export const GET_LINE = 'GET_LINE'
-export const GET_CODE = 'GET_CODE'
-export const GET_NAME = 'GET_NAME'
+const GET_LINE = 'GET_LINE'
+const GET_RECT = 'GET_RECT'
+const GET_CIRC = 'GET_CIRC'
+const GET_CODE = 'GET_CODE'
+const GET_NAME = 'GET_NAME'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
+const UPDATE_SHAPES = 'UPDATE_SHAPES'
 
 //action creator
 export const getLine = (points, color) => ({
   type: GET_LINE,
   lineObj: {type: 'line', points, color}
+})
+
+export const getRect = rect => ({
+  type: GET_RECT,
+  rectObj: {type: 'rect', ...rect}
+})
+
+export const getCirc = circ => ({
+  type: GET_CIRC,
+  circObj: {type: 'circ', ...circ}
+})
+
+export const getUpdatedShapes = shapes => ({
+  type: UPDATE_SHAPES,
+  shapes
 })
 
 export const getCode = str => ({
@@ -122,6 +140,21 @@ export default function(state = defaultBoard, action) {
       return {
         ...state,
         whiteboardData: [...state.whiteboardData, action.lineObj]
+      }
+    case GET_RECT:
+      return {
+        ...state,
+        whiteboardData: [...state.whiteboardData, action.rectObj]
+      }
+    case GET_CIRC:
+      return {
+        ...state,
+        whiteboardData: [...state.whiteboardData, action.circObj]
+      }
+    case UPDATE_SHAPES:
+      return {
+        ...state,
+        whiteboardData: action.shapes
       }
     case GET_CODE:
       return {

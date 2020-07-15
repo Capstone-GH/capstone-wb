@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
+import Lin from './shapes/line'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,6 +30,7 @@ export default function Whiteboard(props) {
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
+  const {getLine, getCirc, getRect, whiteboardData, getUpdatedShapes} = props
 
   const getRandomInt = max => {
     return Math.floor(Math.random() * Math.floor(max))
@@ -44,6 +46,7 @@ export default function Whiteboard(props) {
       id: `rect${rectangles.length + 1}`,
       stroke: 'black'
     }
+    getRect(rect)
     const rects = rectangles.concat([rect])
     setRectangles(rects)
     const shs = shapes.concat([`rect${rectangles.length + 1}`])
@@ -60,6 +63,7 @@ export default function Whiteboard(props) {
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
+    getCirc(circ)
     const circs = circles.concat([circ])
     setCircles(circs)
     const shs = shapes.concat([`circ${circles.length + 1}`])
@@ -83,14 +87,11 @@ export default function Whiteboard(props) {
     layerEl.current.destroyChildren()
   }
 
-  useEffect(
-    () => {
-      clearBoard()
-      redrawLine()
-      // fitStageIntoParentContainer()
-    },
-    [props.whiteboardData]
-  )
+  // useEffect(() => {
+  //   clearBoard()
+  //   redrawLine()
+  //   // fitStageIntoParentContainer()
+  // }, [props.whiteboardData])
 
   let stageWidth = 1000
   let stageHeight = 1000
@@ -129,39 +130,62 @@ export default function Whiteboard(props) {
         ref={stageEl}
       >
         <Layer ref={layerEl}>
-          {circles.map((circle, i) => {
-            return (
-              <Circle
-                key={i}
-                shapeProps={circle}
-                isSelected={circle.id === selectedId}
-                onSelect={() => {
-                  selectShape(circle.id)
-                }}
-                onChange={newAttrs => {
-                  const circs = circles.slice()
-                  circs[i] = newAttrs
-                  setCircles(circs)
-                }}
-              />
-            )
-          })}
-          {rectangles.map((rect, i) => {
-            return (
-              <Rectangle
-                key={i}
-                shapeProps={rect}
-                isSelected={rect.id === selectedId}
-                onSelect={() => {
-                  selectShape(rect.id)
-                }}
-                onChange={newAttrs => {
-                  const rects = rectangles.slice()
-                  rects[i] = newAttrs
-                  setRectangles(rects)
-                }}
-              />
-            )
+          {whiteboardData.map((shape, i) => {
+            switch (shape.type) {
+              case 'circ':
+                return (
+                  <Circle
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
+                    }}
+                  />
+                )
+              case 'rect':
+                return (
+                  <Rectangle
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
+                    }}
+                  />
+                )
+              case 'line':
+                return (
+                  <Lin
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
+                    }}
+                  />
+                )
+              default:
+                console.log('N/A')
+            }
           })}
         </Layer>
       </Stage>

@@ -5,11 +5,14 @@ import CodeEditor from './codeEditor'
 import {connect} from 'react-redux'
 import {
   getLine,
+  getCirc,
+  getRect,
   saveBoard,
   reloadSavedBoard,
   setNewBoard,
   getCode,
-  getName
+  getName,
+  getUpdatedShapes
 } from '../store/canvasData'
 import socket from '../socket'
 import Paper from '@material-ui/core/Paper'
@@ -149,6 +152,10 @@ export class Project extends React.Component {
                 projectId={this.props.projectId}
                 name={this.props.name}
                 whiteboardData={this.props.whiteboardData}
+                getLine={this.props.getLine}
+                getCirc={this.props.getCirc}
+                getRect={this.props.getRect}
+                getUpdatedShapes={this.props.getUpdatedShapes}
               />
               <div id="drag-handler" />
               <CodeEditor
@@ -216,13 +223,16 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getLine: points => dispatch(getLine(points)),
+    getLine: (points, color) => dispatch(getLine(points, color)),
+    getRect: rect => dispatch(getRect(rect)),
+    getCirc: circ => dispatch(getCirc(circ)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
     saveBoard: (projectId, whiteboardData, codeEditorData, name) =>
       dispatch(saveBoard(projectId, whiteboardData, codeEditorData, name)),
     setNewBoard: () => dispatch(setNewBoard()),
     getCode: str => dispatch(getCode(str)),
-    getName: str => dispatch(getName(str))
+    getName: str => dispatch(getName(str)),
+    getUpdatedShapes: shapes => dispatch(getUpdatedShapes(shapes))
   }
 }
 
