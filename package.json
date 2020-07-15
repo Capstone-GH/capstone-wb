@@ -73,10 +73,13 @@
     "react-modal-login": "^1.4.5",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
+    "react-split": "^2.0.9",
+    "react-split-pane": "^0.1.91",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "split.js": "^1.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",

@@ -15,22 +15,20 @@ export default class CodeEditor extends Component {
 
   render() {
     return (
-      <div id="code-editor-container" className="side">
-        <AceEditor
-          placeholder="Let's get coding"
-          mode="javascript"
-          theme="monokai"
-          fontSize={14}
-          setOptions={{useWorker: false}}
-          onChange={this.props.onChange}
-          // onChange={this.onChange}
-          ref={this.refName}
-          // value={this.state.newValue}
-          value={this.props.codeEditorData}
-          width="100%"
-          height="100%"
-        />
-      </div>
+      // <div id="code-editor-container" className="side">
+      <AceEditor
+        placeholder="Let's get coding"
+        mode="javascript"
+        theme="monokai"
+        fontSize={14}
+        setOptions={{useWorker: false}}
+        onChange={this.props.onChange}
+        ref={this.refName}
+        value={this.props.codeEditorData}
+        width="100%"
+        height="100%"
+      />
+      // </div>
     )
   }
 }

@@ -112,42 +112,7 @@ export default function Whiteboard(props) {
         rectangle={addRectangle}
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
-        <Layer ref={layerEl}>
-          {/* {circles.map((circle, i) => {
-            return (
-              <Circle
-                key={i}
-                shapeProps={circle}
-                isSelected={circle.id === selectedId}
-                onSelect={() => {
-                  selectShape(circle.id)
-                }}
-                onChange={newAttrs => {
-                  const circs = circles.slice()
-                  circs[i] = newAttrs
-                  setCircles(circs)
-                }}
-              />
-            )
-          })} */}
-          {/* {rectangles.map((rect, i) => {
-            return (
-              <Rectangle
-                key={i}
-                shapeProps={rect}
-                isSelected={rect.id === selectedId}
-                onSelect={() => {
-                  selectShape(rect.id)
-                }}
-                onChange={newAttrs => {
-                  const rects = rectangles.slice()
-                  rects[i] = newAttrs
-                  setRectangles(rects)
-                }}
-              />
-            )
-          })} */}
-        </Layer>
+        <Layer ref={layerEl} />
       </Stage>
     </div>
   )

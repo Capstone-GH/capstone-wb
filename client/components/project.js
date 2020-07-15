@@ -23,10 +23,16 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
+import Split from 'react-split'
+
+import SplitPane, {Pane} from 'react-split-pane'
 
 export class Project extends React.Component {
   constructor(props) {
     super(props)
+    this.workspaceRef = React.createRef()
+    this.whiteboardRef = React.createRef()
+    this.codeEditorRef = React.createRef()
     this.state = {
       codeEditorData: ' ',
       name: this.props.name,
@@ -139,21 +145,59 @@ export class Project extends React.Component {
                 New Project
               </Button>
             </Paper>
+
             <div id="workspace-container">
-              <Whiteboard
-                projectId={this.props.projectId}
-                name={this.props.name}
-                whiteboardData={this.props.whiteboardData}
-                getRect={this.props.getRect}
-              />
-              <div id="drag-handler" />
-              <CodeEditor
-                projectId={this.props.projectId}
-                name={this.props.name}
-                codeEditorData={this.props.codeEditorData}
-                onChange={this.onChange}
-              />
+              {/* <div ref={this.whiteboardRef}> */}
+              <Split
+                sizes={[50, 50]}
+                gutterSize={10}
+                background="Red"
+                gutterAlign="center"
+                // snapOffset={30}
+                direction="verical"
+                cursor="col-resize"
+                id="splitter"
+              >
+                <Whiteboard
+                  projectId={this.props.projectId}
+                  name={this.props.name}
+                  whiteboardData={this.props.whiteboardData}
+                  getRect={this.props.getRect}
+                />
+                {/* </div> */}
+                {/* <div id="drag-handler"
+                onMouseDown={this.setState({isHandlerDragging: true})}
+
+                onMouseMove={(e) => { if (!this.state.isHandlerDragging) {
+                  return false;
+                }
+                  //more logic here..
+                  // Get offset
+                var containerOffsetLeft = this.workspaceRef.offsetLeft;
+
+
+                // Get x-coordinate of pointer relative to container
+                var pointerRelativeXpos = e.clientX - containerOffsetLeft;
+
+                // Resize box A
+                // * 8px is the left/right spacing between .handler and its inner pseudo-element
+                // * Set flex-grow to 0 to prevent it from growing
+                this.whiteboardRef.style.width = (pointerRelativeXpos - 8) + 'px';
+                this.whiteboardRef.style.flexGrow = 0;
+                }}
+
+                onMouseUp={this.setState({
+                  isHandlerDragging: false
+                })}/> */}
+                <CodeEditor
+                  projectId={this.props.projectId}
+                  name={this.props.name}
+                  codeEditorData={this.props.codeEditorData}
+                  onChange={this.onChange}
+                />
+              </Split>
             </div>
+
             <Dialog
               open={this.state.shareModalOpen}
               onClose={this.closeShareModal}
