@@ -29,6 +29,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
+import Chatbox from './chatBox'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -250,6 +251,9 @@ export class Project extends React.Component {
         ) : (
           <CircularProgress />
         )}
+        <>
+          <Chatbox />
+        </>
       </div>
     )
   }
