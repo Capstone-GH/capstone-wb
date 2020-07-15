@@ -33,16 +33,16 @@ import IconButton from '@material-ui/core/IconButton'
 export class Project extends React.Component {
   constructor(props) {
     super(props)
+    this.workspaceRef = React.createRef()
+    this.whiteboardRef = React.createRef()
     this.state = {
       codeEditorData: ' ',
       name: this.props.name,
       isHandlerDragging: false,
       inProgress: false,
       shareModalOpen: false,
-      width: 100
+      width: 1000
     }
-    const workspaceRef = React.createRef()
-    const whiteboardRef = React.createRef()
     this.onChange = this.onChange.bind(this)
     this.onNameChange = this.onNameChange.bind(this)
     this.shareProject = this.shareProject.bind(this)
@@ -170,7 +170,7 @@ export class Project extends React.Component {
                   Math.max(whiteboardMinWidth, pointerRelativeXpos - 8) + 'px'
                 this.whiteboardRef.current.style.flexGrow = 0
                 this.setState({
-                  width: Math.max(boxAminWidth, pointerRelativeXpos - 80)
+                  width: Math.max(whiteboardMinWidth, pointerRelativeXpos - 80)
                 })
               }}
               onMouseUp={() => {
