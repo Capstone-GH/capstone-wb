@@ -118,7 +118,13 @@ export default function WhiteboardToolbar(props) {
           </ListItem>
 
           <ListItem className="tool-item">
-            <IconButton onClick={() => erase()}>
+            <IconButton
+              onClick={() => {
+                setSelected('eraser')
+                store.dispatch(setActiveTool('eraser'))
+                erase()
+              }}
+            >
               <ClearIcon />
             </IconButton>
           </ListItem>
