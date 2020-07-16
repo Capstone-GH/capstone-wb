@@ -76,17 +76,14 @@ form div {
   background-color: grey;
 }
 
-.MuiDrawer-paper {
+.MuiPaper-root.MuiDrawer-paper {
   height: 100%;
   position: static;
 }
 
 .MuiListItem-root.tool-item {
-  padding-left: 0px;
-}
-
-.MuiIconButton-root.tool-button {
-  margin-right: 1em;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .MuiPaper-root.project-title-bar {
@@ -116,7 +113,7 @@ form div {
   display: block;
   width: 5px;
   height: 100%;
-  background: red;
+  background: #f8005a;
   margin: 0 auto;
 }
 
