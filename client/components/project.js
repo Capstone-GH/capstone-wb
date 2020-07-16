@@ -68,11 +68,8 @@ export class Project extends React.Component {
 
   async onNameChange(e) {
     this.setState({inProgress: true})
-    console.log(e.target.value)
     const newValue = e.target.value
-    console.log('calling onNameChange')
     await this.setState({name: newValue})
-    console.log(this.state)
     this.props.getName(this.state.name)
   }
 
