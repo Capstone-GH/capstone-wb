@@ -47,7 +47,12 @@ export const me = () => async dispatch => {
   }
 }
 
-export const auth = (email, password, method) => async dispatch => {
+export const auth = (
+  email,
+  password,
+  method,
+  source = 'default'
+) => async dispatch => {
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
@@ -57,7 +62,9 @@ export const auth = (email, password, method) => async dispatch => {
 
   try {
     dispatch(getUser(res.data))
-    history.push('/home')
+    if (source === 'default') {
+      history.push('/home')
+    }
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
   }

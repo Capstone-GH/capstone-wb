@@ -37,6 +37,10 @@ const useStyles = makeStyles(theme => ({
 
 export function SignUp(props) {
   const classes = useStyles()
+  let source = 'default'
+  if (props.source) {
+    source = props.source
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -51,7 +55,12 @@ export function SignUp(props) {
         <form
           className={classes.form}
           name="signup"
-          onSubmit={props.handleSubmit}
+          onSubmit={e => {
+            props.handleSubmit(e, source)
+            if (source === 'modal') {
+              props.closeLoginModal()
+            }
+          }}
         >
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -87,11 +96,30 @@ export function SignUp(props) {
           >
             Sign Up
           </Button>
+          {source === 'modal' ? (
+            <Button
+              type="button"
+              fullWidth
+              variant="outlined"
+              color="primary"
+              onClick={() => props.closeLoginModal()}
+            >
+              Cancel
+            </Button>
+          ) : (
+            ''
+          )}
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="signin" variant="body2">
-                Already have an account? Sign in
-              </Link>
+              {source === 'modal' ? (
+                <Button onClick={() => props.toggleFormType()}>
+                  Already have an account? Sign In
+                </Button>
+              ) : (
+                <Link href="/login" variant="body2">
+                  Don't have an account? Sign Up
+                </Link>
+              )}
             </Grid>
           </Grid>
         </form>
@@ -102,12 +130,12 @@ export function SignUp(props) {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    handleSubmit(evt, source) {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      dispatch(auth(email, password, formName, source))
     }
   }
 }

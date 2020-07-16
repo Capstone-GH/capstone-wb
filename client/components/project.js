@@ -30,6 +30,7 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import Chatbox from './chatBox'
+import AuthModal from './auth-modal'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -42,6 +43,7 @@ export class Project extends React.Component {
       isHandlerDragging: false,
       inProgress: false,
       shareModalOpen: false,
+      loginModalOpen: false,
       width: 1000
     }
     this.onChange = this.onChange.bind(this)
@@ -49,6 +51,7 @@ export class Project extends React.Component {
     this.shareProject = this.shareProject.bind(this)
     this.openShareModal = this.openShareModal.bind(this)
     this.closeShareModal = this.closeShareModal.bind(this)
+    this.closeLoginModal = this.closeLoginModal.bind(this)
   }
 
   openShareModal() {
@@ -57,7 +60,12 @@ export class Project extends React.Component {
 
   closeShareModal() {
     this.setState({shareModalOpen: false})
-    window.location.href = `/project/${this.props.projectId}`
+    this.props.history.push(`/project/${this.props.projectId}`)
+  }
+
+  closeLoginModal() {
+    this.setState({loginModalOpen: false})
+    // window.location.href = `/project/${this.props.projectId}`
   }
 
   onChange(newValue) {
@@ -110,13 +118,17 @@ export class Project extends React.Component {
                 <IconButton
                   aria-label="save"
                   onClick={async () => {
-                    const id = await this.props.saveBoard(
-                      this.props.projectId,
-                      this.props.whiteboardData,
-                      this.props.codeEditorData,
-                      this.props.name
-                    )
-                    window.location.href = `/project/${id}`
+                    if (this.props.userId) {
+                      const id = await this.props.saveBoard(
+                        this.props.projectId,
+                        this.props.whiteboardData,
+                        this.props.codeEditorData,
+                        this.props.name
+                      )
+                      this.props.history.push(`/project/${id}`)
+                    } else {
+                      this.setState({loginModalOpen: true})
+                    }
                   }}
                   type="button"
                   variant="outlined"
@@ -238,6 +250,12 @@ export class Project extends React.Component {
                 </Button>
               </DialogActions>
             </Dialog>
+            <Dialog open={this.state.loginModalOpen}>
+              <DialogTitle id="login-modal">
+                Please log in to save your work!
+              </DialogTitle>
+              <AuthModal closeLoginModal={this.closeLoginModal} />
+            </Dialog>
           </div>
         ) : (
           <CircularProgress />
@@ -255,7 +273,8 @@ const mapState = state => {
     whiteboardData: state.canvasData.whiteboardData,
     projectId: state.canvasData.projectId,
     name: state.canvasData.name,
-    codeEditorData: state.canvasData.codeEditorData
+    codeEditorData: state.canvasData.codeEditorData,
+    userId: state.user._id
   }
 }
 
