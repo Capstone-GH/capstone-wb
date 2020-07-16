@@ -1,9 +1,9 @@
 import Konva from 'konva'
-import {Text} from 'react-konva'
-const uuidv1 = require('uuid/v1')
-
-const addText = (stage, layer) => {
-  const id = uuidv1()
+import store from '../store/index'
+import {getText} from '../store/canvasData'
+const {v4: uuidv4} = require('uuid')
+export const addTextNode = (stage, layer) => {
+  const id = uuidv4()
   const textNode = new Konva.Text({
     text: 'type here',
     x: 50,
@@ -13,7 +13,9 @@ const addText = (stage, layer) => {
     width: 200,
     id
   })
+  //   store.dispatch(getText(textNode))
   layer.add(textNode)
+
   let tr = new Konva.Transformer({
     node: textNode,
     enabledAnchors: ['middle-left', 'middle-right'],
@@ -45,27 +47,21 @@ const addText = (stage, layer) => {
   })
   layer.add(tr)
   layer.draw()
-  textNode.on('dblclick', () => {
+  textNode.on('click', () => {
     // hide text node and transformer:
     textNode.hide()
     tr.hide()
-    layer.draw()
-    // create textarea over canvas with absolute position
+    layer.draw() // create textarea over canvas with absolute position
     // first we need to find position for textarea
-    // how to find it?
-    // at first lets find position of text node relative to the stage:
-    let textPosition = textNode.absolutePosition()
-    // then lets find position of stage container on the page:
-    let stageBox = stage.container().getBoundingClientRect()
-    // so position of textarea will be the sum of positions above:
+    // how to find it?// at first lets find position of text node relative to the stage:
+    let textPosition = textNode.absolutePosition() // then lets find position of stage container on the page:
+    let stageBox = stage.container().getBoundingClientRect() // so position of textarea will be the sum of positions above:
     let areaPosition = {
       x: stageBox.left + textPosition.x,
       y: stageBox.top + textPosition.y
-    }
-    // create textarea and style it
+    } // create textarea and style it
     let textarea = document.createElement('textarea')
-    document.body.appendChild(textarea)
-    // apply many styles to match text on canvas as close as possible
+    document.body.appendChild(textarea) // apply many styles to match text on canvas as close as possible
     // remember that text rendering on canvas and on the textarea can be different
     // and sometimes it is hard to make it 100% the same. But we will try...
     textarea.value = textNode.text()
@@ -117,16 +113,16 @@ const addText = (stage, layer) => {
         // set width for placeholder
         newWidth = textNode.placeholder.length * textNode.fontSize()
       }
-      // some extra fixes on different browsers
-      let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
-      let isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
-      if (isSafari || isFirefox) {
-        newWidth = Math.ceil(newWidth)
-      }
-      let isEdge = document.documentMode || /Edge/.test(navigator.userAgent)
-      if (isEdge) {
-        newWidth += 1
-      }
+      //   // some extra fixes on different browsers
+      //   let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      //   let isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1
+      //   if (isSafari || isFirefox) {
+      //     newWidth = Math.ceil(newWidth)
+      //   }
+      //   let isEdge = document.documentMode || /Edge/.test(navigator.userAgent)
+      //   if (isEdge) {
+      //     newWidth += 1
+      //   }
       textarea.style.width = newWidth + 'px'
     }
     textarea.addEventListener('keydown', function(e) {
@@ -147,16 +143,14 @@ const addText = (stage, layer) => {
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight + textNode.fontSize() + 'px'
     })
-    function handleOutsideClick(e) {
-      if (e.target !== textarea) {
-        removeTextarea()
-      }
-    }
+    // function handleOutsideClick(e) {
+    //   if (e.target !== textarea) {
+    //     removeTextarea()
+    //   }
+    // }
     setTimeout(() => {
       window.addEventListener('click', handleOutsideClick)
     })
   })
   return id
 }
-
-export default addText

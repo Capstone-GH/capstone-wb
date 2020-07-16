@@ -8,6 +8,9 @@ import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
 import socket from '../socket'
+import {addTextNode} from './textNode'
+import {Tooltip} from '@material-ui/core'
+import textNode from './textNode'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,9 +31,11 @@ export default function Whiteboard(props) {
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
+
   const {
     getLine,
     getCirc,
+    getText,
     getRect,
     whiteboardData,
     getUpdatedShapes,
@@ -85,6 +90,12 @@ export default function Whiteboard(props) {
     Line(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
   }
 
+  const drawText = () => {
+    const id = addTextNode(stageEl.current.getStage(), layerEl.current)
+    const shs = shapes.concat([id])
+    setShapes(shs)
+  }
+
   const redrawLine = () => {
     Redraw(layerEl.current)
   }
@@ -123,6 +134,7 @@ export default function Whiteboard(props) {
         circle={addCircle}
         rectangle={addRectangle}
         erase={erase}
+        drawText={drawText}
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
@@ -169,6 +181,23 @@ export default function Whiteboard(props) {
                         shapesArr,
                         projectId
                       )
+                    }}
+                  />
+                )
+              case 'text':
+                return (
+                  <addTextNode
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
                     }}
                   />
                 )

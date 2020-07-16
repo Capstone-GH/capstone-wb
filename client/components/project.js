@@ -7,6 +7,7 @@ import {
   getLine,
   getCirc,
   getRect,
+  getText,
   saveBoard,
   reloadSavedBoard,
   setNewBoard,
@@ -195,6 +196,7 @@ export class Project extends React.Component {
                   getLine={this.props.getLine}
                   getCirc={this.props.getCirc}
                   getRect={this.props.getRect}
+                  getText={this.props.getText}
                   getUpdatedShapes={this.props.getUpdatedShapes}
                   width={this.state.width}
                 />
