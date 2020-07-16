@@ -114,8 +114,6 @@ export default function Whiteboard(props) {
     stage.draw()
   }
 
-  console.log('rendering whiteboard', props)
-
   return (
     <div id="whiteboard-container">
       <WhiteboardToolbar

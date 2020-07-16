@@ -93,11 +93,6 @@ export class Project extends React.Component {
   }
 
   render() {
-    console.log('rendering project component')
-    console.log('props', this.props)
-    console.log(this.state)
-
-    console.log(this.state)
     return (
       <div>
         {this.props.name || this.state.inProgress ? (

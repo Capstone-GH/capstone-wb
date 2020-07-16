@@ -9,12 +9,13 @@ import ClearIcon from '@material-ui/icons/Clear'
 import Crop169Icon from '@material-ui/icons/Crop169'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import {set} from 'mongoose'
 
 export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
   const [penColor, setPenColor] = React.useState('black')
   const [open, setOpen] = React.useState(false)
-  const penMenuRef = React.createRef()
+  const [menuAnchor, setMenuAnchor] = React.useState(null)
 
   const {drawLine, circle, rectangle} = props
 
@@ -25,6 +26,7 @@ export default function WhiteboardToolbar(props) {
 
   const handleMenuClose = () => {
     setOpen(false)
+    setMenuAnchor(null)
   }
 
   return (
@@ -35,7 +37,6 @@ export default function WhiteboardToolbar(props) {
             <IconButton
               className="tool-button"
               aria-label="pen"
-              ref={penMenuRef}
               onClick={() => {
                 drawLine(penColor)
                 setSelected('pen')
@@ -43,6 +44,7 @@ export default function WhiteboardToolbar(props) {
               }}
               onContextMenu={e => {
                 setSelected('pen')
+                setMenuAnchor(e.currentTarget)
                 handleMenuOpen(e)
               }}
             >
@@ -56,7 +58,7 @@ export default function WhiteboardToolbar(props) {
               keepMounted
               open={open && selected === 'pen'}
               onClose={handleMenuClose}
-              anchorEl={penMenuRef.current}
+              anchorEl={menuAnchor}
             >
               <MenuItem
                 onClick={() => {
