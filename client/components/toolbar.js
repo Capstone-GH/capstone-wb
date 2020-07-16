@@ -9,7 +9,8 @@ import ClearIcon from '@material-ui/icons/Clear'
 import Crop169Icon from '@material-ui/icons/Crop169'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import {set} from 'mongoose'
+import store from '../store/index'
+import {setActiveTool} from '../store/toolbar'
 
 export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
@@ -38,12 +39,14 @@ export default function WhiteboardToolbar(props) {
               className="tool-button"
               aria-label="pen"
               onClick={() => {
-                drawLine(penColor)
                 setSelected('pen')
+                store.dispatch(setActiveTool('pen'))
+                drawLine(penColor)
                 handleMenuClose()
               }}
               onContextMenu={e => {
                 setSelected('pen')
+                store.dispatch(setActiveTool('pen'))
                 setMenuAnchor(e.currentTarget)
                 handleMenuOpen(e)
               }}
@@ -51,7 +54,7 @@ export default function WhiteboardToolbar(props) {
               {selected === 'pen' ? (
                 <CreateIcon style={{color: penColor}} />
               ) : (
-                <CreateIcon />
+                <CreateIcon style={{color: 'rgba(0, 0, 0, 0.54)'}} />
               )}
             </IconButton>
             <Menu
@@ -91,13 +94,25 @@ export default function WhiteboardToolbar(props) {
           </ListItem>
 
           <ListItem className="tool-item">
-            <IconButton onClick={() => circle()}>
+            <IconButton
+              onClick={() => {
+                setSelected('circle')
+                store.dispatch(setActiveTool('circle'))
+                circle()
+              }}
+            >
               <RadioButtonUncheckedIcon />
             </IconButton>
           </ListItem>
 
           <ListItem className="tool-item">
-            <IconButton onClick={() => rectangle()}>
+            <IconButton
+              onClick={() => {
+                setSelected('rectangle')
+                store.dispatch(setActiveTool('rectangle'))
+                rectangle()
+              }}
+            >
               <Crop169Icon />
             </IconButton>
           </ListItem>

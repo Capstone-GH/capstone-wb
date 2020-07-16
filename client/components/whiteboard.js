@@ -77,7 +77,6 @@ export default function Whiteboard(props) {
   }
 
   const drawLine = (color = 'black') => {
-    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
