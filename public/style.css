@@ -51,10 +51,6 @@ form div {
   flex: 1 1 auto;
 }
 
-#code-editor-container {
-  /* border: 3px solid peru; */
-}
-
 #workspace-container {
   display: flex;
   width: 100%;
@@ -66,6 +62,27 @@ form div {
 
 #project-title {
   display: block;
+}
+
+#nameArea {
+  display: flex;
+  align-items: center;
+}
+
+.pen-icon {
+  color: #5393d3;
+  align-self: flex-end;
+  margin-bottom: 0.5em;
+}
+
+#Circle-out {
+  display: flex;
+  align-items: center;
+}
+
+.little-circle {
+  align-self: center;
+  margin-left: 0.2em;
 }
 
 #boardName {

@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import store from '../store/index'
 import {setActiveTool} from '../store/toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
 
 export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
@@ -34,64 +35,67 @@ export default function WhiteboardToolbar(props) {
     <React.Fragment>
       <Drawer variant="permanent">
         <List>
-          <ListItem className="tool-item">
-            <IconButton
-              className="tool-button"
-              aria-label="pen"
-              onClick={() => {
-                setSelected('pen')
-                store.dispatch(setActiveTool('pen'))
-                drawLine(penColor)
-                handleMenuClose()
-              }}
-              onContextMenu={e => {
-                setSelected('pen')
-                store.dispatch(setActiveTool('pen'))
-                setMenuAnchor(e.currentTarget)
-                handleMenuOpen(e)
-              }}
-            >
-              {selected === 'pen' ? (
-                <CreateIcon style={{color: penColor}} />
-              ) : (
-                <CreateIcon style={{color: 'rgba(0, 0, 0, 0.54)'}} />
-              )}
-            </IconButton>
-            <Menu
-              keepMounted
-              open={open && selected === 'pen'}
-              onClose={handleMenuClose}
-              anchorEl={menuAnchor}
-            >
-              <MenuItem
+          <Tooltip title="Right-Click for colors">
+            <ListItem className="tool-item">
+              <IconButton
+                aria-label="Right-click"
+                className="tool-button"
+                aria-label="pen"
                 onClick={() => {
-                  setPenColor('black')
+                  setSelected('pen')
+                  store.dispatch(setActiveTool('pen'))
+                  drawLine(penColor)
                   handleMenuClose()
-                  drawLine('black')
+                }}
+                onContextMenu={e => {
+                  setSelected('pen')
+                  store.dispatch(setActiveTool('pen'))
+                  setMenuAnchor(e.currentTarget)
+                  handleMenuOpen(e)
                 }}
               >
-                Black
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setPenColor('red')
-                  handleMenuClose()
-                  drawLine('red')
-                }}
+                {selected === 'pen' ? (
+                  <CreateIcon style={{color: penColor}} />
+                ) : (
+                  <CreateIcon style={{color: 'rgba(0, 0, 0, 0.54)'}} />
+                )}
+              </IconButton>
+              <Menu
+                keepMounted
+                open={open && selected === 'pen'}
+                onClose={handleMenuClose}
+                anchorEl={menuAnchor}
               >
-                Red
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setPenColor('blue')
-                  handleMenuClose()
-                  drawLine('blue')
-                }}
-              >
-                Blue
-              </MenuItem>
-            </Menu>
-          </ListItem>
+                <MenuItem
+                  onClick={() => {
+                    setPenColor('black')
+                    handleMenuClose()
+                    drawLine('black')
+                  }}
+                >
+                  Black
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setPenColor('red')
+                    handleMenuClose()
+                    drawLine('red')
+                  }}
+                >
+                  Red
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setPenColor('blue')
+                    handleMenuClose()
+                    drawLine('blue')
+                  }}
+                >
+                  Blue
+                </MenuItem>
+              </Menu>
+            </ListItem>
+          </Tooltip>
 
           <ListItem className="tool-item">
             <IconButton
@@ -116,18 +120,20 @@ export default function WhiteboardToolbar(props) {
               <Crop169Icon />
             </IconButton>
           </ListItem>
-
-          <ListItem className="tool-item">
-            <IconButton
-              onClick={() => {
-                setSelected('eraser')
-                store.dispatch(setActiveTool('eraser'))
-                erase()
-              }}
-            >
-              <ClearIcon />
-            </IconButton>
-          </ListItem>
+          <Tooltip title="Erase">
+            <ListItem className="tool-item">
+              <IconButton
+                aria-label="Erase"
+                onClick={() => {
+                  setSelected('eraser')
+                  store.dispatch(setActiveTool('eraser'))
+                  erase()
+                }}
+              >
+                <ClearIcon />
+              </IconButton>
+            </ListItem>
+          </Tooltip>
         </List>
       </Drawer>
     </React.Fragment>

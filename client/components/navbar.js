@@ -31,7 +31,9 @@ const Navigation = ({handleClick, isLoggedIn}) => {
     <div className={classes.root}>
       <AppBar position="static" style={{background: '#e1f5fe'}}>
         <Toolbar>
-          <img src="s1.png" />
+          <Link href="/project">
+            <img src="s1.png" />
+          </Link>{' '}
           {/* <img src={require('../../public/s1.png')} /> */}
           {isLoggedIn ? (
             <React.Fragment>
