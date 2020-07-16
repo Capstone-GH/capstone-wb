@@ -5,8 +5,9 @@ import {composeWithDevTools} from 'redux-devtools-extension'
 import user from './user'
 import canvasData from './canvasData'
 import chatStore from './chatStore'
+import toolbar from './toolbar'
 
-const reducer = combineReducers({user, canvasData, chatStore})
+const reducer = combineReducers({user, canvasData, chatStore, toolbar})
 const middleware = composeWithDevTools(
   applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
 )

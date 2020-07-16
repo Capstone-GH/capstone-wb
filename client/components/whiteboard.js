@@ -77,7 +77,6 @@ export default function Whiteboard(props) {
   }
 
   const drawLine = (color = 'black') => {
-    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
@@ -113,8 +112,6 @@ export default function Whiteboard(props) {
     stage.width(stageWidth * scale)
     stage.draw()
   }
-
-  console.log('rendering whiteboard', props)
 
   return (
     <div id="whiteboard-container">

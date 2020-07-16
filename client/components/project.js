@@ -61,7 +61,6 @@ export class Project extends React.Component {
   }
 
   onChange(newValue) {
-    console.log('calling on change')
     this.setState({codeEditorData: newValue})
     this.props.getCode(this.state.codeEditorData)
     socket.emit('new-code-from-client', newValue, this.props.projectId)
@@ -69,11 +68,8 @@ export class Project extends React.Component {
 
   async onNameChange(e) {
     this.setState({inProgress: true})
-    console.log(e.target.value)
     const newValue = e.target.value
-    console.log('calling onNameChange')
     await this.setState({name: newValue})
-    console.log(this.state)
     this.props.getName(this.state.name)
   }
 
@@ -97,11 +93,6 @@ export class Project extends React.Component {
   }
 
   render() {
-    console.log('rendering project component')
-    console.log('props', this.props)
-    console.log(this.state)
-
-    console.log(this.state)
     return (
       <div>
         {this.props.name || this.state.inProgress ? (
