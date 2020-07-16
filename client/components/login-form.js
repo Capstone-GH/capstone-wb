@@ -103,6 +103,14 @@ export function Login(props) {
   )
 }
 
+const mapLogin = state => {
+  return {
+    name: 'login',
+    displayName: 'Login',
+    error: state.user.error
+  }
+}
+
 const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
@@ -115,4 +123,4 @@ const mapDispatch = dispatch => {
   }
 }
 
-export default connect(null, mapDispatch)(Login)
+export default connect(mapLogin, mapDispatch)(Login)
