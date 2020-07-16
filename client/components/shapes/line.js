@@ -22,6 +22,8 @@ const Lin = ({shapeProps, isSelected, onSelect}) => {
         stroke={shapeProps.color}
         strokeWidth={5}
         points={shapeProps.points}
+        globalCompositeOperation={shapeProps.globalCompositeOperation}
+        strokeWidth={shapeProps.strokeWidth}
       />
     </React.Fragment>
   )

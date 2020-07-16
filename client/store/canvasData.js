@@ -20,9 +20,9 @@ const SET_NEW_BOARD = 'SET_NEW_BOARD'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'
 
 //action creator
-export const getLine = (points, color) => ({
+export const getLine = line => ({
   type: GET_LINE,
-  lineObj: {type: 'line', points, color}
+  lineObj: {type: 'line', ...line}
 })
 
 export const getRect = rect => ({

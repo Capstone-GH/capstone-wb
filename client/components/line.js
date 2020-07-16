@@ -10,7 +10,7 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
 
   stage.on('mousedown touchstart', function() {
     let activeTool = store.getState().toolbar.activeTool
-    if (activeTool === 'pen') {
+    if (activeTool === 'pen' || activeTool === 'eraser') {
       isPaint = true
       let pos = stage.getPointerPosition()
       lastLine = new Konva.Line({
@@ -23,14 +23,23 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
       layer.add(lastLine)
     }
   })
+
   stage.on('mouseup touchend', function() {
     isPaint = false
+
     let activeTool = store.getState().toolbar.activeTool
-    if (activeTool === 'pen') {
-      store.dispatch(getLine(lastLine.attrs.points, lastLine.attrs.stroke))
-      line_events.emit('new-line', lastLine.attrs.points, lastLine.attrs.stroke)
+    if (activeTool === 'pen' || activeTool === 'eraser') {
+      const lineData = {
+        points: lastLine.attrs.points,
+        color: lastLine.attrs.stroke,
+        globalCompositeOperation: lastLine.attrs.globalCompositeOperation,
+        strokeWidth: lastLine.attrs.strokeWidth
+      }
+      store.dispatch(getLine(lineData))
+      line_events.emit('new-line', lineData)
     }
   })
+
   stage.on('mousemove touchmove', function() {
     if (!isPaint) {
       return

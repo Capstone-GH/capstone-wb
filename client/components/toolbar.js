@@ -18,7 +18,7 @@ export default function WhiteboardToolbar(props) {
   const [open, setOpen] = React.useState(false)
   const [menuAnchor, setMenuAnchor] = React.useState(null)
 
-  const {drawLine, circle, rectangle} = props
+  const {drawLine, circle, rectangle, erase} = props
 
   const handleMenuOpen = e => {
     e.preventDefault()
@@ -118,7 +118,13 @@ export default function WhiteboardToolbar(props) {
           </ListItem>
 
           <ListItem className="tool-item">
-            <IconButton onClick={() => console.log('erase')}>
+            <IconButton
+              onClick={() => {
+                setSelected('eraser')
+                store.dispatch(setActiveTool('eraser'))
+                erase()
+              }}
+            >
               <ClearIcon />
             </IconButton>
           </ListItem>

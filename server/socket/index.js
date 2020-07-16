@@ -11,8 +11,8 @@ module.exports = io => {
       socket.join(id)
     })
 
-    socket.on('new-line-from-client', (points, color, roomName) => {
-      socket.to(roomName).emit('new-line-from-server', points, color)
+    socket.on('new-line-from-client', (line, roomName) => {
+      socket.to(roomName).emit('new-line-from-server', line)
     })
 
     socket.on('new-code-from-client', (codeEditorData, roomName) => {
