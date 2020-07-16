@@ -77,17 +77,19 @@ export default function Whiteboard(props) {
   }
 
   const drawLine = (color = 'black') => {
-    console.log('drawing')
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
+  const erase = () => {
+    console.log('erasing')
+    Line(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
+  }
+
   const redrawLine = () => {
-    console.log('redraw')
     Redraw(layerEl.current)
   }
 
   const clearBoard = () => {
-    console.log('clearboard')
     layerEl.current.destroyChildren()
   }
 
@@ -114,14 +116,13 @@ export default function Whiteboard(props) {
     stage.draw()
   }
 
-  console.log('rendering whiteboard', props)
-
   return (
     <div id="whiteboard-container">
       <WhiteboardToolbar
         drawLine={drawLine}
         circle={addCircle}
         rectangle={addRectangle}
+        erase={erase}
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>

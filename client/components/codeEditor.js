@@ -13,7 +13,6 @@ export default class CodeEditor extends Component {
   }
 
   render() {
-    console.log('rendering codeEditor', this.props)
     return (
       <div id="code-editor-container" className="side">
         <AceEditor

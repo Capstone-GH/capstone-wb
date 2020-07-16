@@ -12,7 +12,7 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
     isPaint = true
     let pos = stage.getPointerPosition()
     lastLine = new Konva.Line({
-      stroke: color,
+      stroke: mode === 'brush' ? color : 'white',
       strokeWidth: mode === 'brush' ? 5 : 20,
       globalCompositeOperation:
         mode === 'brush' ? 'source-over' : 'destination-out',
@@ -22,8 +22,15 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
   })
   stage.on('mouseup touchend', function() {
     isPaint = false
-    store.dispatch(getLine(lastLine.attrs.points, lastLine.attrs.stroke))
-    line_events.emit('new-line', lastLine.attrs.points, lastLine.attrs.stroke)
+    console.log(lastLine)
+    const lineData = {
+      points: lastLine.attrs.points,
+      color: lastLine.attrs.stroke,
+      globalCompositeOperation: lastLine.attrs.globalCompositeOperation,
+      strokeWidth: lastLine.attrs.strokeWidth
+    }
+    store.dispatch(getLine(lineData))
+    line_events.emit('new-line', lineData)
   })
   stage.on('mousemove touchmove', function() {
     if (!isPaint) {

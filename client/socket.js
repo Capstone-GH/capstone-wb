@@ -15,13 +15,13 @@ socket.on('connect', () => {
   console.log('I am now connected to the server!')
 })
 
-line_events.on('new-line', (points, color) => {
+line_events.on('new-line', line => {
   let id = store.getState().canvasData.projectId
-  socket.emit('new-line-from-client', points, color, id)
+  socket.emit('new-line-from-client', line, id)
 })
 
-socket.on('new-line-from-server', (points, color) => {
-  store.dispatch(getLine(points, color))
+socket.on('new-line-from-server', line => {
+  store.dispatch(getLine(line))
 })
 
 socket.on('new-code-from-server', codeEditorData => {

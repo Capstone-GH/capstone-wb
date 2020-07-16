@@ -107,7 +107,7 @@ export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
   const [penColor, setPenColor] = React.useState('black')
 
-  const {drawLine, circle, rectangle} = props
+  const {drawLine, circle, rectangle, erase} = props
 
   const handleDrawerOpen = e => {
     e.preventDefault()
@@ -205,7 +205,7 @@ export default function WhiteboardToolbar(props) {
             </ListItem>
 
             <ListItem className="tool-item">
-              <IconButton onClick={() => console.log('erase')}>
+              <IconButton onClick={() => erase()}>
                 <ClearIcon />
               </IconButton>
             </ListItem>
