@@ -73,7 +73,6 @@ export const setNewBoard = () => ({
 })
 
 export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
-  console.log('name', name)
   if (projectId) {
     return async dispatch => {
       try {
@@ -82,7 +81,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
           codeEditorData: codeEditorData,
           name: name
         })
-        console.log(data)
         return projectId
       } catch (error) {
         console.errror(error)
