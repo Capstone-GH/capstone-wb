@@ -13,6 +13,7 @@ import store from '../store/index'
 import {setActiveTool} from '../store/toolbar'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import Tooltip from '@material-ui/core/Tooltip'
+import TextFieldsOutlinedIcon from '@material-ui/icons/TextFieldsOutlined'
 
 export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
@@ -20,7 +21,7 @@ export default function WhiteboardToolbar(props) {
   const [open, setOpen] = React.useState(false)
   const [menuAnchor, setMenuAnchor] = React.useState(null)
 
-  const {drawLine, circle, rectangle, erase, arrow} = props
+  const {drawLine, circle, rectangle, erase, arrow, drawText} = props
 
   const handleMenuOpen = e => {
     e.preventDefault()
@@ -134,6 +135,17 @@ export default function WhiteboardToolbar(props) {
             </IconButton>
           </ListItem>
 
+          <ListItem className="tool-item">
+            <IconButton
+              onClick={() => {
+                setSelected('drawText')
+                store.dispatch(setActiveTool('drawText'))
+                drawText()
+              }}
+            >
+              <TextFieldsOutlinedIcon />
+            </IconButton>
+          </ListItem>
           <Tooltip title="Erase">
             <ListItem className="tool-item">
               <IconButton

@@ -27,6 +27,11 @@ module.exports = io => {
       socket.to(roomName).emit('new-rect-from-server', rect)
     })
 
+    socket.on('new-text-from-client', (text, roomName) => {
+      socket.to(roomName).emit('new-text-from-server', text)
+      console.log('new_text')
+    })
+
     socket.on('new-circ-from-client', (circ, roomName) => {
       socket.to(roomName).emit('new-circ-from-server', circ)
     })

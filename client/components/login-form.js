@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {auth} from '../store'
+import {loginAndSave} from '../store/user'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -39,6 +40,10 @@ const useStyles = makeStyles(theme => ({
 
 export function Login(props) {
   const classes = useStyles()
+  let source = 'default'
+  if (props.source) {
+    source = props.source
+  }
 
   return (
     <Container component="main" maxWidth="xs">
@@ -53,7 +58,21 @@ export function Login(props) {
         <form
           className={classes.form}
           name="login"
-          onSubmit={props.handleSubmit}
+          onSubmit={e => {
+            if (source === 'saveLoginModal') {
+              console.log(props)
+              props.handleSubmitAndSave(
+                e,
+                props.whiteboardData,
+                props.codeEditorData,
+                props.projectName
+              )
+
+              props.closeLoginModal()
+            } else {
+              props.handleSubmit(e, source)
+            }
+          }}
         >
           <TextField
             variant="outlined"
@@ -77,10 +96,6 @@ export function Login(props) {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           <Button
             type="submit"
             fullWidth
@@ -90,11 +105,30 @@ export function Login(props) {
           >
             Sign In
           </Button>
+          {source === 'saveLoginModal' ? (
+            <Button
+              type="button"
+              fullWidth
+              variant="outlined"
+              color="primary"
+              onClick={() => props.closeLoginModal()}
+            >
+              Cancel
+            </Button>
+          ) : (
+            ''
+          )}
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/signup" variant="body2">
-                Don't have an account? Sign Up
-              </Link>
+              {source === 'saveLoginModal' ? (
+                <Button onClick={() => props.toggleFormType()}>
+                  Don't have an account? Sign Up
+                </Button>
+              ) : (
+                <Link href="/signup" variant="body2">
+                  Don't have an account? Sign Up
+                </Link>
+              )}
             </Grid>
           </Grid>
         </form>
@@ -113,12 +147,28 @@ const mapLogin = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt) {
+    handleSubmit: (evt, source) => {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
-      dispatch(auth(email, password, formName))
+      dispatch(auth(email, password, formName, source))
+    },
+    handleSubmitAndSave: (evt, whiteboardData, CodeEditorData, projectName) => {
+      evt.preventDefault()
+      const formName = evt.target.name
+      const email = evt.target.email.value
+      const password = evt.target.password.value
+      dispatch(
+        loginAndSave(
+          email,
+          password,
+          formName,
+          whiteboardData,
+          CodeEditorData,
+          projectName
+        )
+      )
     }
   }
 }

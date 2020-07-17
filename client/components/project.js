@@ -8,6 +8,7 @@ import {
   getCirc,
   getRect,
   getArrow,
+  getText,
   saveBoard,
   reloadSavedBoard,
   setNewBoard,
@@ -31,9 +32,11 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import Chatbox from './chatBox'
+import AuthModal from './auth-modal'
 import {Tooltip} from '@material-ui/core'
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
+import {Arrow} from 'react-konva'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -46,6 +49,7 @@ export class Project extends React.Component {
       isHandlerDragging: false,
       inProgress: false,
       shareModalOpen: false,
+      loginModalOpen: false,
       width: 1000
     }
     this.onChange = this.onChange.bind(this)
@@ -53,6 +57,7 @@ export class Project extends React.Component {
     this.shareProject = this.shareProject.bind(this)
     this.openShareModal = this.openShareModal.bind(this)
     this.closeShareModal = this.closeShareModal.bind(this)
+    this.closeLoginModal = this.closeLoginModal.bind(this)
   }
 
   openShareModal() {
@@ -61,8 +66,11 @@ export class Project extends React.Component {
 
   closeShareModal() {
     this.setState({shareModalOpen: false})
-    //  this.props.history.push(`/project/${this.props.projectId}`)
-    window.location.href = `/project/${this.props.projectId}`
+    this.props.history.push(`/project/${this.props.projectId}`)
+  }
+
+  closeLoginModal() {
+    this.setState({loginModalOpen: false})
   }
 
   onChange(newValue) {
@@ -116,13 +124,17 @@ export class Project extends React.Component {
                   <IconButton
                     aria-label="save"
                     onClick={async () => {
-                      const id = await this.props.saveBoard(
-                        this.props.projectId,
-                        this.props.whiteboardData,
-                        this.props.codeEditorData,
-                        this.props.name
-                      )
-                      this.props.history.push(`/project/${id}`)
+                      if (this.props.userId) {
+                        const id = await this.props.saveBoard(
+                          this.props.projectId,
+                          this.props.whiteboardData,
+                          this.props.codeEditorData,
+                          this.props.name
+                        )
+                        this.props.history.push(`/project/${id}`)
+                      } else {
+                        this.setState({loginModalOpen: true})
+                      }
                     }}
                     type="button"
                     variant="outlined"
@@ -199,6 +211,7 @@ export class Project extends React.Component {
                   getCirc={this.props.getCirc}
                   getRect={this.props.getRect}
                   getArrow={this.props.getArrow}
+                  getText={this.props.getText}
                   getUpdatedShapes={this.props.getUpdatedShapes}
                   width={this.state.width}
                 />
@@ -254,6 +267,18 @@ export class Project extends React.Component {
                 </Button>
               </DialogActions>
             </Dialog>
+            <Dialog open={this.state.loginModalOpen}>
+              <DialogTitle id="login-modal">
+                Please log in to save your work!
+              </DialogTitle>
+              <AuthModal
+                closeLoginModal={this.closeLoginModal}
+                source="saveLoginModal"
+                whiteboardData={this.props.whiteboardData}
+                codeEditorData={this.props.codeEditorData}
+                projectName={this.props.name}
+              />
+            </Dialog>
           </div>
         ) : (
           <CircularProgress />
@@ -271,7 +296,8 @@ const mapState = state => {
     whiteboardData: state.canvasData.whiteboardData,
     projectId: state.canvasData.projectId,
     name: state.canvasData.name,
-    codeEditorData: state.canvasData.codeEditorData
+    codeEditorData: state.canvasData.codeEditorData,
+    userId: state.user._id
   }
 }
 
@@ -281,6 +307,7 @@ const mapDispatch = dispatch => {
     getRect: rect => dispatch(getRect(rect)),
     getCirc: circ => dispatch(getCirc(circ)),
     getArrow: arrow => dispatch(getArrow(arrow)),
+    getText: text => dispatch(getText(text)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
     saveBoard: (projectId, whiteboardData, codeEditorData, name) =>
       dispatch(saveBoard(projectId, whiteboardData, codeEditorData, name)),
