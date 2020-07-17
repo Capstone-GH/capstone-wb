@@ -30,6 +30,9 @@ import TextField from '@material-ui/core/TextField'
 import SaveIcon from '@material-ui/icons/Save'
 import IconButton from '@material-ui/core/IconButton'
 import Chatbox from './chatBox'
+import {Tooltip} from '@material-ui/core'
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -108,31 +111,37 @@ export class Project extends React.Component {
                 >
                   Share
                 </Button>
-                <IconButton
-                  aria-label="save"
-                  onClick={async () => {
-                    const id = await this.props.saveBoard(
-                      this.props.projectId,
-                      this.props.whiteboardData,
-                      this.props.codeEditorData,
-                      this.props.name
-                    )
-                    this.props.history.push(`/project/${id}`)
-                  }}
-                  type="button"
-                  variant="outlined"
-                  color="secondary"
-                >
-                  <SaveIcon />
-                </IconButton>
+                <Tooltip title="Save">
+                  <IconButton
+                    aria-label="save"
+                    onClick={async () => {
+                      const id = await this.props.saveBoard(
+                        this.props.projectId,
+                        this.props.whiteboardData,
+                        this.props.codeEditorData,
+                        this.props.name
+                      )
+                      this.props.history.push(`/project/${id}`)
+                    }}
+                    type="button"
+                    variant="outlined"
+                    color="secondary"
+                  >
+                    <SaveIcon />
+                  </IconButton>
+                </Tooltip>
               </div>
-              <TextField
-                id="project-title"
-                value={this.props.name}
-                onChange={this.onNameChange}
-                placeholder="Your Project Name"
-                color="secondary"
-              />
+              <div id="nameArea">
+                <TextField
+                  id="project-title"
+                  value={this.props.name}
+                  onChange={this.onNameChange}
+                  placeholder="Your Project Name"
+                  color="secondary"
+                />
+                <CreateOutlinedIcon className="pen-icon" />
+              </div>
+
               <Button
                 onClick={() => {
                   this.props.setNewBoard()
@@ -142,6 +151,9 @@ export class Project extends React.Component {
                 type="button"
               >
                 New Project
+                <div id="Circle-out">
+                  <AddCircleOutlineOutlinedIcon className="little-circle" />
+                </div>
               </Button>
             </Paper>
             <div
