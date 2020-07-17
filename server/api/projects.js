@@ -61,6 +61,12 @@ router.delete('/:id', async (req, res, next) => {
   try {
     if (!req.user) res.sendStatus(401)
     await Project.findByIdAndDelete(req.params.id)
+    const currUser = await User.findById(req.user._id)
+    let updatedBoardList = currUser.ownerBoards.filter(
+      board => board._id.toString() !== req.params.id
+    )
+    currUser.ownerBoards = updatedBoardList
+    await currUser.save()
     res.sendStatus(204)
   } catch (error) {
     next(error)
