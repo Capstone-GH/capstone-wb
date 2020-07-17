@@ -9,7 +9,7 @@ import toolbar from './toolbar'
 
 const reducer = combineReducers({user, canvasData, chatStore, toolbar})
 const middleware = composeWithDevTools(
-  applyMiddleware(thunkMiddleware)
+  applyMiddleware(thunkMiddleware, createLogger({collapsed: true}))
   //createLogger({collapsed: true})
 )
 const store = createStore(reducer, middleware)

@@ -125,8 +125,8 @@ export default function WhiteboardToolbar(props) {
           <ListItem className="tool-item">
             <IconButton
               onClick={() => {
-                // setSelected('rectangle')
-                // store.dispatch(setActiveTool('rectangle'))
+                setSelected('arrow')
+                store.dispatch(setActiveTool('arrow'))
                 arrow()
               }}
             >

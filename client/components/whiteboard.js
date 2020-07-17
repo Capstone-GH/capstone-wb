@@ -9,6 +9,7 @@ import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
 import socket from '../socket'
 import {Arr} from './arrow'
+import Arrw from './shapes/arrow'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,9 +30,10 @@ export default function Whiteboard(props) {
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
-  const [arrows, setArrows] = useState([])
+
   const {
     getLine,
+    getArrow,
     getCirc,
     getRect,
     whiteboardData,
@@ -70,7 +72,6 @@ export default function Whiteboard(props) {
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
-    console.log(circ)
     getCirc(circ)
     socket.emit('new-circ-from-client', circ, projectId)
     const circs = circles.concat([circ])
@@ -89,7 +90,6 @@ export default function Whiteboard(props) {
   }
 
   const erase = () => {
-    console.log('erasing')
     Line(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
   }
 
@@ -135,18 +135,6 @@ export default function Whiteboard(props) {
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
-          <Text
-            text="Some text on canvas"
-            fontSize={15}
-            draggable="true"
-            x={50}
-            y={80}
-            fontSize={20}
-            width={200}
-            padding={20}
-            draggable="true"
-          />
-
           {whiteboardData.map((shape, i) => {
             switch (shape.type) {
               case 'circ':
@@ -215,28 +203,28 @@ export default function Whiteboard(props) {
                     }}
                   />
                 )
-              // case 'arrow':
-              //   return (
-              //     <Arrow
-              //       key={i}
-              //       shapeProps={shape}
-              //       isSelected={shape.id === selectedId}
-              //       onSelect={() => {
-              //         selectShape(shape.id)
-              //       }}
-              //       onChange={newAttrs => {
-              //         const shapesArr = whiteboardData.slice()
-              //         shapesArr[i] = newAttrs
-              //         setShapes(shapesArr)
-              //         getUpdatedShapes(shapesArr)
-              //         socket.emit(
-              //           'new-updateShape-from-client',
-              //           shapesArr,
-              //           projectId
-              //         )
-              //       }}
-              //     />
-              //   )
+              case 'arrow':
+                return (
+                  <Arrw
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
+                      socket.emit(
+                        'new-updateShape-from-client',
+                        shapesArr,
+                        projectId
+                      )
+                    }}
+                  />
+                )
               default:
                 console.log('N/A')
             }
