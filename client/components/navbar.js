@@ -34,7 +34,6 @@ const Navigation = ({handleClick, isLoggedIn}) => {
           <Link href="/project">
             <img src="s1.png" />
           </Link>{' '}
-          {/* <img src={require('../../public/s1.png')} /> */}
           {isLoggedIn ? (
             <React.Fragment>
               <Typography className={classes.root} variant="h6">

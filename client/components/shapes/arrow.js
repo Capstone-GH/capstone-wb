@@ -1,7 +1,7 @@
 import React from 'react'
-import {Line} from 'react-konva'
+import {Arrow} from 'react-konva'
 
-const Lin = ({shapeProps, isSelected, onSelect}) => {
+const Arrw = ({shapeProps, isSelected, onSelect, onChange}) => {
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
@@ -16,17 +16,26 @@ const Lin = ({shapeProps, isSelected, onSelect}) => {
   )
   return (
     <React.Fragment>
-      <Line
+      <Arrow
         onClick={onSelect}
         ref={shapeRef}
-        stroke={shapeProps.color}
-        strokeWidth={5}
+        {...shapeProps}
+        pointerLength={20}
+        pointerWidth={20}
         points={shapeProps.points}
-        globalCompositeOperation={shapeProps.globalCompositeOperation}
+        fill="black"
+        stroke="black"
         strokeWidth={shapeProps.strokeWidth}
+        onDragEnd={e => {
+          onChange({
+            ...shapeProps,
+            x: e.target.x(),
+            y: e.target.y()
+          })
+        }}
       />
     </React.Fragment>
   )
 }
 
-export default Lin
+export default Arrw

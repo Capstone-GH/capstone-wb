@@ -9,6 +9,8 @@ import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
 import Txt from './shapes/text'
 import socket from '../socket'
+import {Arr} from './arrow'
+import Arrw from './shapes/arrow'
 import {addTextNode} from './textNode'
 import {Tooltip} from '@material-ui/core'
 const {v4: uuidv4} = require('uuid')
@@ -36,6 +38,7 @@ export default function Whiteboard(props) {
 
   const {
     getLine,
+    getArrow,
     getCirc,
     getText,
     getRect,
@@ -106,8 +109,12 @@ export default function Whiteboard(props) {
     Line(stageEl.current.getStage(), layerEl.current, color)
   }
 
+  const drawArrow = () => {
+    console.log('arrowing')
+    Arr(stageEl.current.getStage(), layerEl.current)
+  }
+
   const erase = () => {
-    console.log('erasing')
     Line(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
   }
 
@@ -149,6 +156,7 @@ export default function Whiteboard(props) {
         circle={addCircle}
         rectangle={addRectangle}
         erase={erase}
+        arrow={drawArrow}
         drawText={drawText}
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
@@ -334,6 +342,28 @@ export default function Whiteboard(props) {
               case 'line':
                 return (
                   <Lin
+                    key={i}
+                    shapeProps={shape}
+                    isSelected={shape.id === selectedId}
+                    onSelect={() => {
+                      selectShape(shape.id)
+                    }}
+                    onChange={newAttrs => {
+                      const shapesArr = whiteboardData.slice()
+                      shapesArr[i] = newAttrs
+                      setShapes(shapesArr)
+                      getUpdatedShapes(shapesArr)
+                      socket.emit(
+                        'new-updateShape-from-client',
+                        shapesArr,
+                        projectId
+                      )
+                    }}
+                  />
+                )
+              case 'arrow':
+                return (
+                  <Arrw
                     key={i}
                     shapeProps={shape}
                     isSelected={shape.id === selectedId}

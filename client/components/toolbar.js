@@ -11,6 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import store from '../store/index'
 import {setActiveTool} from '../store/toolbar'
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import Tooltip from '@material-ui/core/Tooltip'
 import TextFieldsOutlinedIcon from '@material-ui/icons/TextFieldsOutlined'
 
@@ -20,7 +21,7 @@ export default function WhiteboardToolbar(props) {
   const [open, setOpen] = React.useState(false)
   const [menuAnchor, setMenuAnchor] = React.useState(null)
 
-  const {drawLine, circle, rectangle, erase, drawText} = props
+  const {drawLine, circle, rectangle, erase, arrow, drawText} = props
 
   const handleMenuOpen = e => {
     e.preventDefault()
@@ -121,6 +122,19 @@ export default function WhiteboardToolbar(props) {
               <Crop169Icon />
             </IconButton>
           </ListItem>
+
+          <ListItem className="tool-item">
+            <IconButton
+              onClick={() => {
+                setSelected('arrow')
+                store.dispatch(setActiveTool('arrow'))
+                arrow()
+              }}
+            >
+              <ArrowRightAltIcon />
+            </IconButton>
+          </ListItem>
+
           <ListItem className="tool-item">
             <IconButton
               onClick={() => {

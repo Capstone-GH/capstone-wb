@@ -1,5 +1,6 @@
 import io from 'socket.io-client'
 import {
+  getArrow,
   getLine,
   getCode,
   getRect,
@@ -10,6 +11,7 @@ import {
 import store from './store/index'
 import {line_events} from './components/line'
 import {getMessage} from './store/chatStore'
+import {arrow_emits} from './components/arrow'
 
 const socket = io(window.location.origin)
 socket.on('connect', () => {
@@ -19,6 +21,11 @@ socket.on('connect', () => {
 line_events.on('new-line', line => {
   let id = store.getState().canvasData.projectId
   socket.emit('new-line-from-client', line, id)
+})
+
+arrow_emits.on('new-arrow', arrow => {
+  let id = store.getState().canvasData.projectId
+  socket.emit('new-arrow-from-client', arrow, id)
 })
 
 socket.on('new-line-from-server', line => {
@@ -43,6 +50,11 @@ socket.on('new-text-from-server', text => {
 
 socket.on('new-circ-from-server', circ => {
   store.dispatch(getCirc(circ))
+})
+
+socket.on('new-arrow-from-server', arrow => {
+  store.dispatch(getArrow(arrow))
+  console.log(arrow)
 })
 
 socket.on('new-updateShape-from-server', shapesArr => {

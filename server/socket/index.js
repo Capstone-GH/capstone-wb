@@ -3,11 +3,9 @@ module.exports = io => {
     console.log(`A socket connection to the server has been made: ${socket.id}`)
 
     const roomName = getRoomName(socket)
-    console.log('Joining(from page load): ', roomName)
     socket.join(roomName)
 
     socket.on('joinRoom', id => {
-      console.log('Joining (from event): ', id)
       socket.join(id)
     })
 
@@ -17,19 +15,16 @@ module.exports = io => {
 
     socket.on('new-code-from-client', (codeEditorData, roomName) => {
       socket.to(roomName).emit('new-code-from-server', codeEditorData)
-      console.log('new_code')
     })
 
     socket.on('message-from-client', (message, roomName) => {
       socket
         .to(roomName)
         .emit('message-from-server', {...message, author: 'them'})
-      console.log('message-from-client')
     })
 
     socket.on('new-rect-from-client', (rect, roomName) => {
       socket.to(roomName).emit('new-rect-from-server', rect)
-      console.log('new_rect')
     })
 
     socket.on('new-text-from-client', (text, roomName) => {
@@ -39,7 +34,11 @@ module.exports = io => {
 
     socket.on('new-circ-from-client', (circ, roomName) => {
       socket.to(roomName).emit('new-circ-from-server', circ)
-      console.log('new_circ')
+    })
+
+    socket.on('new-arrow-from-client', (arrow, roomName) => {
+      socket.to(roomName).emit('new-arrow-from-server', arrow)
+      console.log('new_arrow')
     })
 
     socket.on('new-updateShape-from-client', (shapesArr, roomName) => {

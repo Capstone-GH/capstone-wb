@@ -14,6 +14,7 @@ const GET_RECT = 'GET_RECT'
 const GET_CIRC = 'GET_CIRC'
 const GET_CODE = 'GET_CODE'
 const GET_NAME = 'GET_NAME'
+const GET_ARROW = 'GET_ARROW'
 const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
@@ -34,6 +35,11 @@ export const getRect = rect => ({
 export const getCirc = circ => ({
   type: GET_CIRC,
   circObj: {type: 'circ', ...circ}
+})
+
+export const getArrow = arrow => ({
+  type: GET_ARROW,
+  arrwObj: {type: 'arrow', ...arrow}
 })
 
 export const getText = text => ({
@@ -100,7 +106,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
           codeEditorData: codeEditorData,
           name: name
         })
-        console.log(data)
         dispatch(setId(data._id))
         return data._id
       } catch (error) {
@@ -147,7 +152,11 @@ export default function(state = defaultBoard, action) {
         ...state,
         whiteboardData: [...state.whiteboardData, action.circObj]
       }
-
+    case GET_ARROW:
+      return {
+        ...state,
+        whiteboardData: [...state.whiteboardData, action.arrwObj]
+      }
     case GET_TEXT:
       return {
         ...state,

@@ -11,7 +11,6 @@ export class SavedBoards extends React.Component {
 
   render() {
     let {savedBoards} = this.props || []
-    console.log(this.props)
     return (
       <div className="container py-5">
         <h1>My Boards</h1>

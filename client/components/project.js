@@ -7,6 +7,7 @@ import {
   getLine,
   getCirc,
   getRect,
+  getArrow,
   getText,
   saveBoard,
   reloadSavedBoard,
@@ -157,6 +158,7 @@ export class Project extends React.Component {
               <Button
                 onClick={() => {
                   this.props.setNewBoard()
+                  // this.props.history.push( `/project`)
                   window.location.href = '/project'
                 }}
                 type="button"
@@ -208,6 +210,7 @@ export class Project extends React.Component {
                   getLine={this.props.getLine}
                   getCirc={this.props.getCirc}
                   getRect={this.props.getRect}
+                  getArrow={this.props.getArrow}
                   getText={this.props.getText}
                   getUpdatedShapes={this.props.getUpdatedShapes}
                   width={this.state.width}
@@ -300,9 +303,10 @@ const mapState = state => {
 
 const mapDispatch = dispatch => {
   return {
-    getLine: (points, color) => dispatch(getLine(points, color)),
+    getLine: line => dispatch(getLine(line)),
     getRect: rect => dispatch(getRect(rect)),
     getCirc: circ => dispatch(getCirc(circ)),
+    getArrow: arrow => dispatch(getArrow(arrow)),
     getText: text => dispatch(getText(text)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
     saveBoard: (projectId, whiteboardData, codeEditorData, name) =>
