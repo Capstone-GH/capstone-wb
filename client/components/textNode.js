@@ -13,15 +13,13 @@ export const addTextNode = (stage, layer) => {
     width: 200,
     id
   })
-  //   store.dispatch(getText(textNode))
   layer.add(textNode)
-
   let tr = new Konva.Transformer({
     node: textNode,
     enabledAnchors: ['middle-left', 'middle-right'],
     // set minimum width of text
     boundBoxFunc: function(oldBox, newBox) {
-      newBox.width = Math.max(30, newBox.width)
+      newBox.width = Math.max(40, newBox.width)
       return newBox
     }
   })
@@ -143,11 +141,11 @@ export const addTextNode = (stage, layer) => {
       textarea.style.height = 'auto'
       textarea.style.height = textarea.scrollHeight + textNode.fontSize() + 'px'
     })
-    // function handleOutsideClick(e) {
-    //   if (e.target !== textarea) {
-    //     removeTextarea()
-    //   }
-    // }
+    function handleOutsideClick(e) {
+      if (e.target !== textarea) {
+        removeTextarea()
+      }
+    }
     setTimeout(() => {
       window.addEventListener('click', handleOutsideClick)
     })
