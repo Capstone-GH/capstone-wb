@@ -4,6 +4,7 @@ import {
   getCode,
   getRect,
   getCirc,
+  getText,
   getUpdatedShapes
 } from './store/canvasData'
 import store from './store/index'
@@ -34,6 +35,10 @@ socket.on('message-from-server', message => {
 
 socket.on('new-rect-from-server', rect => {
   store.dispatch(getRect(rect))
+})
+
+socket.on('new-text-from-server', text => {
+  store.dispatch(getText(text))
 })
 
 socket.on('new-circ-from-server', circ => {

@@ -18,6 +18,7 @@ const SET_PROJECTID = 'SET_PROJECTID'
 const SET_RELOADEDBOARD = 'SET_RELOADEDBOARD'
 const SET_NEW_BOARD = 'SET_NEW_BOARD'
 const UPDATE_SHAPES = 'UPDATE_SHAPES'
+const GET_TEXT = 'GET_TEXT'
 
 //action creator
 export const getLine = line => ({
@@ -33,6 +34,11 @@ export const getRect = rect => ({
 export const getCirc = circ => ({
   type: GET_CIRC,
   circObj: {type: 'circ', ...circ}
+})
+
+export const getText = text => ({
+  type: GET_TEXT,
+  textObj: {type: 'text', ...text}
 })
 
 export const getUpdatedShapes = shapes => ({
@@ -140,6 +146,12 @@ export default function(state = defaultBoard, action) {
       return {
         ...state,
         whiteboardData: [...state.whiteboardData, action.circObj]
+      }
+
+    case GET_TEXT:
+      return {
+        ...state,
+        whiteboardData: [...state.whiteboardData, action.textObj]
       }
     case UPDATE_SHAPES:
       return {

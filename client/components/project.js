@@ -7,6 +7,7 @@ import {
   getLine,
   getCirc,
   getRect,
+  getText,
   saveBoard,
   reloadSavedBoard,
   setNewBoard,
@@ -207,6 +208,7 @@ export class Project extends React.Component {
                   getLine={this.props.getLine}
                   getCirc={this.props.getCirc}
                   getRect={this.props.getRect}
+                  getText={this.props.getText}
                   getUpdatedShapes={this.props.getUpdatedShapes}
                   width={this.state.width}
                 />
@@ -301,6 +303,7 @@ const mapDispatch = dispatch => {
     getLine: (points, color) => dispatch(getLine(points, color)),
     getRect: rect => dispatch(getRect(rect)),
     getCirc: circ => dispatch(getCirc(circ)),
+    getText: text => dispatch(getText(text)),
     reloadSavedBoard: projectId => dispatch(reloadSavedBoard(projectId)),
     saveBoard: (projectId, whiteboardData, codeEditorData, name) =>
       dispatch(saveBoard(projectId, whiteboardData, codeEditorData, name)),
