@@ -57,6 +57,7 @@ export class Project extends React.Component {
 
   closeShareModal() {
     this.setState({shareModalOpen: false})
+    //  this.props.history.push(`/project/${this.props.projectId}`)
     window.location.href = `/project/${this.props.projectId}`
   }
 
@@ -116,7 +117,7 @@ export class Project extends React.Component {
                       this.props.codeEditorData,
                       this.props.name
                     )
-                    window.location.href = `/project/${id}`
+                    this.props.history.push(`/project/${id}`)
                   }}
                   type="button"
                   variant="outlined"
@@ -135,6 +136,7 @@ export class Project extends React.Component {
               <Button
                 onClick={() => {
                   this.props.setNewBoard()
+                  // this.props.history.push( `/project`)
                   window.location.href = '/project'
                 }}
                 type="button"

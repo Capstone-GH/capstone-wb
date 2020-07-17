@@ -32,7 +32,6 @@ const Navigation = ({handleClick, isLoggedIn}) => {
       <AppBar position="static" style={{background: '#e1f5fe'}}>
         <Toolbar>
           <img src="s1.png" />
-          {/* <img src={require('../../public/s1.png')} /> */}
           {isLoggedIn ? (
             <React.Fragment>
               <Typography className={classes.root} variant="h6">

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Line} from './line'
-import {Stage, Layer} from 'react-konva'
+import {Stage, Layer, Text} from 'react-konva'
 import {Redraw} from './redrawutils'
 import WhiteboardToolbar from './toolbar'
 import {makeStyles} from '@material-ui/core/styles'
@@ -8,6 +8,7 @@ import Circle from './shapes/circle'
 import Rectangle from './shapes/rectangle'
 import Lin from './shapes/line'
 import socket from '../socket'
+import {Arr} from './arrow'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,6 +29,7 @@ export default function Whiteboard(props) {
   const [shapes, setShapes] = useState([])
   const [selectedId, selectShape] = useState(null)
   const [rectangles, setRectangles] = useState([])
+  const [arrows, setArrows] = useState([])
   const {
     getLine,
     getCirc,
@@ -68,6 +70,7 @@ export default function Whiteboard(props) {
       id: `circ${circles.length + 1}`,
       stroke: 'black'
     }
+    console.log(circ)
     getCirc(circ)
     socket.emit('new-circ-from-client', circ, projectId)
     const circs = circles.concat([circ])
@@ -78,6 +81,11 @@ export default function Whiteboard(props) {
 
   const drawLine = (color = 'black') => {
     Line(stageEl.current.getStage(), layerEl.current, color)
+  }
+
+  const drawArrow = () => {
+    console.log('arrowing')
+    Arr(stageEl.current.getStage(), layerEl.current)
   }
 
   const erase = () => {
@@ -123,9 +131,22 @@ export default function Whiteboard(props) {
         circle={addCircle}
         rectangle={addRectangle}
         erase={erase}
+        arrow={drawArrow}
       />
       <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
         <Layer ref={layerEl}>
+          <Text
+            text="Some text on canvas"
+            fontSize={15}
+            draggable="true"
+            x={50}
+            y={80}
+            fontSize={20}
+            width={200}
+            padding={20}
+            draggable="true"
+          />
+
           {whiteboardData.map((shape, i) => {
             switch (shape.type) {
               case 'circ':
@@ -194,6 +215,28 @@ export default function Whiteboard(props) {
                     }}
                   />
                 )
+              // case 'arrow':
+              //   return (
+              //     <Arrow
+              //       key={i}
+              //       shapeProps={shape}
+              //       isSelected={shape.id === selectedId}
+              //       onSelect={() => {
+              //         selectShape(shape.id)
+              //       }}
+              //       onChange={newAttrs => {
+              //         const shapesArr = whiteboardData.slice()
+              //         shapesArr[i] = newAttrs
+              //         setShapes(shapesArr)
+              //         getUpdatedShapes(shapesArr)
+              //         socket.emit(
+              //           'new-updateShape-from-client',
+              //           shapesArr,
+              //           projectId
+              //         )
+              //       }}
+              //     />
+              //   )
               default:
                 console.log('N/A')
             }

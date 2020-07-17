@@ -9,7 +9,7 @@ const Lin = ({shapeProps, isSelected, onSelect}) => {
     () => {
       if (isSelected) {
         trRef.current.setNode(shapeRef.current)
-        trRef.current.getLayer().batchDraw()
+        trRef.current.batchDraw()
       }
     },
     [isSelected]

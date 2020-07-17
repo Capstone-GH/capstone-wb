@@ -82,7 +82,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
           codeEditorData: codeEditorData,
           name: name
         })
-        console.log(data)
         return projectId
       } catch (error) {
         console.errror(error)
@@ -96,7 +95,6 @@ export const saveBoard = (projectId, whiteboardData, codeEditorData, name) => {
           codeEditorData: codeEditorData,
           name: name
         })
-        console.log(data)
         dispatch(setId(data._id))
         return data._id
       } catch (error) {
