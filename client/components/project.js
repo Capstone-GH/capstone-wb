@@ -34,6 +34,7 @@ import AuthModal from './auth-modal'
 import {Tooltip} from '@material-ui/core'
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined'
+import {Arrow} from 'react-konva'
 
 export class Project extends React.Component {
   constructor(props) {
@@ -68,7 +69,6 @@ export class Project extends React.Component {
 
   closeLoginModal() {
     this.setState({loginModalOpen: false})
-    // window.location.href = `/project/${this.props.projectId}`
   }
 
   onChange(newValue) {
@@ -266,7 +266,13 @@ export class Project extends React.Component {
               <DialogTitle id="login-modal">
                 Please log in to save your work!
               </DialogTitle>
-              <AuthModal closeLoginModal={this.closeLoginModal} />
+              <AuthModal
+                closeLoginModal={this.closeLoginModal}
+                source="saveLoginModal"
+                whiteboardData={this.props.whiteboardData}
+                codeEditorData={this.props.codeEditorData}
+                projectName={this.props.name}
+              />
             </Dialog>
           </div>
         ) : (

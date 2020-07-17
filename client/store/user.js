@@ -1,5 +1,6 @@
 import axios from 'axios'
 import history from '../history'
+import {setId} from './canvasData'
 
 /**
  * ACTION TYPES
@@ -56,6 +57,7 @@ export const auth = (
   let res
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
+    console.log(res.data)
   } catch (authError) {
     return dispatch(getUser({error: authError}))
   }
@@ -65,8 +67,50 @@ export const auth = (
     if (source === 'default') {
       history.push('/home')
     }
+    return 'success'
   } catch (dispatchOrHistoryErr) {
     console.error(dispatchOrHistoryErr)
+  }
+}
+
+export const loginAndSave = (
+  email,
+  password,
+  method,
+  whiteboardData,
+  codeEditorData,
+  projectName
+) => async dispatch => {
+  let res
+  console.log(
+    email,
+    password,
+    method,
+    whiteboardData,
+    codeEditorData,
+    projectName
+  )
+  try {
+    res = await axios.post(`/auth/${method}`, {email, password})
+  } catch (authError) {
+    return dispatch(getUser({error: authError}))
+  }
+  try {
+    dispatch(getUser(res.data))
+  } catch (dispatchErr) {
+    console.error(dispatchErr)
+  }
+  try {
+    const {data} = await axios.post('/api/projects', {
+      whiteboardData: whiteboardData,
+      codeEditorData: codeEditorData,
+      name: projectName
+    })
+    console.log(data)
+    dispatch(setId(data._id))
+    return data._id
+  } catch (error) {
+    console.error(error)
   }
 }
 

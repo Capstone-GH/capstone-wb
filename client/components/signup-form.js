@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {auth} from '../store'
+import {loginAndSave} from '../store/user'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -14,6 +15,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import {makeStyles} from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
+import CodeEditor from './codeEditor'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -56,9 +58,17 @@ export function SignUp(props) {
           className={classes.form}
           name="signup"
           onSubmit={e => {
-            props.handleSubmit(e, source)
-            if (source === 'modal') {
+            if (source === 'saveLoginModal') {
+              props.handleSubmitAndSave(
+                e,
+                props.whiteboardData,
+                props.codeEditorData,
+                props.projectName
+              )
+
               props.closeLoginModal()
+            } else {
+              props.handleSubmit(e, source)
             }
           }}
         >
@@ -96,7 +106,7 @@ export function SignUp(props) {
           >
             Sign Up
           </Button>
-          {source === 'modal' ? (
+          {source === 'saveLoginModal' ? (
             <Button
               type="button"
               fullWidth
@@ -111,7 +121,7 @@ export function SignUp(props) {
           )}
           <Grid container justify="flex-end">
             <Grid item>
-              {source === 'modal' ? (
+              {source === 'saveLoginModal' ? (
                 <Button onClick={() => props.toggleFormType()}>
                   Already have an account? Sign In
                 </Button>
@@ -130,12 +140,28 @@ export function SignUp(props) {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt, source) {
+    handleSubmit: (evt, source) => {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
       dispatch(auth(email, password, formName, source))
+    },
+    handleSubmitAndSave: (evt, whiteboardData, CodeEditorData, projectName) => {
+      evt.preventDefault()
+      const formName = evt.target.name
+      const email = evt.target.email.value
+      const password = evt.target.password.value
+      dispatch(
+        loginAndSave(
+          email,
+          password,
+          formName,
+          whiteboardData,
+          CodeEditorData,
+          projectName
+        )
+      )
     }
   }
 }

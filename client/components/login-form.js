@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {auth} from '../store'
+import {loginAndSave} from '../store/user'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -58,9 +59,18 @@ export function Login(props) {
           className={classes.form}
           name="login"
           onSubmit={e => {
-            props.handleSubmit(e, source)
-            if (source === 'modal') {
+            if (source === 'saveLoginModal') {
+              console.log(props)
+              props.handleSubmitAndSave(
+                e,
+                props.whiteboardData,
+                props.codeEditorData,
+                props.projectName
+              )
+
               props.closeLoginModal()
+            } else {
+              props.handleSubmit(e, source)
             }
           }}
         >
@@ -95,7 +105,7 @@ export function Login(props) {
           >
             Sign In
           </Button>
-          {source === 'modal' ? (
+          {source === 'saveLoginModal' ? (
             <Button
               type="button"
               fullWidth
@@ -110,7 +120,7 @@ export function Login(props) {
           )}
           <Grid container justify="flex-end">
             <Grid item>
-              {source === 'modal' ? (
+              {source === 'saveLoginModal' ? (
                 <Button onClick={() => props.toggleFormType()}>
                   Don't have an account? Sign Up
                 </Button>
@@ -137,12 +147,28 @@ const mapLogin = state => {
 
 const mapDispatch = dispatch => {
   return {
-    handleSubmit(evt, source) {
+    handleSubmit: (evt, source) => {
       evt.preventDefault()
       const formName = evt.target.name
       const email = evt.target.email.value
       const password = evt.target.password.value
       dispatch(auth(email, password, formName, source))
+    },
+    handleSubmitAndSave: (evt, whiteboardData, CodeEditorData, projectName) => {
+      evt.preventDefault()
+      const formName = evt.target.name
+      const email = evt.target.email.value
+      const password = evt.target.password.value
+      dispatch(
+        loginAndSave(
+          email,
+          password,
+          formName,
+          whiteboardData,
+          CodeEditorData,
+          projectName
+        )
+      )
     }
   }
 }
