@@ -1,5 +1,6 @@
 import React from 'react'
 import {Circle, Transformer} from 'react-konva'
+import store from '../../store/index'
 
 const Circ = ({shapeProps, isSelected, onSelect, onChange}) => {
   const shapeRef = React.useRef()
@@ -14,13 +15,16 @@ const Circ = ({shapeProps, isSelected, onSelect, onChange}) => {
     },
     [isSelected]
   )
+
+  let activeTool = store.getState().toolbar.activeTool
+
   return (
     <React.Fragment>
       <Circle
         onClick={onSelect}
         ref={shapeRef}
         {...shapeProps}
-        draggable
+        draggable={activeTool === 'circle' || activeTool === 'move'}
         onDragEnd={e => {
           onChange({
             ...shapeProps,

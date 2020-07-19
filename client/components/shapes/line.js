@@ -5,15 +5,6 @@ const Lin = ({shapeProps, isSelected, onSelect}) => {
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
-  React.useEffect(
-    () => {
-      if (isSelected) {
-        trRef.current.setNode(shapeRef.current)
-        trRef.current.batchDraw()
-      }
-    },
-    [isSelected]
-  )
   return (
     <React.Fragment>
       <Line

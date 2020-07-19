@@ -1,6 +1,6 @@
 import React from 'react'
 import {Rect, Transformer} from 'react-konva'
-
+import store from '../../store/index'
 const Rectangle = ({shapeProps, isSelected, onSelect, onChange}) => {
   const shapeRef = React.useRef()
   const trRef = React.useRef()
@@ -15,6 +15,8 @@ const Rectangle = ({shapeProps, isSelected, onSelect, onChange}) => {
     [isSelected]
   )
 
+  let activeTool = store.getState().toolbar.activeTool
+
   return (
     <React.Fragment>
       <Rect
@@ -22,7 +24,7 @@ const Rectangle = ({shapeProps, isSelected, onSelect, onChange}) => {
         onTap={onSelect}
         ref={shapeRef}
         {...shapeProps}
-        draggable
+        draggable={activeTool === 'rectangle' || activeTool === 'move'}
         onDragEnd={e => {
           onChange({
             ...shapeProps,

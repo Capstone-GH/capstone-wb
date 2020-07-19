@@ -6,6 +6,7 @@ import {Login, Signup, UserHome} from './components'
 import {me} from './store'
 import SavedBoards from './components/saved-boards'
 import Project from './components/project'
+import LandingPage from './components/landingPage'
 
 /**
  * COMPONENT
@@ -26,6 +27,7 @@ class Routes extends Component {
         <Route path="/signup" component={Signup} />
         <Route exact path="/project" component={Project} />
         <Route path="/project/:id" component={Project} />
+        {/* <Route path="/landing" component={LandingPage}/> */}
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

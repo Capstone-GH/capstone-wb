@@ -22,7 +22,6 @@ const Txt = ({shapeProps, isSelected, onSelect, onTextEdit, onChange}) => {
           if (!isSelected) {
             onSelect()
           } else {
-            console.log(shapeRef)
             onTextEdit(shapeRef, trRef)
           }
         }}
