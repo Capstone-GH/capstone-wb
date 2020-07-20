@@ -8,6 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import Link from '@material-ui/core/Link'
+import LandingPage from './landingPage'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,10 +56,12 @@ const Navigation = ({handleClick, isLoggedIn}) => {
             </React.Fragment>
           ) : (
             <React.Fragment>
+              {/* <Link href="/landing" color='secondary'>
+                <Button>Landing Page</Button>
+              </Link> */}
               <Link href="/project">
                 <Button color="secondary">Project Workspace</Button>
               </Link>
-
               <Link href="/login">
                 <Button color="secondary">Login</Button>
               </Link>

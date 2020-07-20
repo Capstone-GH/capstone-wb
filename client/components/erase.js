@@ -2,15 +2,15 @@ import Konva from 'konva'
 import store from '../store/index'
 import {getLine} from '../store/canvasData'
 import {EventEmitter} from 'events'
-export const line_events = new EventEmitter()
+export const erase_events = new EventEmitter()
 
-export const Line = (stage, layer, color = 'black', mode = 'brush') => {
+export const Erase = (stage, layer, color = 'white', mode = 'brush') => {
   let isPaint = false
   let lastLine
 
   stage.on('mousedown touchstart', function() {
     let activeTool = store.getState().toolbar.activeTool
-    if (activeTool === 'pen') {
+    if (activeTool === 'eraser') {
       isPaint = true
       let pos = stage.getPointerPosition()
       lastLine = new Konva.Line({
@@ -35,7 +35,7 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
     isPaint = false
 
     let activeTool = store.getState().toolbar.activeTool
-    if (activeTool === 'pen') {
+    if (activeTool === 'eraser') {
       const lineData = {
         points: lastLine.attrs.points,
         color: lastLine.attrs.stroke,
@@ -43,7 +43,7 @@ export const Line = (stage, layer, color = 'black', mode = 'brush') => {
         strokeWidth: lastLine.attrs.strokeWidth
       }
       store.dispatch(getLine(lineData))
-      line_events.emit('new-line', lineData)
+      erase_events.emit('new-erase', lineData)
     }
   })
 

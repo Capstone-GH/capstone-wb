@@ -13,6 +13,7 @@ import {Arr} from './arrow'
 import Arrw from './shapes/arrow'
 import {addTextNode} from './textNode'
 import {Tooltip} from '@material-ui/core'
+import {Erase} from './erase'
 const {v4: uuidv4} = require('uuid')
 
 const useStyles = makeStyles(theme => ({
@@ -110,12 +111,11 @@ export default function Whiteboard(props) {
   }
 
   const drawArrow = () => {
-    console.log('arrowing')
     Arr(stageEl.current.getStage(), layerEl.current)
   }
 
   const erase = () => {
-    Line(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
+    Erase(stageEl.current.getStage(), layerEl.current, 'white', 'eraser')
   }
 
   const redrawLine = () => {
@@ -159,7 +159,14 @@ export default function Whiteboard(props) {
         arrow={drawArrow}
         drawText={drawText}
       />
-      <Stage height={stageHeight} width={stageWidth} ref={stageEl}>
+      <Stage
+        height={stageHeight}
+        width={stageWidth}
+        ref={stageEl}
+        onClick={e => {
+          if (!e.target.attrs.type) selectShape(null)
+        }}
+      >
         <Layer ref={layerEl}>
           {whiteboardData.map((shape, i) => {
             switch (shape.type) {
@@ -300,7 +307,6 @@ export default function Whiteboard(props) {
                         // hide on enter
                         // but don't hide on shift + enter
                         if (e.keyCode === 13 && !e.shiftKey) {
-                          console.log(textarea.value)
                           txtRef.current.text(textarea.value)
                           const shapesArr = whiteboardData.slice()
                           shapesArr[i] = {...shapesArr[i], text: textarea.value}

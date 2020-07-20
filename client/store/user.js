@@ -82,14 +82,6 @@ export const loginAndSave = (
   projectName
 ) => async dispatch => {
   let res
-  console.log(
-    email,
-    password,
-    method,
-    whiteboardData,
-    codeEditorData,
-    projectName
-  )
   try {
     res = await axios.post(`/auth/${method}`, {email, password})
   } catch (authError) {

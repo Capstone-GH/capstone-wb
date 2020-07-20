@@ -14,6 +14,7 @@ import {setActiveTool} from '../store/toolbar'
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt'
 import Tooltip from '@material-ui/core/Tooltip'
 import TextFieldsOutlinedIcon from '@material-ui/icons/TextFieldsOutlined'
+import OpenWithIcon from '@material-ui/icons/OpenWith'
 
 export default function WhiteboardToolbar(props) {
   const [selected, setSelected] = React.useState('')
@@ -160,6 +161,17 @@ export default function WhiteboardToolbar(props) {
               </IconButton>
             </ListItem>
           </Tooltip>
+
+          <ListItem className="tool-item">
+            <IconButton
+              onClick={() => {
+                setSelected('move')
+                store.dispatch(setActiveTool('move'))
+              }}
+            >
+              <OpenWithIcon />
+            </IconButton>
+          </ListItem>
         </List>
       </Drawer>
     </React.Fragment>

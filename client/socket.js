@@ -12,6 +12,7 @@ import store from './store/index'
 import {line_events} from './components/line'
 import {getMessage} from './store/chatStore'
 import {arrow_emits} from './components/arrow'
+import {erase_events} from './components/erase'
 
 const socket = io(window.location.origin)
 socket.on('connect', () => {
@@ -19,6 +20,11 @@ socket.on('connect', () => {
 })
 
 line_events.on('new-line', line => {
+  let id = store.getState().canvasData.projectId
+  socket.emit('new-line-from-client', line, id)
+})
+
+erase_events.on('new-erase', line => {
   let id = store.getState().canvasData.projectId
   socket.emit('new-line-from-client', line, id)
 })

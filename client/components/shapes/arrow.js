@@ -5,15 +5,6 @@ const Arrw = ({shapeProps, isSelected, onSelect, onChange}) => {
   const shapeRef = React.useRef()
   const trRef = React.useRef()
 
-  React.useEffect(
-    () => {
-      if (isSelected) {
-        trRef.current.setNode(shapeRef.current)
-        trRef.current.batchDraw()
-      }
-    },
-    [isSelected]
-  )
   return (
     <React.Fragment>
       <Arrow
