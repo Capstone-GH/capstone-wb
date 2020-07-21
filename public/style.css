@@ -47,6 +47,10 @@ form div {
   display: flex;
 }
 
+#code-editor-container {
+  width: 1000px;
+}
+
 .side {
   flex: 1 1 auto;
 }
