@@ -7,8 +7,9 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Link from '@material-ui/core/Link'
+// import Link from '@material-ui/core/Link'
 import LandingPage from './landingPage'
+import {Link} from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,24 +33,24 @@ const Navigation = ({handleClick, isLoggedIn}) => {
     <div className={classes.root}>
       <AppBar position="static" style={{background: '#e1f5fe'}}>
         <Toolbar>
-          <Link href="/project">
-            <img src="s1.png" />
-          </Link>{' '}
+          <Link to="/project">
+            <img src="/s1.png" />
+          </Link>
           {isLoggedIn ? (
             <React.Fragment>
               <Typography className={classes.root} variant="h6">
-                <Link href="/home">
+                <Link to="/home">
                   <Button color="secondary">Home</Button>
                 </Link>
-                <Link href="/project">
+                <Link to="/project">
                   <Button color="secondary">Project Workspace</Button>
                 </Link>
-                <Link href="/myprojects">
+                <Link to="/myprojects">
                   <Button color="secondary">My Projects</Button>
                 </Link>
                 <Button color="secondary">
                   <a href="#" onClick={handleClick}>
-                    Logout{' '}
+                    Logout
                   </a>
                 </Button>
               </Typography>
@@ -59,13 +60,13 @@ const Navigation = ({handleClick, isLoggedIn}) => {
               {/* <Link href="/landing" color='secondary'>
                 <Button>Landing Page</Button>
               </Link> */}
-              <Link href="/project">
+              <Link to="/project">
                 <Button color="secondary">Project Workspace</Button>
               </Link>
-              <Link href="/login">
+              <Link to="/login">
                 <Button color="secondary">Login</Button>
               </Link>
-              <Link href="/signup">
+              <Link to="/signup">
                 <Button color="secondary">Sign Up</Button>
               </Link>
             </React.Fragment>
