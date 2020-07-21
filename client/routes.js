@@ -6,7 +6,6 @@ import {Login, Signup, UserHome} from './components'
 import {me} from './store'
 import SavedBoards from './components/saved-boards'
 import Project from './components/project'
-import LandingPage from './components/landingPage'
 
 /**
  * COMPONENT
