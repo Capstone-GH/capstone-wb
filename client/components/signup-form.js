@@ -8,7 +8,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
+// import Link from '@material-ui/core/Link'
+import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Box from '@material-ui/core/Box'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
@@ -76,17 +77,20 @@ export function SignUp(props) {
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                margin="normal"
                 required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                autoFocus
               />
             </Grid>
             <Grid item xs={12}>
               <TextField
                 variant="outlined"
+                margin="normal"
                 required
                 fullWidth
                 name="password"
@@ -96,29 +100,31 @@ export function SignUp(props) {
                 autoComplete="current-password"
               />
             </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign Up
+              </Button>
+            </Grid>
+            {source === 'saveLoginModal' ? (
+              <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                color="primary"
+                onClick={() => props.closeLoginModal()}
+              >
+                Cancel
+              </Button>
+            ) : (
+              ''
+            )}
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          {source === 'saveLoginModal' ? (
-            <Button
-              type="button"
-              fullWidth
-              variant="outlined"
-              color="primary"
-              onClick={() => props.closeLoginModal()}
-            >
-              Cancel
-            </Button>
-          ) : (
-            ''
-          )}
           <Grid container justify="flex-end">
             <Grid item>
               {source === 'saveLoginModal' ? (
@@ -126,8 +132,8 @@ export function SignUp(props) {
                   Already have an account? Sign In
                 </Button>
               ) : (
-                <Link href="/login" variant="body2">
-                  Don't have an account? Sign Up
+                <Link to="/login" variant="body2">
+                  Already have an account? Sign In
                 </Link>
               )}
             </Grid>

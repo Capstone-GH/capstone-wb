@@ -8,7 +8,8 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
+// import Link from '@material-ui/core/Link'
+import {Link} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
@@ -60,7 +61,6 @@ export function Login(props) {
           name="login"
           onSubmit={e => {
             if (source === 'saveLoginModal') {
-              console.log(props)
               props.handleSubmitAndSave(
                 e,
                 props.whiteboardData,
@@ -74,50 +74,58 @@ export function Login(props) {
             }
           }}
         >
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          {source === 'saveLoginModal' ? (
-            <Button
-              type="button"
-              fullWidth
-              variant="outlined"
-              color="primary"
-              onClick={() => props.closeLoginModal()}
-            >
-              Cancel
-            </Button>
-          ) : (
-            ''
-          )}
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign In
+              </Button>
+            </Grid>
+            {source === 'saveLoginModal' ? (
+              <Button
+                type="button"
+                fullWidth
+                variant="outlined"
+                color="primary"
+                onClick={() => props.closeLoginModal()}
+              >
+                Cancel
+              </Button>
+            ) : (
+              ''
+            )}
+          </Grid>
           <Grid container justify="flex-end">
             <Grid item>
               {source === 'saveLoginModal' ? (
@@ -125,7 +133,7 @@ export function Login(props) {
                   Don't have an account? Sign Up
                 </Button>
               ) : (
-                <Link href="/signup" variant="body2">
+                <Link to="/signup" variant="body2">
                   Don't have an account? Sign Up
                 </Link>
               )}
